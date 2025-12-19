@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-YM3EHHB2YQ');</script><title>Local timeouts and ActiveRecord transactions - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Local timeouts and ActiveRecord transactions</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on November 27, 2023</p><p class="note-updated uk-article-meta">Updated on November 28, 2023</p></div><p class="blog-post-tags">Tags: <a href="/?tag=postgres">postgres</a>, <a href="/?tag=rails">rails</a></p><p>
+There may be cases where the default <a href="//www.postgresql.org/docs/current/runtime-config-client.html#GUC-STATEMENT-TIMEOUT">statement_timeout</a> value for a database
+connection might not be high enough for certain long-running queries. One option
+is to just increase the value for the connection. Another option is the increase
+the timeout locally, for a specific query.
+</p>
+<h2><a id="connectiontimeout" class="anchor" href="#connectiontimeout"><i># </i></a>Connection timeout</h2><div class="outline-text-2" id="text-orga45fea2">
+<p>
+For an ActiveRecord Postgres database configuration, a <code>statement_timeout</code> can be
+set in the <code>database.yml</code>. In this example, all queries to this database
+will timeout after 1 second (can use other units, ms is the default).
+</p>
+<div class="org-src-container">
+<pre class="src src-yml">production_replica:
+  replica: true
+  variables:
+    statement_timeout: 1s
+</pre>
+</div>
+
+<p>
+It&rsquo;s a good idea to set a value for this since the default is <code>0</code> which disables
+timeouts and could grind down an application with unexpectedly long running
+queries.
+</p>
+</div>
+<h2><a id="localtimeout" class="anchor" href="#localtimeout"><i># </i></a>Local timeout</h2><div class="outline-text-2" id="text-org79ff7e7">
+<p>
+A local time can be used to temporarily override the <code>statement_timeout</code> defined
+on the connection. A local timeout must be declared within a transaction,
+otherwise it will be ignored and the connection <code>statement_timeout</code> will be
+used. The timeout of <code>2s</code> below will apply only for the transaction and will take
+precedence over the timeout for the connection (<code>1s</code>) See also
+<a href="https://www.postgresql.org/docs/16/sql-set.html">https://www.postgresql.org/docs/16/sql-set.html</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span class="org-keyword">BEGIN</span>;
+<span class="org-keyword">SET</span> <span class="org-keyword">LOCAL</span> statement_timeout = <span class="org-string">'2s'</span>;
+<span class="org-keyword">SELECT</span> pg_sleep(1.8);
+<span class="org-keyword">COMMIT</span>;
+</pre>
+</div>
+
+<p>
+Without the local timeout, the <code>pg_sleep(1.8)</code> will raise a timeout error given
+a <code>statement_timeout</code> for the connection is <code>1s</code>.
+</p>
+<div class="org-src-container">
+<pre class="src src-nil">ERROR:  canceling statement due to statement timeout
+</pre>
+</div>
+</div>
+<h3><a id="howcanthisbeusedwithactiverecordrsquosqueryinterface" class="anchor" href="#howcanthisbeusedwithactiverecordrsquosqueryinterface"><i># </i></a>How can this be used with ActiveRecord&rsquo;s query interface?</h3><div class="outline-text-3" id="text-orgb15c556">
+<p>
+We know we need a <a href="//api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/DatabaseStatements.html#method-i-transaction">transaction</a>, within which we need to <a href="//api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/DatabaseStatements.html#method-i-execute">execute</a> a <a href="//www.postgresql.org/docs/16/sql-set.html">SET</a> statement.
+Putting that together, we might do something like this
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-type">ActiveRecord</span>::<span class="org-type">Base</span>.transaction <span class="org-keyword">do</span>
+  <span class="org-type">ActiveRecord</span>::<span class="org-type">Base</span>.connection.execute(<span class="org-string">"SET LOCAL statement_timeout = '2s';"</span>)
+  <span class="org-type">Message</span>.all
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<p>
+Strangely, we&rsquo;ll see this in the logs:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span class="org-keyword">TRANSACTION</span> (0.7ms)  <span class="org-keyword">BEGIN</span>
+(3.4ms)  <span class="org-keyword">SET</span> <span class="org-keyword">LOCAL</span> statement_timeout = <span class="org-string">'2s'</span>;
+<span class="org-keyword">TRANSACTION</span> (0.5ms)  <span class="org-keyword">COMMIT</span>
+Message Load (0.4ms)  <span class="org-keyword">SELECT</span> "messages".* <span class="org-keyword">FROM</span> "messages" <span class="org-comment">/* loading for pp */</span> <span class="org-keyword">LIMIT</span> $1  [["<span class="org-keyword">LIMIT</span>", 11]]
+</pre>
+</div>
+
+<p>
+The transaction appears to <code>COMMIT</code> before the select statement making the
+local timeout useless.
+</p>
+
+<p>
+In fact, this can be tested using <code>pg_sleep</code>. Given the <code>statement_timeout</code> of <code>1s</code>
+defined for the connection in the <code>database.yml</code>, the following code&#x2026;
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-type">ActiveRecord</span>::<span class="org-type">Base</span>.transaction <span class="org-keyword">do</span>
+  <span class="org-type">ActiveRecord</span>::<span class="org-type">Base</span>.connection.execute(<span class="org-string">"SET LOCAL statement_timeout = '2s';"</span>)
+  <span class="org-type">Message</span>.select(<span class="org-string">'id, pg_sleep(1.8)'</span>)
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<p>
+&#x2026;will raise a timeout error:
+</p>
+<div class="org-src-container">
+<pre class="src src-nil">An error occurred when inspecting the object: #&lt;ActiveRecord::QueryCanceled:"PG::QueryCanceled: ERROR:  canceling statement due to statement timeout\n"&gt;
+</pre>
+</div>
+
+<p>
+If we change the ruby code to use <code>execute</code> for both statements&#x2026;
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-type">ActiveRecord</span>::<span class="org-type">Base</span>.transaction <span class="org-keyword">do</span>
+  <span class="org-type">ActiveRecord</span>::<span class="org-type">Base</span>.connection.execute(<span class="org-string">"SET LOCAL statement_timeout = '2s';"</span>)
+  <span class="org-type">ActiveRecord</span>::<span class="org-type">Base</span>.connection.execute(<span class="org-type">Message</span>.all.to_sql)
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<p>
+&#x2026;then we something that looks more like what one would expect. Both the local
+timeout and the query are within the transaction.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span class="org-keyword">TRANSACTION</span> (0.4ms)  <span class="org-keyword">BEGIN</span>
+(2.4ms)  <span class="org-keyword">SET</span> <span class="org-keyword">LOCAL</span> statement_timeout = <span class="org-string">'2s'</span>;
+(1.2ms)  <span class="org-keyword">SELECT</span> "messages".* <span class="org-keyword">FROM</span> "messages"
+<span class="org-keyword">TRANSACTION</span> (0.9ms)  <span class="org-keyword">COMMIT</span>
+</pre>
+</div>
+
+<p>
+And if we re-do the test above with <code>pg_timeout</code>&#x2026;
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-type">ActiveRecord</span>::<span class="org-type">Base</span>.transaction <span class="org-keyword">do</span>
+  <span class="org-type">ActiveRecord</span>::<span class="org-type">Base</span>.connection.execute(<span class="org-string">"SET LOCAL statement_timeout = '2s';"</span>)
+  <span class="org-type">ActiveRecord</span>::<span class="org-type">Base</span>.connection.execute(
+    <span class="org-type">Message</span>.select(<span class="org-string">'id, pg_sleep(1.8)'</span>).to_sql
+  )
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<p>
+It will complete with no timeout error, again appearing to be within the DB
+transaction.
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span class="org-keyword">TRANSACTION</span> (0.3ms)  <span class="org-keyword">BEGIN</span>
+(2.0ms)  <span class="org-keyword">SET</span> <span class="org-keyword">LOCAL</span> statement_timeout = <span class="org-string">'2s'</span>;
+(1803.2ms)  <span class="org-keyword">SELECT</span> id, pg_sleep(1.8) <span class="org-keyword">FROM</span> "messages"
+<span class="org-keyword">TRANSACTION</span> (0.6ms)  <span class="org-keyword">COMMIT</span>
+</pre>
+</div>
+
+<p>
+I didn&rsquo;t know why, in the previous examples, the query was being run outside
+of the transaction, so I asked about it
+<a href="https://github.com/rails/rails/issues/50201">https://github.com/rails/rails/issues/50201</a>
+</p>
+
+<p>
+<b>TL;DR</b> This happens because the transaction block is returning an
+ActiveRecord::Relation object which is lazily loaded. It is loaded after the
+transaction block completes (eg, when iterating over the collection or when
+inspect is called on it by virtue of running it in the rails console).
+Therefore, chaining <code>.load</code> will force the query to be performed within the
+transaction block.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-type">ActiveRecord</span>::<span class="org-type">Base</span>.transaction <span class="org-keyword">do</span>
+  <span class="org-type">ActiveRecord</span>::<span class="org-type">Base</span>.connection.execute(<span class="org-string">"SET LOCAL statement_timeout = '2s';"</span>)
+  <span class="org-type">Message</span>.all.load
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-sql"><span class="org-keyword">TRANSACTION</span> (0.2ms)  <span class="org-keyword">BEGIN</span>
+(2.9ms)  <span class="org-keyword">SET</span> <span class="org-keyword">LOCAL</span> statement_timeout = <span class="org-string">'2s'</span>;
+Message Load (7.1ms)  <span class="org-keyword">SELECT</span> "messages".* <span class="org-keyword">FROM</span> "messages"
+<span class="org-keyword">TRANSACTION</span> (0.3ms)  <span class="org-keyword">COMMIT</span>
+</pre>
+</div>
+
+<p>
+While that explains the issue, I find this behavior undesirable. Admittedly,
+this is likely a rare edge case. Most uses of a transaction will involve
+performing write operations where this problem does not arise (eg, no lazily
+loaded relations with <code>update</code>, <code>create</code>, etc). Still, perhaps it is possible to
+change this behavior so that relations are always loaded when within a
+transaction block.
+</p>
+</div>
+</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

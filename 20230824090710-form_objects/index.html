@@ -1,0 +1,675 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-YM3EHHB2YQ');</script><title>The Utility of ActiveModel - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">The Utility of ActiveModel</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on August 24, 2023</p><p class="note-updated uk-article-meta">Updated on February 12, 2025</p></div><p class="blog-post-tags">Tags: <a href="/?tag=rails">rails</a>, <a href="/?tag=ruby">ruby</a></p><div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgb0fd683">ActiveModel::Model</a>
+<ul>
+<li><a href="#org6308ac6">Some notes on <code>form_with</code></a></li>
+<li><a href="#orgf214c46">Validating child objects</a></li>
+</ul>
+</li>
+<li><a href="#orge593997">ActiveModel::Attributes</a>
+<ul>
+<li><a href="#org59433f9">ActiveMode::Type</a></li>
+</ul>
+</li>
+<li><a href="#orga01ad01">ActiveModel::Serialization</a></li>
+<li><a href="#org9937b3a">ActiveModel::Callback</a></li>
+<li><a href="#org83bb3b5">ActiveModel::Validation::Callbacks</a></li>
+</ul>
+</div>
+</div>
+<p>
+:ID:       E7CAC743-E22D-48FC-9922-19081FA8A495
+</p>
+<p>
+Make use of various <code>ActiveModel</code> modules in your Ruby objects to get <code>ActiveRecord</code>
+like behavior like type casting, validation, and callbacks. Code that would
+otherwise be complex, can be simplified by providing a familiar Railsy interface
+while also saving you some development time.
+</p>
+
+<p>
+The form object pattern is one example:
+</p>
+<ul class="org-ul">
+<li><a href="https://github.com/apmiller108/tmp/blob/main/lib/conversation_form.rb">https://github.com/apmiller108/tmp/blob/main/lib/conversation_form.rb</a></li>
+</ul>
+
+<p>
+There&rsquo;s already lot on the internet about form objects in Rails. Rather than
+just the basic example, I want to document additional use cases organized by
+the different <code>ActiveModel</code> modules and the specialized behavior they can provide
+our ruby objects.
+</p>
+
+<p>
+I&rsquo;ve found the form object pattern useful as clean way to handle complex or
+forms where we&rsquo;re not working with just a single ActiveRecord object. For
+example, forms that create or update multiple records (eg, an alternative to
+<a href="//api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html#method-i-accepts_nested_attributes_for">accepts_nested_attributes_for</a>) or forms that need to do API calls to other
+services, etc.
+</p>
+
+<p>
+This gist of this is that we can leverage <code>ActiveModel</code> modules to add
+behavior to ruby classes, giving them a familiar ActiveRecord interface.
+</p>
+<h2><a id="activemodelmodel" class="anchor" href="#activemodelmodel"><i># </i></a>ActiveModel::Model</h2><div class="outline-text-2" id="text-orgb0fd683">
+<p>
+At a minimum, we&rsquo;ll want this module. It includes <a href="//api.rubyonrails.org/classes/ActiveModel/API.html">ActiveModel::API</a> which
+provides among other things:
+</p>
+<ol class="org-ol">
+<li>An <code>initializer</code> method that takes a hash and assigns the key-value pairs to the
+class&rsquo; defined <code>attr_accessor</code></li>
+<li>The API needed for interfacing with Action Pack and Action View</li>
+<li>Support for declaring validations</li>
+</ol>
+
+<p>
+See also <a href="http://api.rubyonrails.org/classes/ActiveModel/Model.html">http://api.rubyonrails.org/classes/ActiveModel/Model.html</a>
+</p>
+
+<p>
+The following, rather stupid example, demonstrates the initializer and
+validations.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-keyword">class</span> <span class="org-type">WidgetForm</span>
+  <span class="org-builtin">include</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Model</span>
+
+  <span class="org-builtin">attr_accessor</span> <span class="org-constant">:quantity</span>, <span class="org-constant">:expires_at</span>
+
+  validates <span class="org-constant">:quantity</span>, <span class="org-constant">presence:</span> <span class="org-constant">true</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">submit</span>
+    <span class="org-keyword">return</span> <span class="org-constant">false</span> <span class="org-keyword">if</span> invalid?
+    <span class="org-type">Widget</span>.create(<span class="org-constant">quantity:</span>, <span class="org-constant">expires_at:</span>)
+  <span class="org-keyword">end</span>
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-ruby">form = <span class="org-type">WidgetForm</span>.new(<span class="org-constant">quantity:</span> <span class="org-string">'3'</span>, <span class="org-constant">expires_at:</span> <span class="org-string">'2023-12-31'</span>)
+form.quantity <span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; "3"
+</span>form.expires_at <span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; "2023-12-31"</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-ruby">form = <span class="org-type">WidgetForm</span>.new(<span class="org-constant">expires_at:</span> <span class="org-string">'2023-12-31'</span>)
+form.validate! <span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; ActiveModel::ValidationError: Validation failed: Quantity can't be blank</span>
+</pre>
+</div>
+
+<p>
+This gives us the fundamentals for being able to use this form in a
+controller (and view), taking in user provided parameters. Although, we&rsquo;re
+probably going to encounter issues with this naive implementation &#x2013; more on
+this below. For now, however, we can implement a controller. The example here
+is for a JSON API, but these form objects can be used in views with <code>form_with</code>
+as one would an ActiveRecord object.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-keyword">class</span> <span class="org-type">WidgetsController</span> &lt; <span class="org-type">ApplicationController</span>
+  <span class="org-keyword">def</span> <span class="org-function-name">create</span>
+    form = <span class="org-type">WidgetForm</span>.new(widget_params)
+    <span class="org-keyword">if</span> form.submit
+      render <span class="org-constant">json:</span> form
+    <span class="org-keyword">else</span>
+      render <span class="org-constant">json:</span> { <span class="org-constant">errors:</span> form.errors.full_messages }
+    <span class="org-keyword">end</span>
+  <span class="org-keyword">end</span>
+
+  <span class="org-builtin">private</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">widget_params</span>
+    params.require(<span class="org-constant">:widget</span>).permit(<span class="org-constant">:quantity</span>, <span class="org-constant">:expires_at</span>)
+  <span class="org-keyword">end</span>
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<p>
+When there are validation errors, the client receives the full validation
+error messages generated by <code>ActiveModel::Model</code>.
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">curl --request POST <span class="org-sh-escaped-newline">\</span>
+     --url http://localhost:3000/widgets/ <span class="org-sh-escaped-newline">\</span>
+     --header <span class="org-string">'Accept: application/json'</span> <span class="org-sh-escaped-newline">\</span>
+     --header <span class="org-string">'Content-Type: application/json'</span> <span class="org-sh-escaped-newline">\</span>
+     --data <span class="org-string">'{
+        "widget": {
+          "expires_at": "2024-01-01",
+          "quantity": null
+        }
+      }'</span>
+
+{<span class="org-string">"errors"</span>:[<span class="org-string">"Quantity can't be blank"</span>]}
+</pre>
+</div>
+
+<p>
+Without validation errors, the JSON dump of the form is returned to the
+client.
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">curl --request POST <span class="org-sh-escaped-newline">\</span>
+     --url http://localhost:3000/widgets/ <span class="org-sh-escaped-newline">\</span>
+     --header <span class="org-string">'Accept: application/json'</span> <span class="org-sh-escaped-newline">\</span>
+     --header <span class="org-string">'Content-Type: application/json'</span> <span class="org-sh-escaped-newline">\</span>
+     --data <span class="org-string">'{
+        "widget": {
+          "expires_at": "2024-01-01",
+          "quantity": 1
+        }
+      }'</span>
+
+{<span class="org-string">"attributes"</span>:{},<span class="org-string">"quantity"</span>:1,<span class="org-string">"expires_at"</span>:<span class="org-string">"2024-01-01"</span>,<span class="org-string">"validation_context"</span>:null,<span class="org-string">"errors"</span>:{}}
+</pre>
+</div>
+
+<p>
+This likely isn&rsquo;t the JSON structure we&rsquo;d ultimately want, but again this is
+the most basic approach we can take. We&rsquo;ll look at options for customizing
+the JSON output below. But first, lets look at an alternative way to handle
+the form&rsquo;s attributes.
+</p>
+</div>
+<h3><a id="somenotesonform_with" class="anchor" href="#somenotesonform_with"><i># </i></a>Some notes on <code>form_with</code></h3><div class="outline-text-3" id="text-org6308ac6">
+<p>
+With building forms using <code>form_with</code> the URL and HTTP method are inferred. With
+a form object this may not work the way you want it to. There are several ways
+to solve it, depending on the form object and your needs.
+</p>
+
+<ul class="org-ul">
+<li>Use polymorphic_path and pass in an ActiveRecord object wrapped by the form object.</li>
+<li>Delegate <code>persisted?</code> to an ActiveRecord object wrapped by the form object.
+Rails will infer the HTTP method from <code>persisted?</code>.</li>
+<li>The form object defines methods like <code>method</code> and <code>url</code> that are passed as
+options to <code>form_with</code></li>
+</ul>
+</div>
+<h3><a id="validatingchildobjects" class="anchor" href="#validatingchildobjects"><i># </i></a>Validating child objects</h3><div class="outline-text-3" id="text-orgf214c46">
+<p>
+It&rsquo;s not uncommon to have forms to create or update one or more ActiveRecord
+objects. In this case, we can use a custom validation method and add the
+child object errors to the form.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-keyword">class</span> <span class="org-type">WidgetForm</span>
+  <span class="org-builtin">include</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Model</span>
+
+  <span class="org-builtin">attr_accessor</span> <span class="org-constant">:quantity</span>, <span class="org-constant">:expires_at</span>
+
+  validates <span class="org-constant">:quantity</span>, <span class="org-constant">presence:</span> <span class="org-constant">true</span>
+  validate <span class="org-constant">:validate_component</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">initialize</span>(attrs)
+    <span class="org-keyword">super</span>(attrs)
+    <span class="org-keyword">self</span>.component = <span class="org-type">Component</span>.new(attrs.slice(<span class="org-constant">:type</span>, <span class="org-constant">:name</span>))
+  <span class="org-keyword">end</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">submit</span>
+    <span class="org-keyword">return</span> <span class="org-constant">false</span> <span class="org-keyword">if</span> invalid?
+    <span class="org-type">Widget</span>.create(<span class="org-constant">quantity:</span>, <span class="org-constant">expires_at:</span>)
+    component.save
+  <span class="org-keyword">end</span>
+
+  <span class="org-builtin">private</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">validate_component</span>
+    <span class="org-keyword">return</span> <span class="org-keyword">if</span> component.valid?
+
+    component.errors.each <span class="org-keyword">do</span> |error|
+      errors.add(error.attribute, error.message)
+    <span class="org-keyword">end</span>
+  <span class="org-keyword">end</span>
+<span class="org-keyword">end</span>
+</pre>
+</div>
+</div>
+<h2><a id="activemodelattributes" class="anchor" href="#activemodelattributes"><i># </i></a>ActiveModel::Attributes</h2><div class="outline-text-2" id="text-orge593997">
+<p>
+This is optional, but quite useful as an alternative to the traditional
+<code>attr_accessor</code>. It allows one to declare type casting and default values. Say
+if we have a date string, and we&rsquo;d like to instead represent this using a
+Ruby Date object for convenience. There are many <a href="//api.rubyonrails.org/classes/ActiveModel/Type.html">built in types</a> casts or you
+can even define your own custom one.
+</p>
+
+<p>
+Here we will demonstrate three types:
+</p>
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-keyword">class</span> <span class="org-type">WidgetForm</span>
+  <span class="org-builtin">include</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Model</span>
+  <span class="org-builtin">include</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Attributes</span>
+
+  attribute <span class="org-constant">:quantity</span>, <span class="org-constant">:integer</span>
+  attribute <span class="org-constant">:expires_at</span>, <span class="org-constant">:date</span>
+  attribute <span class="org-constant">:active</span>, <span class="org-constant">:boolean</span>, <span class="org-constant">default:</span> <span class="org-constant">true</span>
+
+  validates <span class="org-constant">:quantity</span>, <span class="org-constant">presence:</span> <span class="org-constant">true</span>
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<p>
+In this example the string <code>'3'</code> is cast to <code>Integer</code> and the expires_at date
+string is cast to a Ruby <code>Date</code> object. <code>active</code> is <code>true</code> by default, and setting
+it to <code>'0'</code> will cast the value to <code>false</code>.
+</p>
+<div class="org-src-container">
+<pre class="src src-ruby">form = <span class="org-type">WidgetForm</span>.new(<span class="org-constant">quantity:</span> <span class="org-string">'3'</span>, <span class="org-constant">expires_at:</span> <span class="org-string">'2023-12-31'</span>)
+form.quantity <span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; 3
+</span>form.expires_at <span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; Sun, 31 Dec 2023
+</span>form.active <span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; true
+</span>
+form.active = <span class="org-string">'0'</span>
+form.active <span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; false</span>
+</pre>
+</div>
+
+<p>
+See also
+<a href="http://api.rubyonrails.org/classes/ActiveModel/Attributes/ClassMethods.html">http://api.rubyonrails.org/classes/ActiveModel/Attributes/ClassMethods.html</a>
+</p>
+
+<p>
+This is NOT the <a href="//api.rubyonrails.org/classes/ActiveRecord/Attributes/ClassMethods.html">ActiveRecord attributes API</a> but it works in some of the same
+ways. See also <a href="40FFCDB2-F065-4EDC-9DED-C3007827B470">ActiveRecord</a> notes.
+</p>
+</div>
+<h3><a id="activemodetype" class="anchor" href="#activemodetype"><i># </i></a>ActiveMode::Type</h3><div class="outline-text-3" id="text-org59433f9">
+<p>
+This goes along with <code>ActiveModel::Attributes</code>, specifically the type casting
+declarations. There are many <a href="//api.rubyonrails.org/classes/ActiveModel/Type.html">built in types</a> which will likely satisfy the
+vast majority of use cases.
+</p>
+
+<p>
+If, however,the built in types aren&rsquo;t enough, we have peculiar use
+cases, and we&rsquo;re feeling particularly <b>bold</b>, then we can define a custom type.
+Let&rsquo;s say we have temperature that could be submitted in either Celsius or
+Fahrenheit and we want to store the values in <a href="//en.wikipedia.org/wiki/Kelvin">Kelvin</a>.
+</p>
+
+<p>
+To do this, we define a custom type class that itself defines a <code>cast</code> method.
+This method contains the custom logic for doing the conversion from F or C
+to K in the decimal data type; hence our class inherits from
+<code>ActiveModel::Type::Decimal</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-keyword">class</span> <span class="org-type">Kelvin</span> &lt; <span class="org-type">ActiveModel</span>::<span class="org-type">Type</span>::<span class="org-type">Decimal</span>
+  <span class="org-type">K_BASE</span> = 273.15.to_d
+
+  <span class="org-keyword">def</span> <span class="org-function-name">cast</span>(value)
+    <span class="org-keyword">return</span> <span class="org-keyword">if</span> value.blank?
+
+    value.upcase!
+    temp_in_kelvin = <span class="org-keyword">if</span> value.include?(<span class="org-string">'C'</span>)
+                      value.delete(<span class="org-string">'C'</span>).to_d + <span class="org-type">K_BASE</span>
+                    <span class="org-keyword">elsif</span> value.include?(<span class="org-string">'F'</span>)
+                      ((value.delete(<span class="org-string">'F'</span>).to_d - 32) * (<span class="org-builtin">Rational</span>(5, 9))) + <span class="org-type">K_BASE</span>
+                    <span class="org-keyword">end</span>
+    <span class="org-keyword">super</span>(temp_in_kelvin)
+  <span class="org-keyword">end</span>
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<p>
+Then we register the custom type in an initializer&#x2026;
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-comment-delimiter"># </span><span class="org-comment">config/initializers/active_model_types.rb
+</span><span class="org-type">ActiveModel</span>::<span class="org-type">Type</span>.register(<span class="org-constant">:kelvin</span>, <span class="org-type">Kelvin</span>)
+</pre>
+</div>
+
+<p>
+&#x2026;And use it in the same way we would use one of the built in types.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-keyword">class</span> <span class="org-type">WidgetForm</span>
+  <span class="org-builtin">include</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Model</span>
+  <span class="org-builtin">include</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Attributes</span>
+
+  attribute <span class="org-constant">:temperature</span>, <span class="org-constant">:kelvin</span>
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-ruby">form = <span class="org-type">WidgetForm</span>.new(<span class="org-constant">temperature:</span> <span class="org-string">'1 C'</span>)
+form.temperature <span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; 0.27415e3
+</span>
+form = <span class="org-type">WidgetForm</span>.new(<span class="org-constant">temperature:</span> <span class="org-string">'1 f'</span>)
+form.temperature <span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; 0.255927777764e3</span>
+</pre>
+</div>
+
+<p>
+Doing this does have implications for front ends when displaying the value
+back to the user in their temperature unit preference. For example,
+returning the value in scientific notation in K would be quite unexpected
+when the user submitting the value in either C or F. So we&rsquo;ll probably need
+some custom conversion to case the value back to F or C.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-keyword">class</span> <span class="org-type">Kelvin</span> &lt; <span class="org-type">ActiveModel</span>::<span class="org-type">Type</span>::<span class="org-type">Decimal</span>
+  <span class="org-type">K_BASE</span> = 273.15.to_d
+
+  <span class="org-keyword">def</span> <span class="org-keyword">self</span>.<span class="org-function-name">to_preferred_unit</span>(value, unit)
+    <span class="org-keyword">return</span> <span class="org-keyword">if</span> value.blank?
+
+    <span class="org-keyword">if</span> unit == <span class="org-string">'C'</span>
+      <span class="org-string">"</span><span class="org-variable-name">#{(value - K_BASE)}</span><span class="org-string"> C"</span>
+    <span class="org-keyword">elsif</span> unit == <span class="org-string">'F'</span>
+      fahrenheit = (((value - <span class="org-type">K_BASE</span>) * 9) / 5) + 32
+      <span class="org-string">"</span><span class="org-variable-name">#{fahrenheit.round(2)}</span><span class="org-string"> F"</span>
+    <span class="org-keyword">end</span>
+  <span class="org-keyword">end</span>
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-ruby">form = <span class="org-type">WidgetForm</span>.new(<span class="org-constant">temperature:</span> <span class="org-string">'15.3 c'</span>)
+form.temperature <span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; 0.28845e3
+</span><span class="org-type">Kelvin</span>.to_preferred_unit(form.temperature, <span class="org-string">'C'</span>) <span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; "15.3 C"
+</span>
+form = <span class="org-type">WidgetForm</span>.new(<span class="org-constant">temperature:</span> <span class="org-string">'104.3 f'</span>)
+form.temperature <span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; 0.3133166666666666666988e3
+</span><span class="org-type">Kelvin</span>.to_preferred_unit(form.temperature, <span class="org-string">'F'</span>) <span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; "104.3 F"</span>
+</pre>
+</div>
+
+<p>
+Now we can display the value back to the user in their preferred unit. For
+the JSON representation, we&rsquo;ll need to customize the JSON dump (more on this
+below)
+</p>
+</div>
+<h2><a id="activemodelserialization" class="anchor" href="#activemodelserialization"><i># </i></a>ActiveModel::Serialization</h2><div class="outline-text-2" id="text-orga01ad01">
+<p>
+In basic example above, our controller action returns the JSON
+representation of the <code>WidgetForm</code>. It was OK, but not ideal. If we to
+customize this, we could override the <code>as_json</code> method to return a serializable
+hash of just the attributes we want to return to the client.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-keyword">class</span> <span class="org-type">WidgetForm</span>
+  <span class="org-builtin">include</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Model</span>
+  <span class="org-builtin">include</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Attributes</span>
+
+  attribute <span class="org-constant">:name</span>, <span class="org-constant">:string</span>
+  attribute <span class="org-constant">:quantity</span>, <span class="org-constant">:integer</span>
+  attribute <span class="org-constant">:expires_at</span>, <span class="org-constant">:date</span>
+  attribute <span class="org-constant">:active</span>, <span class="org-constant">:boolean</span>, <span class="org-constant">default:</span> <span class="org-constant">true</span>
+  attribute <span class="org-constant">:temperature</span>, <span class="org-constant">:kelvin</span>
+  attribute <span class="org-constant">:preferred_temperature_unit</span>, <span class="org-constant">:string</span>
+
+  validates <span class="org-constant">:preferred_temperature_unit</span>, <span class="org-constant">inclusion:</span> <span class="org-string">%w[C F]</span>, <span class="org-constant">allow_nil:</span> <span class="org-constant">true</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">initialize</span>(attributes)
+    <span class="org-keyword">super</span>(attributes)
+    set_temperature_unit(attributes[<span class="org-string">'temperature'</span>])
+  <span class="org-keyword">end</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">as_json</span>(_opts = <span class="org-constant">nil</span>)
+    attributes.merge(<span class="org-constant">temperature:</span> <span class="org-type">Kelvin</span>.to_preferred_unit(temperature, preferred_temperature_unit))
+  <span class="org-keyword">end</span>
+
+  <span class="org-builtin">private</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">set_temperature_unit</span>(temperature)
+    <span class="org-keyword">return</span> <span class="org-keyword">if</span> temperature.blank?
+
+    <span class="org-keyword">self</span>.preferred_temperature_unit = temperature.upcase.match(<span class="org-string">/[FC]/</span>)[0]
+  <span class="org-keyword">end</span>
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<p>
+There a little bit more going on here than just overriding <code>as_json</code>. We&rsquo;re
+also defining an <code>initialize</code> method that will call a method to set the
+<code>~preferred_temperature_unit</code> attribute (eg, F or C) from the <code>temperature</code>
+before it is type cast to Kelvin. The <code>preferred_temperature_unit</code> is used to
+convert the temperature in Kelvin back to Fahrenheit or Celsius. ActiveRecord
+has a convenience method, <a href="//api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/BeforeTypeCast.html#method-i-read_attribute_before_type_cast">read_attribute_before_type_cast</a>, that would be
+helpful here, but it is not provided by <code>ActiveModel::Attributes</code>. So, we do a
+little more work.
+</p>
+
+<p>
+The <code>attributes</code> method comes from <code>ActiveModel::Attributes</code> and returns a hash
+of the declared attributes and their values.
+</p>
+
+<p>
+Using this, we get a more sensible JSON response:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">curl --request POST <span class="org-sh-escaped-newline">\</span>
+     --url http://localhost:3000/widgets/ <span class="org-sh-escaped-newline">\</span>
+     --header <span class="org-string">'Accept: application/json'</span> <span class="org-sh-escaped-newline">\</span>
+     --header <span class="org-string">'Content-Type: application/json'</span> <span class="org-sh-escaped-newline">\</span>
+     --data <span class="org-string">'{
+        "widget": {
+        "expires_at": "2024-01-01",
+        "quantity": 1,
+        "temperature": "1 c",
+        "name": "da bomb widget 5000"
+  }
+}'</span>
+
+{<span class="org-string">"name"</span>:<span class="org-string">"da bomb widget 5000"</span>,<span class="org-string">"quantity"</span>:1,<span class="org-string">"expires_at"</span>:<span class="org-string">"2024-01-01"</span>,<span class="org-string">"active"</span>:true,<span class="org-string">"temperature"</span>:<span class="org-string">"1.0 C"</span>,<span class="org-string">"preferred_temperature_unit"</span>:<span class="org-string">"C"</span>}
+</pre>
+</div>
+
+<p>
+Okay that&rsquo;s nice, so what about <code>ActiveModel::Serialization</code>? We can use
+include this module to provide some flexibility in how the object is
+serialized, by providing the <a href="//api.rubyonrails.org/classes/ActiveModel/Serialization.html#method-i-serializable_hash">serializable_hash</a> method. We can use this in the
+controller to customize the serialization. For example, we don&rsquo;t want to send
+back the <code>preferred_temperature_unit</code> since this is something we compute as part
+of the type casting to Kelvin, but we do want to return the temperature value
+in Kelvin. We can do that like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-keyword">class</span> <span class="org-type">WidgetsController</span> &lt; <span class="org-type">ApplicationController</span>
+  <span class="org-keyword">def</span> <span class="org-function-name">create</span>
+    form = <span class="org-type">WidgetForm</span>.new(widget_params)
+    <span class="org-keyword">if</span> form.submit
+      render <span class="org-constant">json:</span> form.serializable_hash(
+               <span class="org-constant">except:</span> <span class="org-constant">:preferred_temperature_unit</span>, <span class="org-constant">methods:</span> <span class="org-constant">:temperature_in_kelvin</span>
+             )
+    <span class="org-keyword">else</span>
+      render <span class="org-constant">json:</span> { <span class="org-constant">errors:</span> form.errors.full_messages }
+    <span class="org-keyword">end</span>
+  <span class="org-keyword">end</span>
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<p>
+We exclude the <code>preferred_temperature_unit</code> and include a new method
+<code>temperature_in_kelvin</code> which is an aliased attribute of <code>temperature</code>. To make
+this work, there are a couple things we need to do in the form. Namely,
+create the alias and make sure we&rsquo;re returning the <code>temperature</code> in the
+preferred unit.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-keyword">class</span> <span class="org-type">WidgetForm</span>
+  <span class="org-builtin">include</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Model</span>
+  <span class="org-builtin">include</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Attributes</span>
+  <span class="org-builtin">include</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Serialization</span>
+
+  attribute <span class="org-constant">:name</span>, <span class="org-constant">:string</span>
+  attribute <span class="org-constant">:quantity</span>, <span class="org-constant">:integer</span>
+  attribute <span class="org-constant">:expires_at</span>, <span class="org-constant">:date</span>
+  attribute <span class="org-constant">:active</span>, <span class="org-constant">:boolean</span>, <span class="org-constant">default:</span> <span class="org-constant">true</span>
+  attribute <span class="org-constant">:temperature</span>, <span class="org-constant">:kelvin</span>
+  attribute <span class="org-constant">:preferred_temperature_unit</span>, <span class="org-constant">:string</span>
+
+  validates <span class="org-constant">:quantity</span>, <span class="org-constant">:name</span>, <span class="org-constant">presence:</span> <span class="org-constant">true</span>
+  validates <span class="org-constant">:preferred_temperature_unit</span>, <span class="org-constant">inclusion:</span> <span class="org-string">%w[C F]</span>, <span class="org-constant">allow_nil:</span> <span class="org-constant">true</span>
+
+  alias_attribute <span class="org-constant">:temperature_in_kelvin</span>, <span class="org-constant">:temperature</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">initialize</span>(attributes)
+    <span class="org-keyword">super</span>(attributes)
+    set_temperature_unit(attributes[<span class="org-string">'temperature'</span>])
+  <span class="org-keyword">end</span>
+
+  <span class="org-builtin">private</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">read_attribute_for_serialization</span>(attribute)
+    <span class="org-keyword">if</span> attribute == <span class="org-string">'temperature'</span>
+      <span class="org-type">Kelvin</span>.to_preferred_unit(temperature, preferred_temperature_unit)
+    <span class="org-keyword">else</span>
+      <span class="org-keyword">super</span>
+    <span class="org-keyword">end</span>
+  <span class="org-keyword">end</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">set_temperature_unit</span>(temperature)
+    <span class="org-keyword">return</span> <span class="org-keyword">if</span> temperature.blank?
+
+    <span class="org-keyword">self</span>.preferred_temperature_unit = temperature.upcase.match(<span class="org-string">/[FC]/</span>)[0]
+  <span class="org-keyword">end</span>
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<p>
+See also <a href="//api.rubyonrails.org/classes/ActiveModel/AttributeMethods/ClassMethods.html#method-i-alias_attribute">alias_attribute</a>
+</p>
+
+<p>
+The <code>read_attribute_for_serialization</code> is a private method that is called for
+each attribute name that is included in the <code>serializable_hash</code>. There is very little
+documentation on this, but it is referenced in the
+<a href="//api.rubyonrails.org/classes/ActiveModel/Serialization.html">ActiveModel::Serialization docs</a>. See the implementation in the code <a href="//github.com/rails/rails/blob/d21d811ffece4d3959bcd37e58fec77590ff6f93/activemodel/lib/active_model/serialization.rb#L172-L176">here</a>.
+</p>
+</div>
+<h2><a id="activemodelcallback" class="anchor" href="#activemodelcallback"><i># </i></a>ActiveModel::Callback</h2><div class="outline-text-2" id="text-org9937b3a">
+<p>
+This module will provide the ability to define callbacks that can be declared
+just like ActiveRecord callbacks (eg, <code>before_create</code>, <code>after_initialize</code>, etc)
+</p>
+
+<p>
+Extending from this module will provide the <a href="//api.rubyonrails.org/classes/ActiveModel/Callbacks.html#method-i-define_model_callbacks">define_model_callbacks</a>. As an
+example, lets say we want to do some benchmarking around the <code>submit</code> method.
+</p>
+
+<p>
+There are three steps to this after extending from <code>ActiveModel::Callbacks</code>:
+</p>
+
+<ol class="org-ol">
+<li>Use the <code>define_model_callbacks</code> class macro to declare callbacks for a
+particular method. By default you will get <code>before_</code>, <code>after_</code> and <code>around_</code>
+callbacks. We can optionally specify <code>:only</code> to create only the callbacks we
+need.</li>
+<li>Call <code>run_callbacks</code> passing the callback name registered using
+<code>define_model_callbacks</code> as an argument. A block should be passed that
+contains the actual method implementation.</li>
+<li>Declare the callback passing a method name containing the code that should
+be run as part of the callback. Optionally, a class could be used instead
+of a method (see <a href="//api.rubyonrails.org/classes/ActiveModel/Callbacks.html#method-i-define_model_callbacks">docs</a> for more on that). Here, we using a method to run
+the <a href="//ruby-doc.org/3.2.0/stdlibs/benchmark/Benchmark.html">benchmark</a> and log the results.</li>
+</ol>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-keyword">class</span> <span class="org-type">WidgetForm</span>
+  <span class="org-builtin">include</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Model</span>
+  <span class="org-builtin">include</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Attributes</span>
+  <span class="org-builtin">extend</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Callbacks</span>
+
+  define_model_callbacks <span class="org-constant">:submit</span>, <span class="org-constant">only:</span> <span class="org-constant">:around</span>
+
+  around_submit <span class="org-constant">:log_benchmark</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">submit</span>
+    run_callbacks <span class="org-constant">:submit</span> <span class="org-keyword">do</span>
+      <span class="org-keyword">return</span> <span class="org-constant">false</span> <span class="org-keyword">if</span> invalid?
+
+      <span class="org-comment-delimiter"># </span><span class="org-comment">Do the submitting stuff
+</span>    <span class="org-keyword">end</span>
+  <span class="org-keyword">end</span>
+
+  <span class="org-builtin">private</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">log_benchmark</span>
+    benchmark = <span class="org-type">Benchmark</span>.measure <span class="org-keyword">do</span>
+      <span class="org-keyword">yield</span>
+    <span class="org-keyword">end</span>
+    <span class="org-type">Rails</span>.logger.info <span class="org-string">"</span><span class="org-variable-name">#{self.class}</span><span class="org-string">#submit benchmark results:\n</span><span class="org-variable-name">#{benchmark}</span><span class="org-string">"</span>
+  <span class="org-keyword">end</span>
+<span class="org-keyword">end</span>
+</pre>
+</div>
+</div>
+<h2><a id="activemodelvalidationcallbacks" class="anchor" href="#activemodelvalidationcallbacks"><i># </i></a>ActiveModel::Validation::Callbacks</h2><div class="outline-text-2" id="text-org83bb3b5">
+<p>
+Include this module to use <code>before_validation</code> and <code>after_validation</code> callbacks.
+Lets say we require the presence of a <code>slug</code> but it is something generated
+automatically from the <code>name</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-keyword">class</span> <span class="org-type">WidgetForm</span>
+  <span class="org-builtin">include</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Model</span>
+  <span class="org-builtin">include</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Attributes</span>
+  <span class="org-builtin">include</span> <span class="org-type">ActiveModel</span>::<span class="org-type">Validations</span>::<span class="org-type">Callbacks</span>
+
+  attribute <span class="org-constant">:name</span>, <span class="org-constant">:string</span>
+  attribute <span class="org-constant">:slug</span>, <span class="org-constant">:string</span>
+
+  validates <span class="org-constant">:name</span>, <span class="org-constant">:slug</span>, <span class="org-constant">presence:</span> <span class="org-constant">true</span>
+
+  before_validation <span class="org-constant">:set_slug</span>
+
+  <span class="org-builtin">private</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">set_slug</span>
+    <span class="org-keyword">return</span> <span class="org-keyword">if</span> name.blank?
+
+    <span class="org-keyword">self</span>.slug = name.parameterize
+  <span class="org-keyword">end</span>
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-ruby">form = <span class="org-type">WidgetForm</span>.new(<span class="org-constant">name:</span> <span class="org-string">'da bomb widget 5000'</span>)
+form.slug <span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; nil
+</span>form.valid? <span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; true
+</span>form.slug <span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; "da-bomb-widget-5000"</span>
+</pre>
+</div>
+</div>
+</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

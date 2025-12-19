@@ -1,0 +1,525 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-YM3EHHB2YQ');</script><title>Kubernetes - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Kubernetes</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on February 28, 2022</p><p class="note-updated uk-article-meta">Updated on June  8, 2023</p></div><p class="blog-post-tags">Tags: <a href="/?tag=kubernetes">kubernetes</a></p><div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgc91da87">Fundamental k8 objects</a>
+<ul>
+<li><a href="#orgf9f45c8">Pods</a></li>
+<li><a href="#org88e496e">Replica Set</a></li>
+<li><a href="#org0db5832">Deployment</a></li>
+<li><a href="#org41f913f">Services</a></li>
+<li><a href="#orgecacb0c">Ingress</a></li>
+<li><a href="#org3b2d29d">YAML files</a></li>
+</ul>
+</li>
+<li><a href="#org50479bd">Dashboard</a></li>
+<li><a href="#orgfeee5a8">K9s GUI tool</a></li>
+<li><a href="#org6be4b80">Kubectl cli tool</a>
+<ul>
+<li><a href="#orgbb83fc5">Some common commands for getting info</a></li>
+<li><a href="#org185366a">Create deployment</a></li>
+<li><a href="#org042ffe1">Updates and Rollbacks</a></li>
+</ul>
+</li>
+<li><a href="#orga9fb7a0">YAMLs</a>
+<ul>
+<li><a href="#org60ef198">Getting started</a>
+<ul>
+<li><a href="#orgdad234b">&#x2013;dry-run</a></li>
+</ul>
+</li>
+<li><a href="#org37d1fcc">Creating stuff from YAML</a></li>
+<li><a href="#org28f14e0">Update stuff</a></li>
+<li><a href="#org2b6d7db">Labels</a></li>
+<li><a href="#orgd75152e">Namespaces</a></li>
+</ul>
+</li>
+<li><a href="#orge9fe785">Secrets</a>
+<ul>
+<li><a href="#orgda6908d">imagePullSecrets</a></li>
+<li><a href="#org079986e">Environment variables</a></li>
+</ul>
+</li>
+<li><a href="#org5264550">Networking</a>
+<ul>
+<li><a href="#org78e95c1">Service object</a></li>
+<li><a href="#org8051b75">LoadBalancer example</a></li>
+<li><a href="#org76ecc67">Database example</a></li>
+<li><a href="#org207e30f">hostNetwork</a></li>
+</ul>
+</li>
+<li><a href="#org9d8f777">Volumes</a>
+<ul>
+<li><a href="#org0451425">Persistent Volume Claim</a></li>
+<li><a href="#orga66ef00">ConfigMap</a></li>
+</ul>
+</li>
+<li><a href="#org179470b">Tilt</a></li>
+<li><a href="#orgb1135d3">Helm Charts</a>
+<ul>
+<li><a href="#orgd840e3b">The files</a></li>
+</ul>
+</li>
+<li><a href="#org16fbbef">Resources</a></li>
+</ul>
+</div>
+</div>
+<p>
+:ID:       31929B00-829E-41F3-BEBF-2F5B77B53E35
+</p>
+<p>
+See also <a href="https://kubernetes.io/">https://kubernetes.io/</a>
+</p>
+<h2><a id="fundamentalk8objects" class="anchor" href="#fundamentalk8objects"><i># </i></a>Fundamental k8 objects</h2><h3><a id="pods" class="anchor" href="#pods"><i># </i></a>Pods</h3><div class="outline-text-3" id="text-orgf9f45c8">
+<ul class="org-ul">
+<li>k8s is all about managing pods.</li>
+<li>A Pod can encapsulate multiple running containers and volumes</li>
+</ul>
+</div>
+<h3><a id="replicaset" class="anchor" href="#replicaset"><i># </i></a>Replica Set</h3><div class="outline-text-3" id="text-org88e496e">
+<p>
+Contains Pod replicas for redundancy.
+</p>
+</div>
+<h3><a id="deployment" class="anchor" href="#deployment"><i># </i></a>Deployment</h3><div class="outline-text-3" id="text-org0db5832">
+<p>
+This is the application. They contain the replica sets. Replica sets contain
+the pods. Deployments contain the scalability and availability configurations.
+</p>
+</div>
+<h3><a id="services" class="anchor" href="#services"><i># </i></a>Services</h3><div class="outline-text-3" id="text-org41f913f">
+<ul class="org-ul">
+<li>Used to expose container ports to other containers and host machine.</li>
+<li>Can make containers reachable by other containers by name. DNS resolution
+happens automatically.</li>
+<li>One type is like a load balancer &#x2013; it distributes traffic to different
+pods in a deployment.</li>
+</ul>
+</div>
+<h3><a id="ingress" class="anchor" href="#ingress"><i># </i></a>Ingress</h3><div class="outline-text-3" id="text-orgecacb0c">
+<p>
+For http/https only. It provides URL access to services.
+</p>
+</div>
+<h3><a id="yamlfiles" class="anchor" href="#yamlfiles"><i># </i></a>YAML files</h3><div class="outline-text-3" id="text-org3b2d29d">
+<p>
+These are used to declare k8 cluster configuration as opposed to using the web
+interface or cli.
+</p>
+</div>
+<h2><a id="dashboard" class="anchor" href="#dashboard"><i># </i></a>Dashboard</h2><div class="outline-text-2" id="text-org50479bd">
+<p>
+A web interface for managing the k8 cluster. You get this with minikube.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">minikube dashboard
+</pre>
+</div>
+
+<p>
+Otherwise, use <code>kubectl</code> cli tool to manage the cluster.
+</p>
+</div>
+<h2><a id="k9sguitool" class="anchor" href="#k9sguitool"><i># </i></a>K9s GUI tool</h2><div class="outline-text-2" id="text-orgfeee5a8">
+<p>
+Useful tool that provides a TUI (with vim key bindings) for doing comment commands
+to the cluster that you&rsquo;d otherwise do using a GUI or CLI.
+<a href="https://k9scli.io/topics/commands/">https://k9scli.io/topics/commands/</a>
+</p>
+</div>
+<h2><a id="kubectlclitool" class="anchor" href="#kubectlclitool"><i># </i></a>Kubectl cli tool</h2><div class="outline-text-2" id="text-org6be4b80">
+<p>
+See also my notes/command reference on <a href="BC7E2058-A3F6-4149-9CA3-902B6BDE5D1F">Kubectl</a>
+</p>
+
+<p>
+This is also for managing the k8 cluster.
+</p>
+</div>
+<h3><a id="somecommoncommandsforgettinginfo" class="anchor" href="#somecommoncommandsforgettinginfo"><i># </i></a>Some common commands for getting info</h3><div class="outline-text-3" id="text-orgbb83fc5">
+<ul class="org-ul">
+<li><code>kubectl api-resources</code> to see all the different types of resources that can
+be managed.</li>
+<li><code>kubectl explain &lt;object&gt;</code> to see the resource properties. You can drill
+into properties like <code>kubectl explain pods.specs</code>. This is useful when
+figuring out what you need when defining YAML files.</li>
+<li><code>kubectl describe &lt;resourceType&gt; &lt;resourceName&gt;</code></li>
+<li><code>kubectl get &lt;resourceType&gt; &lt;resourceName&gt; -o yaml</code> This is super useful
+with <code>--dry-run</code> option and <code>&gt; my_resource.yml</code> to quickly create yamls.</li>
+</ul>
+
+
+<p>
+See also <a href="https://kubernetes.io/docs/reference/kubectl/cheatsheet/">https://kubernetes.io/docs/reference/kubectl/cheatsheet/</a>
+</p>
+</div>
+<h3><a id="createdeployment" class="anchor" href="#createdeployment"><i># </i></a>Create deployment</h3><div class="outline-text-3" id="text-org185366a">
+<p>
+One way is to:
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">kubectl create deployment apache <span class="org-variable-name">image</span>=httpd
+</pre>
+</div>
+
+<p>
+More often you&rsquo;ll create from a yaml file (more on this below)
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">kubectl apply -f deployment.ym
+</pre>
+</div>
+</div>
+<h3><a id="updatesandrollbacks" class="anchor" href="#updatesandrollbacks"><i># </i></a>Updates and Rollbacks</h3><div class="outline-text-3" id="text-org042ffe1">
+<p>
+Lets say you <code>apply -f deployment.yaml</code> with a newer version of a container
+image. This will by default be deployed as a rolling update. Then you can see
+the numbered revision history with:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">kubectl rollout history deployment &lt;deploymentName&gt;
+</pre>
+</div>
+
+<p>
+It can be rolled back with:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">kubectl rollout undo deployment &lt;deploymentName&gt; --to-revision=n
+</pre>
+</div>
+</div>
+<h2><a id="yamls" class="anchor" href="#yamls"><i># </i></a>YAMLs</h2><div class="outline-text-2" id="text-orga9fb7a0">
+<p>
+See <a href="https://github.com/sandervanvugt/kubernetes">https://github.com/sandervanvugt/kubernetes</a> for examples
+</p>
+</div>
+<h3><a id="gettingstarted" class="anchor" href="#gettingstarted"><i># </i></a>Getting started</h3><div class="outline-text-3" id="text-org60ef198">
+<p>
+One easy way to build these yamls is to use the dashboard or cli to build
+deployments, then &ldquo;export&rdquo; the configuration to a yaml file.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">kubectl get deployments foo-nginx -o yaml &gt; foo-nginx.yml
+</pre>
+</div>
+
+<p>
+There&rsquo;s a bunch of things that are extraneous and can be deleted from this
+export:
+</p>
+<ul class="org-ul">
+<li><code>creationTimestamp</code></li>
+<li><code>resourceVersion</code></li>
+<li><code>selfLink</code></li>
+<li><code>uid</code></li>
+<li><code>status</code> and all the stuff nested in it</li>
+</ul>
+
+<p>
+You can make further changes, delete the previous deployment and re-created
+it from the yaml file (see below)
+</p>
+</div>
+<h4><a id="x2013dryrun" class="anchor" href="#x2013dryrun"><i># </i></a>&#x2013;dry-run</h4><div class="outline-text-4" id="text-orgdad234b">
+<p>
+Or use the <code>--dry-run</code> if nothing has been build yet. Dry runs can be
+exported just the same.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">kubectl create deployment mynginx --image=ngnix:1.8 --dry-run=server -o yaml &gt; mynginx_deployment.yml
+</pre>
+</div>
+</div>
+<h3><a id="creatingstufffromyaml" class="anchor" href="#creatingstufffromyaml"><i># </i></a>Creating stuff from YAML</h3><div class="outline-text-3" id="text-org37d1fcc">
+<div class="org-src-container">
+<pre class="src src-shell">kubectl apply -f foo-nginx.yml
+</pre>
+</div>
+</div>
+<h3><a id="updatestuff" class="anchor" href="#updatestuff"><i># </i></a>Update stuff</h3><div class="outline-text-3" id="text-org28f14e0">
+<p>
+Same as creating, use <code>apply -f</code>
+</p>
+</div>
+<h3><a id="labels" class="anchor" href="#labels"><i># </i></a>Labels</h3><div class="outline-text-3" id="text-org2b6d7db">
+<p>
+API objects use labels to connect to other objects
+</p>
+</div>
+<h3><a id="namespaces" class="anchor" href="#namespaces"><i># </i></a>Namespaces</h3><div class="outline-text-3" id="text-orgd75152e">
+<ul class="org-ul">
+<li>Isolated environments, whereas a Context is a cluster (ie, you have have
+access to multiple clusters each with multiple namespaces).</li>
+<li>You can have the same named resource in different namespaces</li>
+<li>See <a href="https://github.com/ahmetb/kubectx">https://github.com/ahmetb/kubectx</a> for a handy cool <code>kubens</code> for
+switching between namespaces.</li>
+</ul>
+</div>
+<h2><a id="secrets" class="anchor" href="#secrets"><i># </i></a>Secrets</h2><div class="outline-text-2" id="text-orge9fe785">
+<p>
+Secret values are Base64 encoded in the yamls/config but plain text in the
+containers.
+</p>
+</div>
+<h3><a id="imagepullsecrets" class="anchor" href="#imagepullsecrets"><i># </i></a>imagePullSecrets</h3><div class="outline-text-3" id="text-orgda6908d">
+<p>
+Most likely I&rsquo;ll be working with private container registries. To specify a
+private registry and auth details:
+</p>
+<ol class="org-ol">
+<li><p>
+create a <code>docker-registry</code> secret. See <a href="//kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-secret-by-providing-credentials-on-the-command-line">the docs</a>. Example:
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">kubectl create secret docker-registry dockerhub-regcred <span class="org-sh-escaped-newline">\</span>
+        --docker-server=https://index.docker.io/v1/ <span class="org-sh-escaped-newline">\</span>
+        --docker-username=USERNAME <span class="org-sh-escaped-newline">\</span>
+        --docker-password=<span class="org-string">'PASSWORD'</span> <span class="org-sh-escaped-newline">\</span>
+        --docker-email=EMAIL
+</pre>
+</div></li>
+<li><p>
+add the secret to a deployment or a pod
+</p>
+<div class="org-src-container">
+<pre class="src src-yaml">apiVersion: apps/v1
+kind: Deployment
+spec:
+  template:
+    spec:
+      containers:
+      - image: username/someimage:latest
+      imagePullSecrets:
+        - name: dockerhub-regcred
+</pre>
+</div></li>
+</ol>
+</div>
+<h3><a id="environmentvariables" class="anchor" href="#environmentvariables"><i># </i></a>Environment variables</h3><div class="outline-text-3" id="text-org079986e">
+<p>
+There are many ways to supply env vars to containers. Here is one:
+</p>
+
+<ol class="org-ol">
+<li><p>
+Create a secret from a file, like a .env file with key value pairs:
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">kubectl create secret generic env-secrets --from-env-file=.env
+</pre>
+</div></li>
+<li><p>
+Then just reference the secret using the <code>envFrom</code> property
+</p>
+<div class="org-src-container">
+<pre class="src src-yaml">containers:
+  - name: nginx
+    image: nginx:latest
+    envFrom:
+      - secretRef:
+          name: env-secrets
+</pre>
+</div></li>
+</ol>
+</div>
+<h2><a id="networking" class="anchor" href="#networking"><i># </i></a>Networking</h2><div class="outline-text-2" id="text-org5264550">
+<p>
+Pods and Services are the things that have IP addresses. All the containers
+within the Pod will share the Pod&rsquo;s IP address.
+</p>
+
+<ul class="org-ul">
+<li>How do running containers within a pod communicate with each other?</li>
+</ul>
+</div>
+<h3><a id="serviceobject" class="anchor" href="#serviceobject"><i># </i></a>Service object</h3><div class="outline-text-3" id="text-org78e95c1">
+<p>
+There&rsquo;s a bunch of different service types.
+</p>
+<ul class="org-ul">
+<li>Connects to Pods with labels</li>
+<li><code>targetPort</code> is the exposed port of the containers (the <code>containerPort</code> property)</li>
+</ul>
+</div>
+<h3><a id="loadbalancerexample" class="anchor" href="#loadbalancerexample"><i># </i></a>LoadBalancer example</h3><div class="outline-text-3" id="text-org8051b75">
+<p>
+Exposing an app.
+</p>
+
+<p>
+Create one using <code>--dry-run</code>. In this example export host 3000 to container
+port 3000
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">kubectl expose deployment kubetest-web --port=3000 --target-port=3000 --dry-run=client -o yaml &gt; service.yml
+</pre>
+</div>
+
+<p>
+When using <code>minikube</code>. You&rsquo;ll need to start a tunnel and leave it open:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">minikube tunnel
+</pre>
+</div>
+
+<p>
+Then, find the <code>EXTERNAL-IP</code> and ports with <code>kubectl get svc</code>. See
+also <a href="//minikube.sigs.k8s.io/docs/handbook/accessing/#example">this example</a>.
+</p>
+</div>
+<h3><a id="databaseexample" class="anchor" href="#databaseexample"><i># </i></a>Database example</h3><div class="outline-text-3" id="text-org76ecc67">
+<p>
+How to connect an app deployment to a database deployment?
+</p>
+
+<p>
+Assuming there is a deployment with an app that needs to make a connection to
+a Postgres database. Also, assumes the <a href="//kubernetes.io/docs/concepts/services-networking/connect-applications-service/#dns">Kubernetes DNS cluster addon</a> is
+running in the cluster.
+</p>
+
+<ol class="org-ol">
+<li><p>
+Create the postgres database deployment. See Secrets above for how to use
+the <code>fromEnv</code> property. It will be needed to set the postgres user and
+password.
+</p>
+<div class="org-src-container">
+<pre class="src src-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: postgres
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - image: postgres:12
+        name: postgres
+        ports:
+          - containerPort: 5432
+        envFrom:
+          - secretRef:
+              name: env-secrets
+</pre>
+</div></li>
+<li><p>
+Create the service with the desired port
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">kubectl expose deployment postgres --port=5432 --target-port=5432 --dry-run=client -o yaml &gt; service-database.yml
+</pre>
+</div></li>
+<li><p>
+Test it out with <code>nslookup</code>. If the K8s DNS cluster is running, you should
+now be able to use the service name to reach the database.
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">kubectl run curl --image=radial/busyboxplus:curl -i --tty
+nslookup postgres
+</pre>
+</div></li>
+<li>So, now <code>postgres</code> will resolve to the postgres database. Just provide
+that as a <code>DATABASE_HOST</code> env var to your app.</li>
+</ol>
+</div>
+<h3><a id="hostnetwork" class="anchor" href="#hostnetwork"><i># </i></a>hostNetwork</h3><div class="outline-text-3" id="text-org207e30f">
+<p>
+<code>spec.template.spec.hostNetwork</code>
+</p>
+</div>
+<h2><a id="volumes" class="anchor" href="#volumes"><i># </i></a>Volumes</h2><h3><a id="persistentvolumeclaim" class="anchor" href="#persistentvolumeclaim"><i># </i></a>Persistent Volume Claim</h3><div class="outline-text-3" id="text-org0451425">
+<p>
+When using <code>minikube</code>, it is the host. So, the directory to which the volume
+is mounted should exist there. So do <code>minikube ssh</code> and <code>sudo mkdir /mydata</code>.
+</p>
+
+<ol class="org-ol">
+<li>Create the persistent volume. This could use the host&rsquo;s storage, NFS,
+cloud storage, etc.</li>
+<li>Create the persistent volume claim (eg, it claims some amount of the PV
+volume&rsquo;s storage).</li>
+<li>Add the volume to the container spec that references the PVC created in
+step 2.</li>
+</ol>
+
+<p>
+See examples in <a href="https://github.com/apmiller108/kubernetes_rails">https://github.com/apmiller108/kubernetes_rails</a>
+</p>
+</div>
+<h3><a id="configmap" class="anchor" href="#configmap"><i># </i></a>ConfigMap</h3><div class="outline-text-3" id="text-orga66ef00">
+<p>
+ConfigMaps can be mounted as a volume and used to provide configuration files.
+</p>
+
+<p>
+See <a href="https://kubernetes.io/docs/concepts/configuration/configmap/#using-configmaps">https://kubernetes.io/docs/concepts/configuration/configmap/#using-configmaps</a>
+</p>
+</div>
+<h2><a id="tilt" class="anchor" href="#tilt"><i># </i></a>Tilt</h2><div class="outline-text-2" id="text-org179470b">
+<p>
+<a href="//docs.tilt.dev/index.html">Tilt</a> is cool for doing local development against a local or remote K8s
+cluster. It handles exposing rebuilding the image with code changes and
+deploying to the cluster automatically. It will also expose resources (ie, a
+web app reachable from your host machines browser).
+</p>
+
+<p>
+A simple <code>Tiltfile</code> can get up an running with <code>tilt up</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-nil">k8s_yaml(['deployment-web.yml', 'deployment-sidekiq.yml'])
+
+docker_build('apmiller/imagename, '.')
+
+k8s_resource('web', port_forwards='3000')
+</pre>
+</div>
+</div>
+<h2><a id="helmcharts" class="anchor" href="#helmcharts"><i># </i></a>Helm Charts</h2><div class="outline-text-2" id="text-orgb1135d3">
+<p>
+<a href="https://helm.sh/docs/intro/install/">https://helm.sh/docs/intro/install/</a>
+</p>
+<ul class="org-ul">
+<li>A package manager for bundled Kubernetes manifests</li>
+<li>A tar archive in a repo</li>
+<li>requires the use of a Helm client</li>
+</ul>
+</div>
+<h3><a id="thefiles" class="anchor" href="#thefiles"><i># </i></a>The files</h3><div class="outline-text-3" id="text-orgd840e3b">
+<ul class="org-ul">
+<li><code>chart.yml</code>: metadata about the chart</li>
+<li><code>values.yml</code>: key/value pairs</li>
+<li>templates: yaml manifests that define the application</li>
+</ul>
+</div>
+<h2><a id="resources" class="anchor" href="#resources"><i># </i></a>Resources</h2><div class="outline-text-2" id="text-org16fbbef">
+<ul class="org-ul">
+<li><a href="//kubernetes.io/docs/reference/kubectl/kubectl/">kubectl</a> is a cmd line tool for k8 cluster management</li>
+<li><a href="//minikube.sigs.k8s.io/docs/start/">minikube</a> used to run a single node k8 cluster locally</li>
+<li><a href="//docs.tilt.dev/index.html">tilt</a> something for kubernetes development environment</li>
+<li><a href="https://kubernetes-rails.com/">https://kubernetes-rails.com/</a></li>
+<li><a href="https://github.com/apmiller108/kubernetes_rails">https://github.com/apmiller108/kubernetes_rails</a></li>
+</ul>
+</div>
+</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

@@ -1,0 +1,1115 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-YM3EHHB2YQ');</script><title>lsp-mode - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">lsp-mode</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on July 21, 2021</p><p class="note-updated uk-article-meta">Updated on September 12, 2025</p></div><p class="blog-post-tags">Tags: <a href="/?tag=lsp">lsp</a>, <a href="/?tag=emacs">emacs</a></p><div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org57c1f5b">Selecting language servers</a></li>
+<li><a href="#org1a649e2">Typescript / Javascript</a>
+<ul>
+<li><a href="#orgb0d47f8">Setup</a></li>
+</ul>
+</li>
+<li><a href="#orgc037a9a">Ruby</a>
+<ul>
+<li><a href="#org4d734d7">Ruby LSP</a></li>
+<li><a href="#org69b1433">Solargraph</a>
+<ul>
+<li><a href="#orgadf6701">Setup</a></li>
+<li><a href="#orgec6dc32">Features</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orge618218">Vue2</a>
+<ul>
+<li><a href="#orge406588">Issues</a></li>
+</ul>
+</li>
+<li><a href="#orgafa242e">Performance</a></li>
+<li><a href="#orga02d040">In editor docs</a></li>
+<li><a href="#org4acdd08">Listing all available clients</a></li>
+</ul>
+</div>
+</div>
+<p>
+:ID:       040AE749-B677-4481-A65B-19FB842CE227
+</p>
+<p>
+<a href="https://emacs-lsp.github.io/lsp-mode/">https://emacs-lsp.github.io/lsp-mode/</a>
+<a href="https://develop.spacemacs.org/layers/+lang/ruby/README.html#language-server-protocol">https://develop.spacemacs.org/layers/+lang/ruby/README.html#language-server-protocol</a>
+</p>
+<h2><a id="selectinglanguageservers" class="anchor" href="#selectinglanguageservers"><i># </i></a>Selecting language servers</h2><div class="outline-text-2" id="text-org57c1f5b">
+<p>
+If there are multiple installed, the highest priority will win. To select the
+server you want independent of priority you can do this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(add-to-list 'lsp-disabled-clients 'ruby-ls) <span class="org-comment-delimiter">;; </span><span class="org-comment">solargraph
+</span>(add-to-list 'lsp-enabled-clients 'ruby-lsp-ls) <span class="org-comment-delimiter">;; </span><span class="org-comment">ruby-lsp (shopify's thing)</span>
+</pre>
+</div>
+</div>
+<h2><a id="typescriptjavascript" class="anchor" href="#typescriptjavascript"><i># </i></a>Typescript / Javascript</h2><h3><a id="setup" class="anchor" href="#setup"><i># </i></a>Setup</h3><div class="outline-text-3" id="text-orgb0d47f8">
+<p>
+Followed these instructions <a href="https://emacs-lsp.github.io/lsp-mode/page/lsp-typescript/">https://emacs-lsp.github.io/lsp-mode/page/lsp-typescript/</a> for ls-ts
+Node dependencies needed:
+</p>
+<ul class="org-ul">
+<li>typescript-language-server</li>
+<li>typescript</li>
+</ul>
+
+<p>
+Weirdly, I got an error that it couldn&rsquo;t find typescript even though it was
+installed globably and was in my path. I had to copy the node module into the
+emacs npm cache:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">cp -R .config/yarn/global/node_modules/typescript spacemacs/.cache/lsp/npm/typescript
+</pre>
+</div>
+</div>
+<h2><a id="ruby" class="anchor" href="#ruby"><i># </i></a>Ruby</h2><div class="outline-text-2" id="text-orgc037a9a">
+<p>
+There are a bunch of options for LSP servers. You can have multiple servers
+and the one used can be specified in a dir-local file
+See also <a href="//emacs-lsp.github.io/lsp-mode/page/faq/#i-have-multiple-language-servers-registered-for-language-foo-which-one-will-be-used-when-opening-a-project">emacs-lsp FAQ</a>
+</p>
+</div>
+<h3><a id="rubylsp" class="anchor" href="#rubylsp"><i># </i></a>Ruby LSP</h3><div class="outline-text-3" id="text-org4d734d7">
+<p>
+<a href="https://github.com/Shopify/ruby-lsp">https://github.com/Shopify/ruby-lsp</a>
+</p>
+
+<p>
+2023-08-04: I tried it but it didn&rsquo;t appear to have jump to definition or any
+features for that matter.
+</p>
+</div>
+<h3><a id="solargraph" class="anchor" href="#solargraph"><i># </i></a>Solargraph</h3><div class="outline-text-3" id="text-org69b1433">
+<ul class="org-ul">
+<li><a href="https://github.com/castwide/solargraph">https://github.com/castwide/solargraph</a></li>
+<li><a href="https://solargraph.org/guides">https://solargraph.org/guides</a></li>
+</ul>
+
+<p>
+It doesn&rsquo;t require <a href="//yardoc.org/features.html">yard</a>, but it can help it out.
+</p>
+</div>
+<h4><a id="setup" class="anchor" href="#setup"><i># </i></a>Setup</h4><div class="outline-text-4" id="text-orgadf6701">
+<p>
+Just follow the instructions linked above. For spacemacs, set the ruby-mode
+backend to <code>'lsp</code>
+</p>
+</div>
+<ul><li>Rails<div class="outline-text-5" id="text-orga01583d">
+<p>
+Use the <a href="//github.com/iftheshoefritz/solargraph-rails/">solargraph-rails</a> plugin. When using this you&rsquo;ll need to include
+<code>"**/*.rb"</code> and use the exclude directive in the .solargraph.yml
+</p>
+</div>
+</li></ul>
+<h4><a id="features" class="anchor" href="#features"><i># </i></a>Features</h4><div class="outline-text-4" id="text-orgec6dc32">
+<ul class="org-ul">
+<li>autocompletion</li>
+<li>other things&#x2026;</li>
+</ul>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">cmd</th>
+<th scope="col" class="org-left">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">lsp-ui-peek-jump-backward</td>
+<td class="org-left">Moves cursor back to the previous location</td>
+</tr>
+
+<tr>
+<td class="org-left">lsp-ui-peek-jump-forward</td>
+<td class="org-left">Moves cursor back to the next location</td>
+</tr>
+
+<tr>
+<td class="org-left">lsp-ui-peek-find-references</td>
+<td class="org-left">Shows a list of where something is used in the code</td>
+</tr>
+
+<tr>
+<td class="org-left">lsp-ui-peek-find-definitions</td>
+<td class="org-left">Navigate to definition of thing at point</td>
+</tr>
+
+<tr>
+<td class="org-left">lsp-describe-thing-at-point</td>
+<td class="org-left">Shows documentation</td>
+</tr>
+</tbody>
+</table>
+
+<ul class="org-ul">
+<li>See <a href="//develop.spacemacs.org/layers/+tools/lsp/README.html#core-key-bindings">spacemacs core lsp-mode bindings</a></li>
+</ul>
+</div>
+<h2><a id="vue2" class="anchor" href="#vue2"><i># </i></a>Vue2</h2><div class="outline-text-2" id="text-orge618218">
+<p>
+Install <a href="//github.com/vuejs/vetur/tree/master/server">vls</a>
+</p>
+</div>
+<h3><a id="issues" class="anchor" href="#issues"><i># </i></a>Issues</h3><div class="outline-text-3" id="text-orge406588">
+<p>
+When trying to start vls:
+</p>
+<div class="org-src-container">
+<pre class="src src-nil">Error: Cannot find module 'vscode-css-languageservice/lib/umd/data/browsers'
+</pre>
+</div>
+</div>
+<h2><a id="performance" class="anchor" href="#performance"><i># </i></a>Performance</h2><div class="outline-text-2" id="text-orgafa242e">
+<p>
+I had performance issues with LSP mode, especially with Typescript.
+</p>
+
+<p>
+See <a href="https://emacs-lsp.github.io/lsp-mode/page/performance/">https://emacs-lsp.github.io/lsp-mode/page/performance/</a> for suggestions.
+</p>
+
+<p>
+I increased the <code>read-process-output-max</code> to 3mb and that seemed to help.
+</p>
+
+<p>
+I was already using emacs v28, so I just rebuild it with native comp. There
+was some pain making the transition, but it completely solved the performance
+issues.
+</p>
+
+<p>
+See <a href="https://xenodium.com/emacs-plus-with-native-comp/">https://xenodium.com/emacs-plus-with-native-comp/</a>
+and <a href="https://github.com/d12frosted/homebrew-emacs-plus#emacs-27-and-emacs-28-options">https://github.com/d12frosted/homebrew-emacs-plus#emacs-27-and-emacs-28-options</a>
+</p>
+</div>
+<h2><a id="ineditordocs" class="anchor" href="#ineditordocs"><i># </i></a>In editor docs</h2><div class="outline-text-2" id="text-orga02d040">
+<p>
+This can sometimes be annoying. Turn it off with lsp-toggle-signature-auto-activate
+</p>
+</div>
+<h2><a id="listingallavailableclients" class="anchor" href="#listingallavailableclients"><i># </i></a>Listing all available clients</h2><div class="outline-text-2" id="text-org4acdd08">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(hash-table-keys lsp-clients)
+</pre>
+</div>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">zls-tramp</td>
+<td class="org-left">zls</td>
+<td class="org-left">yls-tramp</td>
+<td class="org-left">yls</td>
+<td class="org-left">yamlls-tramp</td>
+<td class="org-left">yamlls</td>
+<td class="org-left">xmlls-tramp</td>
+<td class="org-left">xmlls</td>
+<td class="org-left">wgsl-analyzer-tramp</td>
+<td class="org-left">wgsl-analyzer</td>
+<td class="org-left">vue-semantic-server-tramp</td>
+<td class="org-left">vue-semantic-server</td>
+<td class="org-left">vimls-tramp</td>
+<td class="org-left">vimls</td>
+<td class="org-left">lsp-vhdl-tramp</td>
+<td class="org-left">lsp-vhdl</td>
+<td class="org-left">vls-tramp</td>
+<td class="org-left">vls</td>
+<td class="org-left">html-ls-tramp</td>
+<td class="org-left">html-ls</td>
+<td class="org-left">lsp-verilog-verible-tramp</td>
+<td class="org-left">lsp-verilog-verible</td>
+<td class="org-left">lsp-verilog-tramp</td>
+<td class="org-left">lsp-verilog</td>
+<td class="org-left">svlangserver-tramp</td>
+<td class="org-left">svlangserver</td>
+<td class="org-left">valals-tramp</td>
+<td class="org-left">valals</td>
+<td class="org-left">v-analyzer-tramp</td>
+<td class="org-left">v-analyzer</td>
+<td class="org-left">v-ls-tramp</td>
+<td class="org-left">v-ls</td>
+<td class="org-left">typespec-lsp-tramp</td>
+<td class="org-left">typespec-lsp</td>
+<td class="org-left">typeprof-ls-tramp</td>
+<td class="org-left">typeprof-ls</td>
+<td class="org-left">ntt-tramp</td>
+<td class="org-left">ntt</td>
+<td class="org-left">ts-query-ls-tramp</td>
+<td class="org-left">ts-query-ls</td>
+<td class="org-left">trunk-lsp-tramp</td>
+<td class="org-left">trunk-lsp</td>
+<td class="org-left">tombi-tramp</td>
+<td class="org-left">tombi</td>
+<td class="org-left">taplo-tramp</td>
+<td class="org-left">taplo</td>
+<td class="org-left">tiltfile-tramp</td>
+<td class="org-left">tiltfile</td>
+<td class="org-left">texlab-tramp</td>
+<td class="org-left">texlab</td>
+<td class="org-left">digestif-tramp</td>
+<td class="org-left">digestif</td>
+<td class="org-left">tfmls-tramp</td>
+<td class="org-left">tfmls</td>
+<td class="org-left">tfls-tramp</td>
+<td class="org-left">tfls</td>
+<td class="org-left">svelte-ls-tramp</td>
+<td class="org-left">svelte-ls</td>
+<td class="org-left">steep-ls-tramp</td>
+<td class="org-left">steep-ls</td>
+<td class="org-left">sqls-tramp</td>
+<td class="org-left">sqls</td>
+<td class="org-left">sql-ls-tramp</td>
+<td class="org-left">sql-ls</td>
+<td class="org-left">sorbet-ls-tramp</td>
+<td class="org-left">sorbet-ls</td>
+<td class="org-left">solidity-tramp</td>
+<td class="org-left">solidity</td>
+<td class="org-left">ruby-ls-tramp</td>
+<td class="org-left">ruby-ls</td>
+<td class="org-left">semgrep-ls-tramp</td>
+<td class="org-left">semgrep-ls</td>
+<td class="org-left">rust-analyzer-tramp</td>
+<td class="org-left">rust-analyzer</td>
+<td class="org-left">rls-tramp</td>
+<td class="org-left">rls</td>
+<td class="org-left">ruff-tramp</td>
+<td class="org-left">ruff</td>
+<td class="org-left">ruby-syntax-tree-ls-tramp</td>
+<td class="org-left">ruby-syntax-tree-ls</td>
+<td class="org-left">ruby-lsp-ls-tramp</td>
+<td class="org-left">ruby-lsp-ls</td>
+<td class="org-left">rubocop-ls-tramp</td>
+<td class="org-left">rubocop-ls</td>
+<td class="org-left">csharp-roslyn-tramp</td>
+<td class="org-left">csharp-roslyn</td>
+<td class="org-left">roc_language_server-tramp</td>
+<td class="org-left">roc_language_server</td>
+<td class="org-left">rf-intellisense-tramp</td>
+<td class="org-left">rf-intellisense</td>
+<td class="org-left">remark-tramp</td>
+<td class="org-left">remark</td>
+<td class="org-left">racket-language-server-tramp</td>
+<td class="org-left">racket-language-server</td>
+<td class="org-left">racket-langserver-tramp</td>
+<td class="org-left">racket-langserver</td>
+<td class="org-left">lsp-r-tramp</td>
+<td class="org-left">lsp-r</td>
+<td class="org-left">qml-ls-tramp</td>
+<td class="org-left">qml-ls</td>
+<td class="org-left">ty-ls-tramp</td>
+<td class="org-left">ty-ls</td>
+<td class="org-left">pylsp-tramp</td>
+<td class="org-left">pylsp</td>
+<td class="org-left">pyls-tramp</td>
+<td class="org-left">pyls</td>
+<td class="org-left">pwsh-ls-tramp</td>
+<td class="org-left">pwsh-ls</td>
+<td class="org-left">pursls-tramp</td>
+<td class="org-left">pursls</td>
+<td class="org-left">postgres-ls-tramp</td>
+<td class="org-left">postgres-ls</td>
+<td class="org-left">pls-tramp</td>
+<td class="org-left">pls</td>
+<td class="org-left">phpactor-tramp</td>
+<td class="org-left">phpactor</td>
+<td class="org-left">serenata-tramp</td>
+<td class="org-left">serenata</td>
+<td class="org-left">iph-tramp</td>
+<td class="org-left">iph</td>
+<td class="org-left">php-ls-tramp</td>
+<td class="org-left">php-ls</td>
+<td class="org-left">perlnavigator-tramp</td>
+<td class="org-left">perlnavigator</td>
+<td class="org-left">perl-language-server-tramp</td>
+<td class="org-left">perl-language-server</td>
+<td class="org-left">openscad-tramp</td>
+<td class="org-left">openscad</td>
+<td class="org-left">ols-tramp</td>
+<td class="org-left">ols</td>
+<td class="org-left">ocaml-lsp-server-tramp</td>
+<td class="org-left">ocaml-lsp-server</td>
+<td class="org-left">ocaml-ls-tramp</td>
+<td class="org-left">ocaml-ls</td>
+<td class="org-left">nushell-ls-tramp</td>
+<td class="org-left">nushell-ls</td>
+<td class="org-left">nix-nil-tramp</td>
+<td class="org-left">nix-nil</td>
+<td class="org-left">nixd-lsp-tramp</td>
+<td class="org-left">nixd-lsp</td>
+<td class="org-left">rnix-lsp-tramp</td>
+<td class="org-left">rnix-lsp</td>
+<td class="org-left">nimlangserver-tramp</td>
+<td class="org-left">nimlangserver</td>
+<td class="org-left">nimlsp-tramp</td>
+<td class="org-left">nimlsp</td>
+<td class="org-left">nginx-ls-tramp</td>
+<td class="org-left">nginx-ls</td>
+<td class="org-left">nextflow-lsp-tramp</td>
+<td class="org-left">nextflow-lsp</td>
+<td class="org-left">move-analyzer-tramp</td>
+<td class="org-left">move-analyzer</td>
+<td class="org-left">mojo-tramp</td>
+<td class="org-left">mojo</td>
+<td class="org-left">mint-ls-tramp</td>
+<td class="org-left">mint-ls</td>
+<td class="org-left">mesonlsp-tramp</td>
+<td class="org-left">mesonlsp</td>
+<td class="org-left">mdx-analyzer-tramp</td>
+<td class="org-left">mdx-analyzer</td>
+<td class="org-left">matlab-ls-tramp</td>
+<td class="org-left">matlab-ls</td>
+<td class="org-left">marksman-tramp</td>
+<td class="org-left">marksman</td>
+<td class="org-left">unified-tramp</td>
+<td class="org-left">unified</td>
+<td class="org-left">magik-tramp</td>
+<td class="org-left">magik</td>
+<td class="org-left">fennel-ls-tramp</td>
+<td class="org-left">fennel-ls</td>
+<td class="org-left">lua-roblox-language-server-tramp</td>
+<td class="org-left">lua-roblox-language-server</td>
+<td class="org-left">lsp-lua-lsp-tramp</td>
+<td class="org-left">lsp-lua-lsp</td>
+<td class="org-left">lua-language-server-tramp</td>
+<td class="org-left">lua-language-server</td>
+<td class="org-left">emmy-lua-tramp</td>
+<td class="org-left">emmy-lua</td>
+<td class="org-left">alive-lsp-tramp</td>
+<td class="org-left">alive-lsp</td>
+<td class="org-left">helm-ls-tramp</td>
+<td class="org-left">helm-ls</td>
+<td class="org-left">kotlin-ls-tramp</td>
+<td class="org-left">kotlin-ls</td>
+<td class="org-left">json-ls-tramp</td>
+<td class="org-left">json-ls</td>
+<td class="org-left">jq-lsp-tramp</td>
+<td class="org-left">jq-lsp</td>
+<td class="org-left">deno-ls-tramp</td>
+<td class="org-left">deno-ls</td>
+<td class="org-left">flow-ls-tramp</td>
+<td class="org-left">flow-ls</td>
+<td class="org-left">ts-ls-tramp</td>
+<td class="org-left">ts-ls</td>
+<td class="org-left">jsts-ls-tramp</td>
+<td class="org-left">jsts-ls</td>
+<td class="org-left">idris2-lsp-tramp</td>
+<td class="org-left">idris2-lsp</td>
+<td class="org-left">haxe-tramp</td>
+<td class="org-left">haxe</td>
+<td class="org-left">hack-tramp</td>
+<td class="org-left">hack</td>
+<td class="org-left">groovy-ls-tramp</td>
+<td class="org-left">groovy-ls</td>
+<td class="org-left">graphql-lsp-tramp</td>
+<td class="org-left">graphql-lsp</td>
+<td class="org-left">golangci-lint-tramp</td>
+<td class="org-left">golangci-lint</td>
+<td class="org-left">glslls-tramp</td>
+<td class="org-left">glslls</td>
+<td class="org-left">gleam-lsp-tramp</td>
+<td class="org-left">gleam-lsp</td>
+<td class="org-left">gdscript-tramp</td>
+<td class="org-left">gdscript</td>
+<td class="org-left">fsac-tramp</td>
+<td class="org-left">fsac</td>
+<td class="org-left">futhark-tramp</td>
+<td class="org-left">futhark</td>
+<td class="org-left">fortls-tramp</td>
+<td class="org-left">fortls</td>
+<td class="org-left">eslint-tramp</td>
+<td class="org-left">eslint</td>
+<td class="org-left">elp-tramp</td>
+<td class="org-left">elp</td>
+<td class="org-left">erlang-ls-tramp</td>
+<td class="org-left">erlang-ls</td>
+<td class="org-left">emmet-ls-tramp</td>
+<td class="org-left">emmet-ls</td>
+<td class="org-left">elm-ls-tramp</td>
+<td class="org-left">elm-ls</td>
+<td class="org-left">elixir-ls-tramp</td>
+<td class="org-left">elixir-ls</td>
+<td class="org-left">earthlyls-tramp</td>
+<td class="org-left">earthlyls</td>
+<td class="org-left">dockerfile-ls-tramp</td>
+<td class="org-left">dockerfile-ls</td>
+<td class="org-left">dhallls-tramp</td>
+<td class="org-left">dhallls</td>
+<td class="org-left">serve-d-tramp</td>
+<td class="org-left">serve-d</td>
+<td class="org-left">cypher-ls-tramp</td>
+<td class="org-left">cypher-ls</td>
+<td class="org-left">cucumber-language-server-tramp</td>
+<td class="org-left">cucumber-language-server</td>
+<td class="org-left">copilot-ls-tramp</td>
+<td class="org-left">copilot-ls</td>
+<td class="org-left">css-ls-tramp</td>
+<td class="org-left">css-ls</td>
+<td class="org-left">c3lsp-tramp</td>
+<td class="org-left">c3lsp</td>
+<td class="org-left">csharp-ls-tramp</td>
+<td class="org-left">csharp-ls</td>
+<td class="org-left">omnisharp-tramp</td>
+<td class="org-left">omnisharp</td>
+<td class="org-left">crystalline-tramp</td>
+<td class="org-left">crystalline</td>
+<td class="org-left">credo-language-server-tramp</td>
+<td class="org-left">credo-language-server</td>
+<td class="org-left">cobol-ls-tramp</td>
+<td class="org-left">cobol-ls</td>
+<td class="org-left">cmakels-tramp</td>
+<td class="org-left">cmakels</td>
+<td class="org-left">clojure-lsp-tramp</td>
+<td class="org-left">clojure-lsp</td>
+<td class="org-left">clangd-tramp</td>
+<td class="org-left">clangd</td>
+<td class="org-left">buf-tramp</td>
+<td class="org-left">buf</td>
+<td class="org-left">bufls-tramp</td>
+<td class="org-left">bufls</td>
+<td class="org-left">gopls-tramp</td>
+<td class="org-left">gopls</td>
+<td class="org-left">beancount-ls-tramp</td>
+<td class="org-left">beancount-ls</td>
+<td class="org-left">bash-ls-tramp</td>
+<td class="org-left">bash-ls</td>
+<td class="org-left">awkls-tramp</td>
+<td class="org-left">awkls</td>
+<td class="org-left">autotools-ls-tramp</td>
+<td class="org-left">autotools-ls</td>
+<td class="org-left">astro-ls-tramp</td>
+<td class="org-left">astro-ls</td>
+<td class="org-left">asm-lsp-tramp</td>
+<td class="org-left">asm-lsp</td>
+<td class="org-left">ansible-ls-tramp</td>
+<td class="org-left">ansible-ls</td>
+<td class="org-left">angular-ls-tramp</td>
+<td class="org-left">angular-ls</td>
+<td class="org-left">gpr-ls-tramp</td>
+<td class="org-left">gpr-ls</td>
+<td class="org-left">ada-ls-tramp</td>
+<td class="org-left">ada-ls</td>
+<td class="org-left">as3mxml-ls-tramp</td>
+<td class="org-left">as3mxml-ls</td>
+<td class="org-left">ccls-tramp</td>
+<td class="org-left">ccls</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

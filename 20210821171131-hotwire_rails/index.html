@@ -1,0 +1,160 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-YM3EHHB2YQ');</script><title>Hotwire rails - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Hotwire rails</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on August 21, 2021</p><p class="note-updated uk-article-meta">Updated on March 15, 2024</p></div><p class="blog-post-tags">Tags: <a href="/?tag=javascript">javascript</a>, <a href="/?tag=ruby">ruby</a>, <a href="/?tag=rails">rails</a></p><div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org835233f">What is this?</a></li>
+<li><a href="#org466cc53">Add to Rails application</a>
+<ul>
+<li><a href="#org4e35442">Rails 7</a>
+<ul>
+<li><a href="#org83422e3">esbuild</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgc92ba68">Turbo</a>
+<ul>
+<li><a href="#org6cab9ea">Concepts</a>
+<ul>
+<li><a href="#org614e64e">Turbo links</a></li>
+<li><a href="#orgb15e64f">Turbo frames</a></li>
+<li><a href="#orgb362e9b">Turbo streams</a></li>
+<li><a href="#org0b02bff">DOM morphing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgade3d3c">Tutorials</a></li>
+<li><a href="#org53f25c5">Resources</a></li>
+</ul>
+</div>
+</div>
+<p>
+:ID:       1E969F0A-52A6-4D2C-A227-5BF6AE253044
+</p>
+<h2><a id="whatisthis" class="anchor" href="#whatisthis"><i># </i></a>What is this?</h2><div class="outline-text-2" id="text-org835233f">
+<p>
+<a href="//hotwired.dev/">Hotwire</a> is a way of building web applications that, at its core, is about
+sending server rendered HTML over &ldquo;this wire&rdquo; (ie, HTTP or websocket). It is
+composed of three things:
+</p>
+
+<ol class="org-ol">
+<li><a href="//turbo.hotwired.dev/">Turbo</a>: This is really the main thing. With this library alone, we can do
+HTML over the wire.</li>
+<li><a href="//stimulus.hotwired.dev/">Stimulus</a>: A JS framework that doesn&rsquo;t care about rendering stuff, but
+rather with dynamic behavior typical of an SPA.</li>
+<li>Strada: something to do with mobile &#x2013; not sure. As now this moment it has
+not been made public</li>
+</ol>
+
+<p>
+See <a href="https://github.com/hotwired">https://github.com/hotwired</a> for all the libraries.
+</p>
+</div>
+<h2><a id="addtorailsapplication" class="anchor" href="#addtorailsapplication"><i># </i></a>Add to Rails application</h2><div class="outline-text-2" id="text-org466cc53">
+<p>
+Add the <code>hotwire-rails</code> gem. Follow the instructions in the <a href="//github.com/hotwired/hotwire-rails">Readme</a>.
+</p>
+
+<p>
+NOTE:
+</p>
+<ul class="org-ul">
+<li>This appears to basically be a wrapper for <a href="//github.com/hotwired/turbo-rails">turbo-rails</a> and
+<a href="//github.com/hotwired/stimulus-rails">stimulus-rails</a>.</li>
+<li>The <code>hotwire:install</code> rake task will <code>yarn add</code> both NPM packages
+<code>@hotwired/turbo-rails</code> and <code>stimulus</code>.</li>
+</ul>
+</div>
+<h3><a id="rails7" class="anchor" href="#rails7"><i># </i></a>Rails 7</h3><div class="outline-text-3" id="text-org4e35442">
+<p>
+By default Rails 7 will use import maps. Consider also using <a href="//esbuild.github.io/">esbuild</a>. See
+also <a href="//github.com/rails/jsbundling-rails">jsbundling-rails</a> and <a href="//www.youtube.com/watch?v=qOptalp8zUY">GoRails How to use ESBuild&#x2026;</a>
+</p>
+</div>
+<h4><a id="esbuild" class="anchor" href="#esbuild"><i># </i></a>esbuild</h4><div class="outline-text-4" id="text-org83422e3">
+<div class="org-src-container">
+<pre class="src src-shell">rails new foo --javascript=esbuild --css=bootstrap
+</pre>
+</div>
+</div>
+<ul><li>bin/dev<div class="outline-text-5" id="text-org8b2be6d">
+<p>
+Rails apps are now started with <code>bin/dev</code> for development. This uses <a href="//github.com/ddollar/foreman">foreman</a>
+to manager three processes defined in <code>Procfile.dev</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">web: unset PORT &amp;&amp; bin/rails server -p 3000 -b <span class="org-string">'0.0.0.0'</span>
+js: yarn build --watch
+css: yarn build:css --watch
+</pre>
+</div>
+</div>
+</li>
+<li>package.json<div class="outline-text-5" id="text-org8aac21b">
+<p>
+Defines two build commands:
+</p>
+<div class="org-src-container">
+<pre class="src src-json">"scripts": {
+  "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets",
+  "build:css": "sass ./app/assets/stylesheets/application.bootstrap.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules"
+}
+</pre>
+</div>
+</div>
+</li></ul>
+<h2><a id="turbo" class="anchor" href="#turbo"><i># </i></a>Turbo</h2><h3><a id="concepts" class="anchor" href="#concepts"><i># </i></a>Concepts</h3><h4><a id="turbolinks" class="anchor" href="#turbolinks"><i># </i></a>Turbo links</h4><div class="outline-text-4" id="text-org614e64e">
+<p>
+Intercept the request from a clicked link. Remake the request using <code>fetch</code>
+and replace the <code>body</code> element as opposed to a page reload.
+</p>
+</div>
+<h4><a id="turboframes" class="anchor" href="#turboframes"><i># </i></a>Turbo frames</h4><div class="outline-text-4" id="text-orgb15e64f">
+<p>
+Same thing as turbo links, but updates are applied to only sections of the
+dom defined with <code>&lt;turbo-frame&gt;</code> elements.
+</p>
+</div>
+<h4><a id="turbostreams" class="anchor" href="#turbostreams"><i># </i></a>Turbo streams</h4><div class="outline-text-4" id="text-orgb362e9b">
+<p>
+More control over how the DOM is updated. HTML can be appended, updated,
+removed &#x2026;etc. See also <a href="a9825c81-8f3b-42f7-acb8-f5fb4ee359b9">Turbo Streams</a>.
+</p>
+</div>
+<h4><a id="dommorphing" class="anchor" href="#dommorphing"><i># </i></a>DOM morphing</h4><div class="outline-text-4" id="text-org0b02bff">
+<p>
+This is something new in Turbo 8. Morphing is a different way of updating
+the DOM. It does a diff and the new and old templates and updates the stuff
+that changed. Turbo will be using <a href="//github.com/basecamp/idiomorph">idiomorph</a>.
+See also <a href="https://evilmartians.com/chronicles/the-future-of-full-stack-rails-turbo-morph-drive">https://evilmartians.com/chronicles/the-future-of-full-stack-rails-turbo-morph-drive</a>
+</p>
+</div>
+<h2><a id="tutorials" class="anchor" href="#tutorials"><i># </i></a>Tutorials</h2><div class="outline-text-2" id="text-orgade3d3c">
+<ul class="org-ul">
+<li><a href="https://gorails.com/episodes/inline-editing-turbo-frames">https://gorails.com/episodes/inline-editing-turbo-frames</a>: Shows how to
+leverage turbo frames and rails partials to add inline field editing to a
+show page. Most of this is done in the erb view templates. See <a href="//github.com/thoughtbot/hotwire-example-template/tree/hotwire-example-inline-edit">source code</a>
+for an example.</li>
+</ul>
+</div>
+<h2><a id="resources" class="anchor" href="#resources"><i># </i></a>Resources</h2><div class="outline-text-2" id="text-org53f25c5">
+<ul class="org-ul">
+<li><a href="https://github.com/thoughtbot/hotwire-example-template/tree/hotwire-example-inline-edit">https://github.com/thoughtbot/hotwire-example-template/tree/hotwire-example-inline-edit</a></li>
+<li><a href="https://gorails.com/series/hotwire-rails">https://gorails.com/series/hotwire-rails</a></li>
+<li><a href="https://blog.appsignal.com/2022/07/06/get-started-with-hotwire-in-your-ruby-on-rails-app.html">https://blog.appsignal.com/2022/07/06/get-started-with-hotwire-in-your-ruby-on-rails-app.html</a></li>
+<li><a href="https://www.akshaykhot.com/using-hotwire-without-rails/">https://www.akshaykhot.com/using-hotwire-without-rails/</a> (Turbo drive and
+turbo frames without Rails)</li>
+<li><a href="https://www.akshaykhot.com/understanding-hotwire-turbo-streams/">https://www.akshaykhot.com/understanding-hotwire-turbo-streams/</a> (Turbo
+streams without Rails)</li>
+<li><a href="https://blog.appsignal.com/2024/03/13/turbo-streaming-modals-in-ruby-on-rails">https://blog.appsignal.com/2024/03/13/turbo-streaming-modals-in-ruby-on-rails</a></li>
+<li><a href="https://justin.searls.co/posts/how-to-make-a-nice-2fa-otp-sms-code-form/">https://justin.searls.co/posts/how-to-make-a-nice-2fa-otp-sms-code-form/</a></li>
+<li><a href="https://www.beflagrant.com/blog/turbo-confirmation-bias-2024-01-10">https://www.beflagrant.com/blog/turbo-confirmation-bias-2024-01-10</a></li>
+<li><a href="https://code.avi.nyc/turbo-frame-search-filters">https://code.avi.nyc/turbo-frame-search-filters</a></li>
+</ul>
+</div>
+</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

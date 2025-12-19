@@ -1,0 +1,556 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-YM3EHHB2YQ');</script><title>Transcribing wavs - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Transcribing wavs</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on December  5, 2023</p><p class="note-updated uk-article-meta">Updated on July 31, 2024</p></div><p class="blog-post-tags">Tags: <a href="/?tag=ruby">ruby</a>, <a href="/?tag=ai">ai</a>, <a href="/?tag=ffpeg">ffpeg</a></p><div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgb918b80">Synchronous transcription</a>
+<ul>
+<li><a href="#orgbe5cf2c">File size limits</a>
+<ul>
+<li><a href="#org2a5c281">Convert to mp3</a></li>
+<li><a href="#orgb6de762">Convert to mp3 and split</a></li>
+<li><a href="#org0eeba33">Split the wav file</a></li>
+</ul>
+</li>
+<li><a href="#org7a8f2f7">Audio duration limits</a>
+<ul>
+<li><a href="#orge8c7d93">Bytes to seconds</a></li>
+<li><a href="#org82585d3">Split using ffmpeg</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgeb38b90">Asynchronous Transcription</a></li>
+</ul>
+</div>
+</div>
+<p>
+:ID:       CBE89A34-2938-4EF5-A2CC-B509E6B7EFA5
+</p>
+<p>
+I needed to do a bit a research on transcribing audio files. I did some ruby
+scripting to test several approaches including Azure Speech and OpenAI speech to
+text (whisper). Both services have synchronous transcription options but with
+limits. At the time of writing this, OpenAI speech to text is limited to
+transcribing an audio file with a maximum size of 25 MB. Azure Speech takes a
+different approach and limits based on duration (you can send a file of whatever
+size, but it will only transcribe up to 60 seconds).
+</p>
+
+<p>
+I knew I was going to be dealing with wav files that would likely always
+be more than 60 seconds in duration and greater than 25 MB. I did explore
+Azure&rsquo;s batch transcription, which worked well, but had significantly more
+overhead. So, I looked at a couple work-arounds to the synchronous transcription
+limitations.
+</p>
+<h2><a id="synchronoustranscription" class="anchor" href="#synchronoustranscription"><i># </i></a>Synchronous transcription</h2><div class="outline-text-2" id="text-orgb918b80">
+<p>
+This is a simple matter of POSTing a file to an endpoint and waiting for the
+response. It gets interesting when dealing with the limits of how much
+file/audio we&rsquo;re allowed to transcribe in a single HTTP request.
+</p>
+</div>
+<h3><a id="filesizelimits" class="anchor" href="#filesizelimits"><i># </i></a>File size limits</h3><div class="outline-text-3" id="text-orgbe5cf2c">
+<p>
+This was the easier limit to deal with. It&rsquo;s trivial to determine a file size
+of any file type, but a bit more involved to determine the audio duration of a
+wav file.
+</p>
+</div>
+<h4><a id="converttomp3" class="anchor" href="#converttomp3"><i># </i></a>Convert to mp3</h4><div class="outline-text-4" id="text-org2a5c281">
+<p>
+An mp3 is compressed audio format, while a wav is a lossless, uncompressed
+format. So, I figured I could use ffmpeg to do the conversion to mp3 and have
+some levers to pull (eg, bit-rate) to further reduce filesize if needed. The
+quality of the audio matters only insofar as it impacts the ability of the
+model to accurately perform the transcription.
+</p>
+
+<p>
+The script below is the simplest implementation and assumes the mp3 will
+always be under the 25 MB limit. The <code>sample.wav</code> is a 30 second clip from the
+<a href="//changelog.com/friends/22#t=3241">Changelog Podcast</a>. This converts the wav file to mp3 as a <a href="//ruby-doc.org/3.2.0/stdlibs/tempfile/Tempfile.html">Tempfile</a> before
+uploading to the speech to text service. It&rsquo;s important to ensure that
+tempfile is closed and deleted.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-builtin">require</span> <span class="org-string">'json'</span>
+<span class="org-builtin">require</span> <span class="org-string">'tempfile'</span>
+
+<span class="org-type">ENDPOINT</span> = <span class="org-string">'https://api.openai.com'</span>.freeze
+<span class="org-type">PATH</span> = <span class="org-string">'/v1/audio/transcriptions'</span>.freeze
+
+file_path = <span class="org-type">ARGV</span>[0] || <span class="org-string">'sample.wav'</span>
+
+<span class="org-keyword">begin</span>
+  <span class="org-comment-delimiter"># </span><span class="org-comment">Convert wav to mp3
+</span>  t_file = <span class="org-type">Tempfile</span>.create([<span class="org-type">File</span>.basename(file_path), <span class="org-string">'.mp3'</span>])
+  <span class="org-string">`ffmpeg -i </span><span class="org-variable-name">#{file_path}</span><span class="org-string"> -codec:a libmp3lame -qscale:a 2 -y </span><span class="org-variable-name">#{t_file.path}</span><span class="org-string">`</span>
+
+  <span class="org-builtin">puts</span> <span class="org-string">"Wav file size: </span><span class="org-variable-name">#{File.open(file_path).size}</span><span class="org-string">"</span>
+  <span class="org-builtin">puts</span> <span class="org-string">"Mp3 file size: </span><span class="org-variable-name">#{t_file.size}</span><span class="org-string">"</span>
+
+  headers = {
+    <span class="org-string">'Authorization'</span> =&gt; <span class="org-string">"Bearer </span><span class="org-variable-name">#{ENV['OPENAI_API_KEY']}</span><span class="org-string">"</span>,
+    <span class="org-string">'Content-Type'</span> =&gt; <span class="org-string">'multipart/form-data'</span>,
+    <span class="org-string">'Accept'</span> =&gt; <span class="org-string">'application/json'</span>
+  }
+
+  conn = <span class="org-type">Faraday</span>.new(<span class="org-constant">url:</span> <span class="org-type">ENDPOINT</span>, <span class="org-constant">headers:</span>) <span class="org-keyword">do</span> |f|
+    f.request <span class="org-constant">:multipart</span>
+  <span class="org-keyword">end</span>
+
+  response = conn.post(<span class="org-type">PATH</span>) <span class="org-keyword">do</span> |req|
+    req.body = {
+      <span class="org-constant">file:</span> <span class="org-type">Faraday</span>::<span class="org-type">Multipart</span>::<span class="org-type">FilePart</span>.new(t_file, <span class="org-string">'audio/wav'</span>),
+      <span class="org-constant">model:</span> <span class="org-string">'whisper-1'</span>
+    }
+  <span class="org-keyword">end</span>
+
+  <span class="org-builtin">puts</span> response.status
+  <span class="org-builtin">puts</span> response.body
+<span class="org-keyword">ensure</span>
+  t_file.close
+  t_file.unlink
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<p>
+Running this script will produce the following output (the ffmpeg output is
+omitted):
+</p>
+<div class="org-src-container">
+<pre class="src src-nil">Wav file size: 2274232
+Mp3 file size: 331404
+200
+{
+  "text": "Then we are now now we just do a newsletter once a week and we
+  we publish that out and best newsletter in tech By the way, hey, thank
+  you very much. I appreciate that. It's genuinely really good. It's the
+  only one that I subscribe to I love that about you. How do you know it's
+  really good if it's the only one you subscribe to well You got me That's
+  I have a special skill of ruining compliments. Um, no, that's awesome"
+}
+</pre>
+</div>
+
+<p>
+This created an mp3 around 15% the size of the original wav.
+</p>
+
+<p>
+Here is a breakdown of the ffmpeg command used in the script above:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">ffmpeg -i sample.wav -codec:a libmp3lame -qscale:a 2 -y sample.mp3
+</pre>
+</div>
+
+<ul class="org-ul">
+<li><code>-i</code>: input file</li>
+<li><code>-codec:a libmp3lame</code>: audio codec for mp3 encoding</li>
+<li><code>-qscale:a 2</code>: sets the quality for the audio stream (<code>a</code>) to level 2. This is
+codec specific, which in this case represents the <code>lame</code> option <code>-V2</code> (VRB
+170-210). This can be adjusted to produce smaller file sizes/lower audio quality.
+See also <a href="https://trac.ffmpeg.org/wiki/Encode/MP3#VBREncoding">https://trac.ffmpeg.org/wiki/Encode/MP3#VBREncoding</a>.</li>
+<li><code>-y</code>: will overwrite output file without requiring confirmation. I needed
+this since I was creating the tempfile first.</li>
+</ul>
+</div>
+<h4><a id="converttomp3andsplit" class="anchor" href="#converttomp3andsplit"><i># </i></a>Convert to mp3 and split</h4><div class="outline-text-4" id="text-orgb6de762">
+<p>
+The above assumes the conversion will always be under 25 MB, which might be
+true depending on the source wavs and the bit rate selected. If, however,
+there is a need to split the mp3 into smaller files, this can be done with
+ffmpeg, but by specifying the duration each mp3 should be. For example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">ffmpeg -i sample.wav -codec:a libmp3lame -qscale:a 2 -f segment -segment_time 10 /var/tmp/sample%03d.mp3
+</pre>
+</div>
+
+<p>
+This will convert the wave into mp3s each with a 10 second duration, named
+<code>sample001.mp3</code>, <code>sample002.mp3</code>, &#x2026;etc.
+</p>
+</div>
+<h4><a id="splitthewavfile" class="anchor" href="#splitthewavfile"><i># </i></a>Split the wav file</h4><div class="outline-text-4" id="text-org0eeba33">
+<p>
+In the event ffmpeg or equivalent tool will not be available in the
+environment in which the code will run, another option is the split the wav
+file without converting to mp3. Wav files have a 44 byte header at the
+beginning that contains information like sample rate, bit depth, etc, so each
+smaller wav file will need to be written with the correct header information
+in order to be read and transcribed properly.
+</p>
+
+<p>
+Fortunately, this can be done easily with the <a href="//github.com/jstrait/wavefile/">wavefile</a> gem. The script below
+takes a wav file and splits it at approximately some size limit (5MB by
+default), writing each smaller file to a Tempfile and yielding the list of
+tempfiles to the caller to do with whatever (in this case posting to the
+transcription service)
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-builtin">require</span> <span class="org-string">'wavefile'</span>
+<span class="org-builtin">require</span> <span class="org-string">'tempfile'</span>
+
+<span class="org-keyword">class</span> <span class="org-type">WaveChunker</span>
+  <span class="org-type">FORMAT</span> = <span class="org-type">WaveFile</span>::<span class="org-type">Format</span>.new(<span class="org-constant">:mono</span>, <span class="org-constant">:pcm_16</span>, 44100)
+
+  <span class="org-builtin">attr_reader</span> <span class="org-constant">:file</span>, <span class="org-constant">:chunk_size</span>
+
+  <span class="org-comment-delimiter"># </span><span class="org-comment">@param file [IO] a wave file
+</span>  <span class="org-comment-delimiter"># </span><span class="org-comment">@param chunk_size [Integer] max size for each wave file in bytes
+</span>  <span class="org-keyword">def</span> <span class="org-function-name">initialize</span>(file, chunk_size = 5_000_000)
+    <span class="org-variable-name">@file</span> = file
+    <span class="org-variable-name">@chunk_size</span> = chunk_size
+  <span class="org-keyword">end</span>
+
+  <span class="org-comment-delimiter"># </span><span class="org-comment">Pass a block to operate on the list of temp wav files
+</span>  <span class="org-keyword">def</span> <span class="org-function-name">chunk</span>
+    reader = <span class="org-type">WaveFile</span>::<span class="org-type">Reader</span>.new(file)
+
+    <span class="org-builtin">puts</span> <span class="org-string">&lt;&lt;~FORMAT
+      Chunking </span><span class="org-variable-name">#{file.path}</span><span class="org-string">:
+        Audio format: </span><span class="org-variable-name">#{reader.native_format.audio_format}</span><span class="org-string">
+        Channels: </span><span class="org-variable-name">#{reader.native_format.channels}</span><span class="org-string">
+        Bits per sample: </span><span class="org-variable-name">#{reader.native_format.bits_per_sample}</span><span class="org-string">
+        Sample rate: </span><span class="org-variable-name">#{reader.native_format.sample_rate}</span><span class="org-string">
+    FORMAT
+</span>
+    t_files = []
+    t_file = <span class="org-type">Tempfile</span>.new <span class="org-comment-delimiter"># </span><span class="org-comment">This might also work with StringIO if its OK to keep everything in memory
+</span>    writer = <span class="org-type">WaveFile</span>::<span class="org-type">Writer</span>.new(t_file, <span class="org-type">FORMAT</span>)
+
+    reader.each_buffer <span class="org-keyword">do</span> |buffer|
+      <span class="org-keyword">if</span> t_file.size &gt;= chunk_size
+        writer.close
+        t_files &lt;&lt; t_file
+        t_file = <span class="org-type">Tempfile</span>.new
+        writer = <span class="org-type">WaveFile</span>::<span class="org-type">Writer</span>.new(t_file, <span class="org-type">FORMAT</span>)
+      <span class="org-keyword">end</span>
+
+      writer.write(buffer)
+
+      <span class="org-keyword">if</span> reader.current_sample_frame == reader.total_sample_frames
+        writer.close
+        t_files &lt;&lt; t_file
+      <span class="org-keyword">end</span>
+    <span class="org-keyword">end</span>
+
+    t_files.each(&amp;<span class="org-constant">:rewind</span>)
+
+    <span class="org-keyword">yield</span> t_files
+  <span class="org-keyword">ensure</span>
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Close and delete tmp files
+</span>    t_files.each <span class="org-keyword">do</span> |tf|
+      tf.close
+      tf.unlink
+    <span class="org-keyword">end</span>
+  <span class="org-keyword">end</span>
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<p>
+I used the <code>WaveChunker</code> like this:
+</p>
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-type">ENDPOINT</span> = <span class="org-string">'https://api.openai.com'</span>.freeze
+<span class="org-type">PATH</span> = <span class="org-string">'/v1/audio/transcriptions'</span>.freeze
+
+file_path = <span class="org-type">ARGV</span>[0] || <span class="org-string">'sample.wav'</span>
+file = <span class="org-type">File</span>.open(file_path)
+
+<span class="org-type">WaveChunker</span>.new(file, 24_000_000).chunk <span class="org-keyword">do</span> |files|
+  headers = {
+    <span class="org-string">'Authorization'</span> =&gt; <span class="org-string">"Bearer </span><span class="org-variable-name">#{ENV['OPENAI_API_KEY']}</span><span class="org-string">"</span>,
+    <span class="org-string">'Content-Type'</span> =&gt; <span class="org-string">'multipart/form-data'</span>,
+    <span class="org-string">'Accept'</span> =&gt; <span class="org-string">'application/json'</span>
+  }
+
+  conn = <span class="org-type">Faraday</span>.new(<span class="org-constant">url:</span> <span class="org-type">ENDPOINT</span>, <span class="org-constant">headers:</span>) <span class="org-keyword">do</span> |f|
+    f.request <span class="org-constant">:multipart</span>
+    f.response <span class="org-constant">:logger</span>
+  <span class="org-keyword">end</span>
+
+  files.each <span class="org-keyword">do</span> |f|
+    response = conn.post(<span class="org-type">PATH</span>) <span class="org-keyword">do</span> |req|
+      req.body = {
+        <span class="org-constant">file:</span> <span class="org-type">Faraday</span>::<span class="org-type">Multipart</span>::<span class="org-type">FilePart</span>.new(f, <span class="org-string">'audio/wav'</span>),
+        <span class="org-constant">model:</span> <span class="org-string">'whisper-1'</span>
+        <span class="org-comment-delimiter"># </span><span class="org-comment">We could include the optional `prompt` param with the previous chunk's transcription
+</span>        <span class="org-comment-delimiter"># </span><span class="org-comment">to tell the model we are continuing from previously transcribed audio.
+</span>      }
+    <span class="org-keyword">end</span>
+    <span class="org-builtin">puts</span> response.status
+    <span class="org-builtin">puts</span> response.body
+  <span class="org-keyword">end</span>
+<span class="org-keyword">end</span>
+</pre>
+</div>
+</div>
+<h3><a id="audiodurationlimits" class="anchor" href="#audiodurationlimits"><i># </i></a>Audio duration limits</h3><div class="outline-text-3" id="text-org7a8f2f7">
+<p>
+Azure speech lets you synchronously transcribe up to 60 seconds of audio.
+Anything more than that is recommended to use batch transcription. But why not
+split an wav file in 60 sec parts and POST each one combining the results?
+There are reasons why not to do this, but seems like it would be fun to try.
+</p>
+</div>
+<h4><a id="bytestoseconds" class="anchor" href="#bytestoseconds"><i># </i></a>Bytes to seconds</h4><div class="outline-text-4" id="text-orge8c7d93">
+<p>
+To do this using the <code>WaveChunker</code> above, I need to know the number of bytes in
+60 seconds of audio for a given file. Fortunately, the <a href="//www.topherlee.com/software/pcm-tut-wavformat.html">wav file header</a>
+positions 28-31 (0 based) provide the bytes per second of audio. It
+represents the following calculation:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby">(sample_rate * bits_per_second * num_channels) / 8
+</pre>
+</div>
+
+<p>
+So in order to compute the number of bytes in a 60 seconds of audio, I
+multiply that by 60 (seconds) and pass the byte value to the <code>WaveChunker</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby">file_path = <span class="org-string">'sample.wav'</span>
+file = <span class="org-type">File</span>.open(file_path)
+
+wav_header = file.read[0..43] <span class="org-comment-delimiter"># </span><span class="org-comment">First 44 bytes of a wav file is the header
+</span>
+bytes_per_second = wav_header[28..32].unpack1(<span class="org-string">'L&lt;'</span>) <span class="org-comment-delimiter"># </span><span class="org-comment">32 bit unsigned int little-endian
+</span>
+chunk_size = bytes_per_second * 60 <span class="org-comment-delimiter"># </span><span class="org-comment">byte size of 60 seconds of audio
+</span>
+file.rewind
+<span class="org-comment-delimiter"># </span><span class="org-comment">split wave file into 60 second chunks
+</span><span class="org-type">WaveChunker</span>.new(file, chunk_size).chunk <span class="org-keyword">do</span> |files|
+  <span class="org-comment-delimiter"># </span><span class="org-comment">...
+</span><span class="org-keyword">end</span>
+</pre>
+</div>
+</div>
+<h4><a id="splitusingffmpeg" class="anchor" href="#splitusingffmpeg"><i># </i></a>Split using ffmpeg</h4><div class="outline-text-4" id="text-org82585d3">
+<p>
+Alternatively, a wave file can be split using ffmpeg as seen above in the
+mp3 examples:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">ffmpeg -i sample.wav -f segment -segment_time 60 sample_%03d.wav
+</pre>
+</div>
+
+<p>
+This will split the wav file into several wav files each with a 60 second duration, named
+<code>sample001.wav</code>, <code>sample002.wav</code>, &#x2026;etc.
+</p>
+</div>
+<h2><a id="asynchronoustranscription" class="anchor" href="#asynchronoustranscription"><i># </i></a>Asynchronous Transcription</h2><div class="outline-text-2" id="text-orgeb38b90">
+<p>
+Azure Speech batch transcription. This is way more involved that synchronous
+transcription. The steps are:
+</p>
+<ol class="org-ol">
+<li>Upload file an Azure storage container configured with permissions to allow
+the Speech instance read from it. Authenticating the request using signed
+headers makes up much of this.</li>
+<li>Create the batch job for one or more files.</li>
+<li>Poll the job status to determine when it is ready (it is possible to
+instead use callbacks).</li>
+<li>Get the list of transcription files</li>
+<li>For each file, get the transcript</li>
+</ol>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-builtin">require</span> <span class="org-string">'base64'</span>
+<span class="org-builtin">require</span> <span class="org-string">'json'</span>
+<span class="org-builtin">require</span> <span class="org-string">'openssl'</span>
+<span class="org-builtin">require</span> <span class="org-string">'time'</span>
+<span class="org-builtin">require</span> <span class="org-string">'uri'</span>
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Upload file to Azure storage account container
+</span><span class="org-type">ACCOUNT_NAME</span> = <span class="org-type">ENV</span>[<span class="org-string">'STORAGE_ACCOUNT'</span>]
+<span class="org-type">CONTAINER_NAME</span> = <span class="org-type">ENV</span>[<span class="org-string">'STORAGE_CONTAINER'</span>]
+<span class="org-type">MIME_TYPE</span> = <span class="org-string">'audio/wav'</span>
+<span class="org-type">UPLOAD_METHOD</span> = <span class="org-string">'PUT'</span>
+<span class="org-type">STORAGE_VERSION</span> = <span class="org-string">'2023-11-03'</span>
+<span class="org-type">STORAGE_URL</span> = <span class="org-string">"https://</span><span class="org-variable-name">#{ACCOUNT_NAME}</span><span class="org-string">.blob.core.windows.net"</span>
+<span class="org-type">SIGNING_HEADERS</span> = [
+  <span class="org-string">'Content-Encoding'</span>,
+  <span class="org-string">'Content-Language'</span>,
+  <span class="org-string">'Content-Length'</span>,
+  <span class="org-string">'Content-MD5'</span>,
+  <span class="org-string">'Content-Type'</span>,
+  <span class="org-string">'Date'</span>,
+  <span class="org-string">'If-Modified-Since'</span>,
+  <span class="org-string">'If-Match'</span>,
+  <span class="org-string">'If-None-Match'</span>,
+  <span class="org-string">'If-Unmodified-Since'</span>,
+  <span class="org-string">'Range'</span>
+].freeze
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">This class is used to generate the signature used to authenticate requests to the storage REST API
+</span><span class="org-keyword">class</span> <span class="org-type">StorageSignature</span> &lt; <span class="org-type">Struct</span>.new(<span class="org-constant">:headers</span>, <span class="org-constant">:filename</span>)
+  <span class="org-keyword">def</span> <span class="org-function-name">sign</span>
+    <span class="org-type">OpenSSL</span>::<span class="org-type">HMAC</span>.base64digest(<span class="org-string">'SHA256'</span>, <span class="org-type">Base64</span>.decode64(<span class="org-type">ENV</span>[<span class="org-string">'STORAGE_KEY'</span>]), signing_string)
+  <span class="org-keyword">end</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">to_s</span> = sign
+
+  <span class="org-builtin">private</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">signing_string</span>
+    [
+      <span class="org-type">UPLOAD_METHOD</span>,
+      *<span class="org-type">SIGNING_HEADERS</span>.map { |h| headers.fetch(h, <span class="org-string">''</span>) },
+      *cannonicalized_headers,
+      cannonicalized_resource
+    ].join(<span class="org-string">"\n"</span>)
+  <span class="org-keyword">end</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">cannonicalized_headers</span>
+    headers.select { |k| k =~ <span class="org-string">/^x-ms-/</span><span class="org-preprocessor">i</span> }
+            .map { |k, v| <span class="org-string">"</span><span class="org-variable-name">#{k.downcase}</span><span class="org-string">:</span><span class="org-variable-name">#{v}</span><span class="org-string">"</span> }
+            .sort
+  <span class="org-keyword">end</span>
+
+  <span class="org-keyword">def</span> <span class="org-function-name">cannonicalized_resource</span>
+    <span class="org-string">"/</span><span class="org-variable-name">#{ACCOUNT_NAME}</span><span class="org-string">/</span><span class="org-variable-name">#{CONTAINER_NAME}</span><span class="org-string">/</span><span class="org-variable-name">#{filename}</span><span class="org-string">"</span>
+  <span class="org-keyword">end</span>
+<span class="org-keyword">end</span>
+
+file_path = <span class="org-type">ARGV</span>[0] || <span class="org-string">'sample.wav'</span>
+<span class="org-keyword">def</span> <span class="org-function-name">verbose?</span> = <span class="org-type">ARGV</span>[1] == <span class="org-string">'verbose'</span>
+filename = <span class="org-type">File</span>.basename(file_path)
+file = <span class="org-type">File</span>.open(file_path)
+
+<span class="org-keyword">def</span> <span class="org-function-name">validate_response</span>(response, operation, expected_status)
+  <span class="org-keyword">if</span> verbose?
+    <span class="org-builtin">p</span> response.status
+    <span class="org-builtin">p</span> response.body
+  <span class="org-keyword">end</span>
+
+  <span class="org-keyword">if</span> response.status == expected_status
+    <span class="org-builtin">puts</span> <span class="org-string">"</span><span class="org-variable-name">#{operation}</span><span class="org-string"> success."</span>
+  <span class="org-keyword">else</span>
+    <span class="org-builtin">raise</span> <span class="org-string">'Something went wrong. Tip: rerun the script with verbose enabled: `./batch_transcription.rb sample.wav verbose`'</span>
+  <span class="org-keyword">end</span>
+<span class="org-keyword">end</span>
+
+storage_resource_path = <span class="org-string">"/</span><span class="org-variable-name">#{CONTAINER_NAME}</span><span class="org-string">/</span><span class="org-variable-name">#{filename}</span><span class="org-string">"</span>
+storage_headers = {
+  <span class="org-string">'Content-Type'</span> =&gt; <span class="org-type">MIME_TYPE</span>,
+  <span class="org-string">'Content-Length'</span> =&gt; file.size.to_s,
+  <span class="org-string">'x-ms-date'</span> =&gt; <span class="org-type">Time</span>.now.httpdate,
+  <span class="org-string">'x-ms-blob-type'</span> =&gt; <span class="org-string">'BlockBlob'</span>,
+  <span class="org-string">'x-ms-version'</span> =&gt; <span class="org-type">STORAGE_VERSION</span>
+}
+
+<span class="org-builtin">puts</span> <span class="org-string">'Begin file upload. This may take some time depending on the size of the file...'</span>
+conn = <span class="org-type">Faraday</span>.new(<span class="org-constant">url:</span> <span class="org-type">STORAGE_URL</span>, <span class="org-constant">headers:</span> storage_headers) <span class="org-keyword">do</span> |f|
+  f.response <span class="org-constant">:logger</span> <span class="org-keyword">if</span> verbose?
+<span class="org-keyword">end</span>
+signature = <span class="org-type">StorageSignature</span>.new(conn.headers, filename)
+conn.headers[<span class="org-string">'Authorization'</span>] = <span class="org-string">"SharedKey </span><span class="org-variable-name">#{ACCOUNT_NAME}</span><span class="org-string">:</span><span class="org-variable-name">#{signature}</span><span class="org-string">"</span>
+
+response = conn.public_send(<span class="org-type">UPLOAD_METHOD</span>.downcase, storage_resource_path) <span class="org-keyword">do</span> |req|
+  req.body = <span class="org-type">Faraday</span>::<span class="org-type">Multipart</span>::<span class="org-type">FilePart</span>.new(file, <span class="org-type">MIME_TYPE</span>)
+<span class="org-keyword">end</span>
+
+validate_response(response, <span class="org-string">'File upload'</span>, 201)
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Batch transcription
+</span>
+<span class="org-type">SPEECH_ENDPOINT</span> = <span class="org-string">"https://</span><span class="org-variable-name">#{ENV['SPEECH_REGION']}</span><span class="org-string">.api.cognitive.microsoft.com/"</span>
+<span class="org-type">SPEECH_PATH</span> = <span class="org-string">'/speechtotext/v3.1/transcriptions'</span>
+
+speech_headers = {
+  <span class="org-string">'Content-Type'</span> =&gt; <span class="org-string">'application/json'</span>,
+  <span class="org-string">'Ocp-Apim-Subscription-Key'</span> =&gt; <span class="org-type">ENV</span>[<span class="org-string">'SPEECH_KEY'</span>]
+}
+
+conn = <span class="org-type">Faraday</span>.new(<span class="org-constant">url:</span> <span class="org-type">SPEECH_ENDPOINT</span>, <span class="org-constant">headers:</span> speech_headers) <span class="org-keyword">do</span> |f|
+  f.response <span class="org-constant">:logger</span> <span class="org-keyword">if</span> verbose?
+<span class="org-keyword">end</span>
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Create batch transcription job
+</span>
+<span class="org-builtin">puts</span> <span class="org-string">'Creating batch transctiption job...'</span>
+response = conn.post(<span class="org-type">SPEECH_PATH</span>) <span class="org-keyword">do</span> |req|
+  req.body = {
+    <span class="org-string">'contentUrls'</span> =&gt; [
+      URI(<span class="org-type">STORAGE_URL</span> + storage_resource_path)
+    ],
+    <span class="org-string">'locale'</span> =&gt; <span class="org-string">'en-US'</span>,
+    <span class="org-string">'displayName'</span> =&gt; <span class="org-string">"</span><span class="org-variable-name">#{filename}</span><span class="org-string">_transcription"</span>,
+    <span class="org-string">'timeToLive'</span> =&gt; <span class="org-string">'P1W'</span>, <span class="org-comment-delimiter"># </span><span class="org-comment">Delete keep the transcript file after 1 week (ISO 8601 duration format)
+</span>    <span class="org-string">'properties'</span> =&gt; {
+      <span class="org-string">'diarizationEnabled'</span> =&gt; <span class="org-constant">true</span>, <span class="org-comment-delimiter"># </span><span class="org-comment">Identify speakers
+</span>      <span class="org-string">'diarization'</span> =&gt; { <span class="org-comment-delimiter"># </span><span class="org-comment">The docs say this isn't required for only 2 speakers, but it performed better with it.
+</span>        <span class="org-string">'speakers'</span> =&gt; {
+          <span class="org-string">'minCount'</span> =&gt; 2,
+          <span class="org-string">'maxCount'</span> =&gt; 2
+        }
+      }
+    }
+  }.to_json
+<span class="org-keyword">end</span>
+
+validate_response(response, <span class="org-string">'Batch transcription job'</span>, 201)
+
+batch_info = <span class="org-type">JSON</span>.parse(response.body)
+transcription_status_url = batch_info[<span class="org-string">'self'</span>]
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Get transcription status. Poll until job is no longer running.
+</span><span class="org-keyword">def</span> <span class="org-function-name">get_transcription_status</span>(conn, url)
+  <span class="org-builtin">puts</span> <span class="org-string">'Getting status...'</span>
+  response = conn.get(url)
+  validate_response(response, <span class="org-string">'Get transcription status'</span>, 200)
+  <span class="org-type">JSON</span>.parse(response.body)
+<span class="org-keyword">end</span>
+
+<span class="org-builtin">puts</span> <span class="org-string">'Begin polling job status...'</span>
+
+transcription_status = get_transcription_status(conn, transcription_status_url)
+<span class="org-keyword">until</span> transcription_status[<span class="org-string">'status'</span>] != <span class="org-string">'Running'</span>
+  <span class="org-builtin">puts</span> <span class="org-string">"Transcription status is </span><span class="org-variable-name">#{transcription_status['status']}</span><span class="org-string">. Waiting 1 minute before trying again..."</span>
+  <span class="org-builtin">sleep</span> 60
+  transcription_status = get_transcription_status(conn, transcription_status_url)
+<span class="org-keyword">end</span>
+
+transcription_files_url = transcription_status[<span class="org-string">'links'</span>][<span class="org-string">'files'</span>]
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Get transcription files
+</span>
+response = conn.get(transcription_files_url)
+validate_response(response, <span class="org-string">'Get transcription files'</span>, 200)
+
+transcription_files = <span class="org-type">JSON</span>.parse(response.body)
+transcription_files = transcription_files[<span class="org-string">'values'</span>].select { |v| v[<span class="org-string">'kind'</span>] == <span class="org-string">'Transcription'</span> }
+                                                    .map { |v| v[<span class="org-string">'links'</span>][<span class="org-string">'contentUrl'</span>] }
+<span class="org-comment-delimiter"># </span><span class="org-comment">Get transcripts
+</span>
+transcription_files.map <span class="org-keyword">do</span> |f|
+  response = conn.get(f)
+  validate_response(response, <span class="org-string">'Get transcription'</span>, 200)
+  <span class="org-builtin">puts</span> transcript = <span class="org-type">JSON</span>.parse(response.body)
+  transcript
+<span class="org-keyword">end</span>
+</pre>
+</div>
+</div>
+</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

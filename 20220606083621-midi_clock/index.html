@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-YM3EHHB2YQ');</script><title>MIDI clock - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">MIDI clock</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on June  6, 2022</p><p class="note-updated uk-article-meta">Updated on October 17, 2024</p></div><p class="blog-post-tags">Tags: <a href="/?tag=audio">audio</a>, <a href="/?tag=midi">midi</a></p><div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org5bf71b3">Clock Message</a>
+<ul>
+<li><a href="#org2a297f9">Formula</a>
+<ul>
+<li><a href="#orgb289a57">Pulse per ms rate</a></li>
+</ul>
+</li>
+<li><a href="#orgfc2cb92">Message Contents</a>
+<ul>
+<li><a href="#org2291aa9">Status</a></li>
+<li><a href="#orgfed8025">Data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgd0aa917">Sequencing</a>
+<ul>
+<li><a href="#org20c4e07">MIDI Start</a></li>
+<li><a href="#org3d50a8e">MIDI Stop</a></li>
+<li><a href="#org1093fc4">MIDI Continue</a></li>
+</ul>
+</li>
+<li><a href="#orgb2e9f17">Sending MIDI Clock from Mixxx</a>
+<ul>
+<li><a href="#org9defbd4">Existing Limitation</a>
+<ul>
+<li><a href="#org754e817">Possible solution</a></li>
+</ul>
+</li>
+<li><a href="#org513f0d5">RtMidi</a>
+<ul>
+<li><a href="#orgcf2b0ef">Needs jack2 development files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgfea5f93">Arduino</a>
+<ul>
+<li><a href="#orgcb1744c">Libraries</a>
+<ul>
+<li><a href="#org424931f">TimerOne</a></li>
+<li><a href="#orgef96e66">uClock</a></li>
+</ul>
+</li>
+<li><a href="#orgd17b7dd">Examples</a></li>
+<li><a href="#org8ea7cb9">Conclusion</a></li>
+</ul>
+</li>
+<li><a href="#org53ca99c">Resources</a></li>
+</ul>
+</div>
+</div>
+<p>
+:ID:       24E1468A-279A-4B44-8AB8-A8A1C5D8D42D
+</p>
+<p>
+See also <a href="5741B4DD-B291-4F6D-A33A-EB4CD83792FF">MIDI messages</a>
+</p>
+<h2><a id="clockmessage" class="anchor" href="#clockmessage"><i># </i></a>Clock Message</h2><div class="outline-text-2" id="text-org5bf71b3">
+<ul class="org-ul">
+<li>24 messages = 1 quarter note.</li>
+<li>When 24 clock messages are received, the receiving MIDI device knows that 1
+quarter note has passed.</li>
+<li>To generate a MIDI clock signal, calculate the pulse rate based on the BPM
+and send a simple message at that rate.</li>
+</ul>
+</div>
+<h3><a id="formula" class="anchor" href="#formula"><i># </i></a>Formula</h3><h4><a id="pulsepermsrate" class="anchor" href="#pulsepermsrate"><i># </i></a>Pulse per ms rate</h4><div class="outline-text-4" id="text-orgb289a57">
+<p>
+1 minute = 60 seconds = 60,000 ms
+</p>
+
+<div class="org-src-container">
+<pre class="src src-nil">60,000 ms / ppq * bpm
+</pre>
+</div>
+
+<p>
+Example using 120 BPM:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby">ppq = 24.0
+bpm = 120.0
+
+ppms = 60_000 / (ppq * bpm)
+<span class="org-string">"One pulse every </span><span class="org-variable-name">#{ppms}</span><span class="org-string"> ms"</span>
+</pre>
+</div>
+
+<pre class="example">
+One pulse every 20.833333333333332 ms
+</pre>
+</div>
+<h3><a id="messagecontents" class="anchor" href="#messagecontents"><i># </i></a>Message Contents</h3><h4><a id="status" class="anchor" href="#status"><i># </i></a>Status</h4><div class="outline-text-4" id="text-org2291aa9">
+<p>
+<code>0xF8</code>
+</p>
+
+<p>
+There is no channel number.
+</p>
+</div>
+<h4><a id="data" class="anchor" href="#data"><i># </i></a>Data</h4><div class="outline-text-4" id="text-orgfed8025">
+<p>
+No data is required for this message, just the status byte
+</p>
+</div>
+<h2><a id="sequencing" class="anchor" href="#sequencing"><i># </i></a>Sequencing</h2><h3><a id="midistart" class="anchor" href="#midistart"><i># </i></a>MIDI Start</h3>
+<h3><a id="midistop" class="anchor" href="#midistop"><i># </i></a>MIDI Stop</h3>
+<h3><a id="midicontinue" class="anchor" href="#midicontinue"><i># </i></a>MIDI Continue</h3>
+<h2><a id="sendingmidiclockfrommixxx" class="anchor" href="#sendingmidiclockfrommixxx"><i># </i></a>Sending MIDI Clock from Mixxx</h2><h3><a id="existinglimitation" class="anchor" href="#existinglimitation"><i># </i></a>Existing Limitation</h3><div class="outline-text-3" id="text-org9defbd4">
+<p>
+Mixxx only supports a 20ms resolution timer. This will work for BPMs under 100
+so it&rsquo;s not practical. See <a href="//github.com/mixxxdj/mixxx/blob/7672cf1a5efcc17b0ead2f28c7585414fea41b7b/src/controllers/scripting/legacy/controllerscriptinterfacelegacy.cpp#L455-L458">ControllerScriptInterfaceLegacy::beginTimer</a>. It
+uses <a href="//doc.qt.io/qt-5/qobject.html#startTimer">QObject startTimer</a> which only supports using MS. This need microsecond
+precision.
+</p>
+
+<p>
+🚨*See Arduino below*
+</p>
+</div>
+<h4><a id="possiblesolution" class="anchor" href="#possiblesolution"><i># </i></a>Possible solution</h4><div class="outline-text-4" id="text-org754e817">
+<p>
+See <a href="https://stackoverflow.com/a/21856299">https://stackoverflow.com/a/21856299</a>.
+</p>
+
+<p>
+This would require adding a high resolution timer. Maybe an API like
+<code>engine.beginHighResTimer</code>.
+</p>
+</div>
+<ul><li>Other references<div class="outline-text-5" id="text-org69f69ff">
+<ul class="org-ul">
+<li><a href="https://github.com/99x/timercpp/blob/master/timercpp.h">https://github.com/99x/timercpp/blob/master/timercpp.h</a>
+<ul class="org-ul">
+<li>This is not thread safe.</li>
+<li>Maybe it could be adapted to use <code>std::chrono::microseconds</code></li>
+<li>See also <a href="https://en.cppreference.com/w/cpp/thread/sleep_for">https://en.cppreference.com/w/cpp/thread/sleep_for</a></li>
+</ul></li>
+
+<li><a href="https://blat-blatnik.github.io/computerBear/making-accurate-sleep-function/">https://blat-blatnik.github.io/computerBear/making-accurate-sleep-function/</a>
+<ul class="org-ul">
+<li>The naive approach of using <code>std::this_thread::sleep_for</code> is grossly
+inaccurate. This nice post explains why and some alternative approaches.</li>
+</ul></li>
+</ul>
+</div>
+</li></ul>
+<h3><a id="rtmidi" class="anchor" href="#rtmidi"><i># </i></a>RtMidi</h3><div class="outline-text-3" id="text-org513f0d5">
+<p>
+<a href="https://www.music.mcgill.ca/~gary/rtmidi/">https://www.music.mcgill.ca/~gary/rtmidi/</a>
+</p>
+
+<p>
+C++ Library for sending/receiving MIDI messages.
+</p>
+</div>
+<h4><a id="needsjack2developmentfiles" class="anchor" href="#needsjack2developmentfiles"><i># </i></a>Needs jack2 development files</h4><div class="outline-text-4" id="text-orgcf2b0ef">
+<p>
+In order to develop stuff depending on RtMidi and compiling for JACK, you&rsquo;ll
+need the jackd2 development files:
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">sudo apt-get install libjack-jackd2-dev
+</pre>
+</div>
+</div>
+<h2><a id="arduino" class="anchor" href="#arduino"><i># </i></a>Arduino</h2><div class="outline-text-2" id="text-orgfea5f93">
+<p>
+The Mixxx midi clock thing ain&rsquo;t gonna work unless I use an external device to
+generate the midi clock signal based on beat data from a controller mapping
+script running in Mixxx&rsquo;s JS engine. Some data that would be helpful:
+</p>
+<ul class="org-ul">
+<li><a href="//manual.mixxx.org/2.3/en/chapters/appendix/mixxx_controls#control-[ChannelN]-beat_active">beat_active</a>: On every beat_active send the BPM and beat_distance to compute
+the clock PPQ and when the clock should start. The BPM value from Mixxx&rsquo;s
+engine is up to several decimal places, but probably only need accuracy
+rounded to the nearest hundredth. The BPM value can be sent with two
+separate midi messages (due 0-127 limitation). One message containing the
+whole number part and one with the fractional part.</li>
+<li><a href="//manual.mixxx.org/2.3/en/chapters/appendix/mixxx_controls#control-[ChannelN]-beat_distance">beat_distance</a>: With the BPM accurate to two decimal places, might be able to
+predict where the next beat will happen and therefore when to start the clock.</li>
+<li>bpm: See beat_active.</li>
+<li><a href="//manual.mixxx.org/2.4/en/chapters/appendix/mixxx_controls#control-[ChannelN]-sync_leader">sync_leader</a>: I use Mixxx in external mixer mode. Properties like
+play_latched probably won&rsquo;t work and I&rsquo;ll need to explicitly set a
+sync_leader and only get BPM data from it.</li>
+</ul>
+
+<p>
+See also <a href="https://www.youtube.com/watch?v=hSNHhLqYp_o">https://www.youtube.com/watch?v=hSNHhLqYp_o</a> who appears to have
+accomplished this.
+</p>
+</div>
+<h3><a id="libraries" class="anchor" href="#libraries"><i># </i></a>Libraries</h3><h4><a id="timerone" class="anchor" href="#timerone"><i># </i></a>TimerOne</h4><div class="outline-text-4" id="text-org424931f">
+<p>
+<a href="https://www.pjrc.com/teensy/td_libs_TimerOne.html">https://www.pjrc.com/teensy/td_libs_TimerOne.html</a>
+</p>
+</div>
+<h4><a id="uclock" class="anchor" href="#uclock"><i># </i></a>uClock</h4><div class="outline-text-4" id="text-orgef96e66">
+<p>
+<a href="https://github.com/midilab/uClock/tree/main">https://github.com/midilab/uClock/tree/main</a>
+</p>
+</div>
+<h3><a id="examples" class="anchor" href="#examples"><i># </i></a>Examples</h3><div class="outline-text-3" id="text-orgd17b7dd">
+<ul class="org-ul">
+<li><a href="https://github.com/DieterVDW/arduino-midi-clock">https://github.com/DieterVDW/arduino-midi-clock</a></li>
+<li><a href="https://github.com/craigyjp/MIDI-Master-Clock/tree/main">https://github.com/craigyjp/MIDI-Master-Clock/tree/main</a></li>
+</ul>
+</div>
+<h3><a id="conclusion" class="anchor" href="#conclusion"><i># </i></a>Conclusion</h3>
+<h2><a id="resources" class="anchor" href="#resources"><i># </i></a>Resources</h2><div class="outline-text-2" id="text-org53ca99c">
+<ul class="org-ul">
+<li><a href="https://en.wikipedia.org/wiki/MIDI_beat_clock">https://en.wikipedia.org/wiki/MIDI_beat_clock</a></li>
+<li><a href="http://midi.teragonaudio.com/tech/midispec/clock.htm">http://midi.teragonaudio.com/tech/midispec/clock.htm</a></li>
+<li><a href="http://www.giordanobenicchi.it/midi-tech/midispec.htm">http://www.giordanobenicchi.it/midi-tech/midispec.htm</a></li>
+<li><a href="https://www.midi.org/forum/9102-send-midi-clock">https://www.midi.org/forum/9102-send-midi-clock</a></li>
+</ul>
+</div>
+</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

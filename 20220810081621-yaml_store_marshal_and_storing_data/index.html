@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-YM3EHHB2YQ');</script><title>YAML::Store, Marshal and storing data - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">YAML::Store, Marshal and storing data</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on August 10, 2022</p><p class="note-updated uk-article-meta">Updated on August 12, 2022</p></div><p class="blog-post-tags">Tags: <a href="/?tag=ruby">ruby</a></p><div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org271ac9c">Storing data in YAML</a>
+<ul>
+<li><a href="#org6a3fa37">YAML lib</a>
+<ul>
+<li><a href="#org5eb44f2">In a file</a></li>
+<li><a href="#orga6401c9">YAML::Store</a></li>
+</ul>
+</li>
+<li><a href="#orgfecc5a8">Formatting YAML values</a></li>
+</ul>
+</li>
+<li><a href="#org918e9fa">Storing data using Marshal</a></li>
+<li><a href="#org4c3f36c">JSON</a></li>
+</ul>
+</div>
+</div>
+<p>
+:ID:       DA054446-2AE9-42B6-8B80-8B6F5BC88D9E
+</p>
+<p>
+Need to store data or objects to be used later? Maybe as a file or in a document
+database? This could help.
+</p>
+<h2><a id="storingdatainyaml" class="anchor" href="#storingdatainyaml"><i># </i></a>Storing data in YAML</h2><h3><a id="yamllib" class="anchor" href="#yamllib"><i># </i></a>YAML lib</h3><div class="outline-text-3" id="text-org6a3fa37">
+<p>
+I think <code>to_yaml</code> is from the Psych library. See <a href="//ruby-doc.org/stdlib-3.0.1/libdoc/psych/rdoc/Psych.html#method-c-dump">Psych#dump</a> for options that
+can be passed to <code>to_yaml</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-builtin">require</span> <span class="org-string">'yaml'</span>
+<span class="org-type">Person</span> = <span class="org-type">Struct</span>.new <span class="org-constant">:first_name</span>, <span class="org-constant">:last_name</span>
+people = [<span class="org-type">Person</span>.new(<span class="org-string">"Bob"</span>, <span class="org-string">"Smith"</span>), <span class="org-type">Person</span>.new(<span class="org-string">"Mary"</span>, <span class="org-string">"Johnson"</span>)]
+
+yaml = people.to_yaml
+<span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; "---\n- !ruby/struct:Person\n  first_name: Bob\n  last_name: Smith\n- !ruby/struct:Person\n  first_name: Mary\n  last_name: Johnson\n"
+</span>
+<span class="org-type">YAML</span>.safe_load(yaml, <span class="org-constant">permitted_classes:</span> [<span class="org-type">Person</span>, <span class="org-type">Symbol</span>])
+<span class="org-comment-delimiter"># </span><span class="org-comment">=&gt; =&gt; [#&lt;struct Person first_name="Bob", last_name="Smith"&gt;, #&lt;struct Person first_name="Mary", last_name="Johnson"&gt;]</span>
+</pre>
+</div>
+</div>
+<h4><a id="inafile" class="anchor" href="#inafile"><i># </i></a>In a file</h4><div class="outline-text-4" id="text-org5eb44f2">
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-builtin">require</span> <span class="org-string">'yaml'</span>
+<span class="org-type">File</span>.open(<span class="org-string">'things.yml'</span>, <span class="org-string">'w'</span>) <span class="org-keyword">do</span> |file|
+  <span class="org-type">YAML</span>.dump([<span class="org-string">"banana"</span>, <span class="org-string">"coffee"</span>, <span class="org-string">"skittles"</span>], file)
+<span class="org-keyword">end</span>
+friends = <span class="org-type">YAML</span>.load(<span class="org-type">File</span>.open(<span class="org-string">'things.yml'</span>))
+<span class="org-type">File</span>.delete(<span class="org-string">'things.yml'</span>)
+</pre>
+</div>
+</div>
+<h4><a id="yamlstore" class="anchor" href="#yamlstore"><i># </i></a>YAML::Store</h4><div class="outline-text-4" id="text-orga6401c9">
+<p>
+This is the basic example from the docs, however, I found that in Ruby 3.1
+errors such as <code>Tried to load unspecified class: Person
+    (Psych::DisallowedClass)</code> were raised. In order to work around it, used
+<code>safe_load</code> and permitted classes option.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-builtin">require</span> <span class="org-string">'yaml/store'</span>
+<span class="org-type">Person</span> = <span class="org-type">Struct</span>.new <span class="org-constant">:first_name</span>, <span class="org-constant">:last_name</span>
+people = [
+  <span class="org-type">Person</span>.new(<span class="org-string">"Bob"</span>, <span class="org-string">"Smith"</span>), 
+  <span class="org-type">Person</span>.new(<span class="org-string">"Mary"</span>, <span class="org-string">"Johnson"</span>)
+  ]
+store = <span class="org-type">YAML</span>::<span class="org-type">Store</span>.new <span class="org-string">"test.store"</span> <span class="org-comment-delimiter"># </span><span class="org-comment">creates a file test.store
+</span>store.transaction <span class="org-keyword">do</span>
+  store[<span class="org-string">"people"</span>]   = people  
+  store[<span class="org-string">"greeting"</span>] = { <span class="org-string">"hello"</span> =&gt; <span class="org-string">"world"</span> }
+<span class="org-keyword">end</span>
+data = <span class="org-type">YAML</span>.safe_load(<span class="org-type">File</span>.open(<span class="org-string">'test.store'</span>), <span class="org-constant">permitted_classes:</span> [<span class="org-type">Person</span>, <span class="org-type">Symbol</span>])
+<span class="org-type">File</span>.delete(<span class="org-string">'test.store'</span>)
+</pre>
+</div>
+</div>
+<h3><a id="formattingyamlvalues" class="anchor" href="#formattingyamlvalues"><i># </i></a>Formatting YAML values</h3><div class="outline-text-3" id="text-orgfecc5a8">
+<p>
+See this <a href="//stackoverflow.com/a/21699210">this SO post</a>
+</p>
+</div>
+<h2><a id="storingdatausingmarshal" class="anchor" href="#storingdatausingmarshal"><i># </i></a>Storing data using Marshal</h2><div class="outline-text-2" id="text-org918e9fa">
+<p>
+This stores data in a binary format. The data is turned into a byte stream.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-type">File</span>.open(<span class="org-string">'friends.sav'</span>, <span class="org-string">'w'</span>) <span class="org-keyword">do</span> |file|
+  <span class="org-type">Marshal</span>.dump([<span class="org-string">"fred"</span>, <span class="org-string">"bert"</span>, <span class="org-string">"mary"</span>], file)
+<span class="org-keyword">end</span>
+friends = <span class="org-type">Marshal</span>.load(<span class="org-type">File</span>.open(<span class="org-string">'friends.sav'</span>))
+<span class="org-type">File</span>.delete(<span class="org-string">'friends.sav'</span>)
+</pre>
+</div>
+</div>
+<h2><a id="json" class="anchor" href="#json"><i># </i></a>JSON</h2><div class="outline-text-2" id="text-org4c3f36c">
+<p>
+It&rsquo;s worth noting that JSON could be used as well. And I think it&rsquo;s faster. In
+this case, we can determine how an object is serialized by defining the
+<code>as_json</code>. The JSON parsed results could be passed to an initializer to create
+a new object with the same data.
+</p>
+</div>
+</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

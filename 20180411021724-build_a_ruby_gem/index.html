@@ -1,0 +1,297 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-YM3EHHB2YQ');</script><title>Build a Ruby Gem - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Build a Ruby Gem</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on April 11, 2018</p><p class="note-updated uk-article-meta">Updated on December 23, 2023</p></div><p class="blog-post-tags">Tags: <a href="/?tag=ruby">ruby</a></p><div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org843ef78">What is this?</a></li>
+<li><a href="#org3076d88">Naming Conventions</a></li>
+<li><a href="#org39fd05f">Scaffold the Gem</a>
+<ul>
+<li><a href="#org6eca730">The .gemspec file</a></li>
+</ul>
+</li>
+<li><a href="#org63fbd2c">Configuration</a>
+<ul>
+<li><a href="#org3e6f28c">Global Configuration</a></li>
+<li><a href="#org4487b4b">Local Configuration</a></li>
+<li><a href="#org5a2e5a6">Middleware configuration</a></li>
+</ul>
+</li>
+<li><a href="#org72ec47a">Versioning</a></li>
+<li><a href="#org5447d67">Extending Rails with Railties</a>
+<ul>
+<li><a href="#org2141f14">ActiveSupport on_load</a></li>
+</ul>
+</li>
+<li><a href="#org0ba8656">Running the Gem Locally</a></li>
+<li><a href="#orga519014">Testing</a></li>
+<li><a href="#org0f8d97c">Gem Dependencies</a></li>
+<li><a href="#org79d3f58">Loading Support Libraries</a></li>
+<li><a href="#org8f11f00">Adding an Executable to bin/</a></li>
+<li><a href="#orga3dc081">Building</a></li>
+<li><a href="#org5d4464b">Install</a></li>
+<li><a href="#orgbd222b3">Push</a>
+<ul>
+<li><a href="#org1d33736">Setup to Push to rubygems.org</a></li>
+<li><a href="#orge44b90f">Push to Rubygems.org</a></li>
+</ul>
+</li>
+<li><a href="#org7e35a05">Misc</a>
+<ul>
+<li><a href="#orga444c4e">Copy an installed Gem&rsquo;s source code to CWD</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+:ID:       E7593CFF-18DA-4385-A78C-C879ADDA7E3B
+</p>
+<h2><a id="whatisthis" class="anchor" href="#whatisthis"><i># </i></a>What is this?</h2><div class="outline-text-2" id="text-org843ef78">
+<p>
+A reference for building a Ruby gem. See also the official <a href="//guides.rubygems.org/make-your-own-gem/">RubyGem.org
+Instructions</a> for the latest info on this. There&rsquo;s probably a bunch of stuff
+here that is outdated.
+</p>
+
+<p>
+There&rsquo;s a cool <code>8min</code> synopsis of most of this <a href="https://www.youtube.com/watch?v=g2zJC2XKblo">https://www.youtube.com/watch?v=g2zJC2XKblo</a>
+</p>
+</div>
+<h2><a id="namingconventions" class="anchor" href="#namingconventions"><i># </i></a>Naming Conventions</h2><div class="outline-text-2" id="text-org3076d88">
+<ul class="org-ul">
+<li>Lowercase</li>
+<li>Underscores to separate words</li>
+<li>Dash to indicate an extension of an existing gem</li>
+</ul>
+</div>
+<h2><a id="scaffoldthegem" class="anchor" href="#scaffoldthegem"><i># </i></a>Scaffold the Gem</h2><div class="outline-text-2" id="text-org39fd05f">
+<div class="org-src-container">
+<pre class="src src-nil">bundle gem {{ GEM_NAME }}
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Answer prompts about which testing suite to use, CI, license, code of
+conduct, changelog, etc.</li>
+<li>In the root dir</li>
+</ul>
+</div>
+<h3><a id="thegemspecfile" class="anchor" href="#thegemspecfile"><i># </i></a>The .gemspec file</h3><div class="outline-text-3" id="text-org6eca730">
+<p>
+See the <a href="//guides.rubygems.org/specification-reference/">the specifiction reference on rubygems.org</a>.
+</p>
+</div>
+<h2><a id="configuration" class="anchor" href="#configuration"><i># </i></a>Configuration</h2><h3><a id="globalconfiguration" class="anchor" href="#globalconfiguration"><i># </i></a>Global Configuration</h3><div class="outline-text-3" id="text-org3e6f28c">
+<ul class="org-ul">
+<li>Create a configuration <code>attr_accessor</code> on the main module</li>
+<li><code>def self.configure(configuration_class)</code> class method takes a block and
+instantiates a <code>Configuration</code> object. See <a href="//github.com/apmiller108/locotimezone/blob/master/lib/locotimezone.rb#L24-L37">this example</a>.</li>
+</ul>
+</div>
+<h3><a id="localconfiguration" class="anchor" href="#localconfiguration"><i># </i></a>Local Configuration</h3><div class="outline-text-3" id="text-org4487b4b">
+<p>
+This things is instantiated with a config object.
+</p>
+</div>
+<h3><a id="middlewareconfiguration" class="anchor" href="#middlewareconfiguration"><i># </i></a>Middleware configuration</h3><div class="outline-text-3" id="text-org5a2e5a6">
+<p>
+See <a href="//github.com/mperham/sidekiq/wiki/Middleware?utm_source=build-a-ruby-gem&utm_medium=ebook&utm_campaign=configuration">sidekiq example</a>.
+</p>
+</div>
+<h2><a id="versioning" class="anchor" href="#versioning"><i># </i></a>Versioning</h2><div class="outline-text-2" id="text-org72ec47a">
+<ul class="org-ul">
+<li>Version numbers by default are in <code>lib/my-gem/version.rb</code> file. Why is there a
+file for this and not just hardcoded in the gemspec. No idea.</li>
+<li>See <a href="//semver.org/">semantic versioning</a>.</li>
+<li>See also <a href="https://bundler.io/guides/gemfile.html">https://bundler.io/guides/gemfile.html</a></li>
+</ul>
+</div>
+<h2><a id="extendingrailswithrailties" class="anchor" href="#extendingrailswithrailties"><i># </i></a>Extending Rails with Railties</h2><div class="outline-text-2" id="text-org5447d67">
+<ul class="org-ul">
+<li><code>Rails::Railtie</code> provides several hooks to extend Rails and/or modify the
+initialization process.</li>
+<li>To implement, an initializer is given an arbitrary name and the related code
+is placed within the ensuing block.</li>
+<li><p>
+Use an initializer to load a module into a Rails component.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-builtin">require</span> <span class="org-string">'rails'</span>
+<span class="org-builtin">require</span> <span class="org-string">'my_gem/some_class'</span>
+<span class="org-keyword">module</span> my_gem
+  <span class="org-keyword">class</span> <span class="org-type">Railtie</span> &lt; <span class="org-type">Rails</span>::<span class="org-type">Railtie</span>
+    initializer <span class="org-string">"my_railtie.configure_rails_initialization"</span> <span class="org-keyword">do</span>
+      <span class="org-type">ActionView</span>::<span class="org-type">Base</span>.send(<span class="org-constant">:include</span>, <span class="org-type">MyGem</span>::<span class="org-type">Stuff</span>)
+    <span class="org-keyword">end</span>
+  <span class="org-keyword">end</span>
+<span class="org-keyword">end</span>
+</pre>
+</div></li>
+</ul>
+</div>
+<h3><a id="activesupporton_load" class="anchor" href="#activesupporton_load"><i># </i></a>ActiveSupport on_load</h3><div class="outline-text-3" id="text-org2141f14">
+<p>
+See also <a href="//github.com/mislav/will_paginate/blob/master/lib/will_paginate/railtie.rb?utm_source=build-a-ruby-gem&utm_medium=ebook&utm_campaign=rails-hooks">will_paginate example</a>.
+</p>
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-builtin">require</span> <span class="org-string">'rails'</span>
+<span class="org-builtin">require</span> <span class="org-string">'my_gem/some_class'</span>
+<span class="org-keyword">class</span> <span class="org-type">Railtie</span> &lt; <span class="org-type">Rails</span>::<span class="org-type">Railtie</span>
+  initializer <span class="org-string">"my_railtie.configure_rails_initialization"</span> <span class="org-keyword">do</span>
+    <span class="org-type">ActiveSupport</span>.on_load(<span class="org-constant">:action_view</span>) <span class="org-keyword">do</span>
+      <span class="org-builtin">include</span> <span class="org-type">MyGem</span>::<span class="org-type">SomeClass</span>
+    <span class="org-keyword">end</span>
+  <span class="org-keyword">end</span>
+<span class="org-keyword">end</span>
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">lib/my_gem
+</span><span class="org-builtin">require</span> <span class="org-string">"my_gem/railtie"</span> <span class="org-keyword">if</span> <span class="org-keyword">defined?</span>(<span class="org-type">Rails</span>)
+</pre>
+</div>
+
+<p>
+An alternative, and possibly safer approach is to just manually include the
+gem&rsquo;s module in the Rails&rsquo; class where you want to use it.
+</p>
+</div>
+<h2><a id="runningthegemlocally" class="anchor" href="#runningthegemlocally"><i># </i></a>Running the Gem Locally</h2><div class="outline-text-2" id="text-org0ba8656">
+<ul class="org-ul">
+<li><code>bin/console</code></li>
+<li><code>bundle console</code></li>
+<li><p>
+<code>irb -r my_gem -I ./lib</code> or add rake task for the lazy
+</p>
+<div class="org-src-container">
+<pre class="src src-ruby">task <span class="org-constant">:console</span> <span class="org-keyword">do</span>
+  <span class="org-builtin">exec</span> <span class="org-string">"irb -r mega_lotto -I ./lib"</span>
+<span class="org-keyword">end</span>
+</pre>
+</div>
+
+<ul class="org-ul">
+<li><code>-e</code> flag runs a line of code when the environment starts. Useful if you
+need to run a config block.</li>
+<li>Add it to a Gemfile by pointing to local checkout path</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-nil">gem "my_gem", path: "~/development/ruby/gems/locotimezone"
+</pre>
+</div></li>
+</ul>
+</div>
+<h2><a id="testing" class="anchor" href="#testing"><i># </i></a>Testing</h2><div class="outline-text-2" id="text-orga519014">
+<ul class="org-ul">
+<li><p>
+The Rakefile should already be setup to gather test files and run them using
+the test framework selected with <code>bundle gem</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-builtin">require</span> <span class="org-string">'bundler/gem_tasks'</span>
+<span class="org-builtin">require</span> <span class="org-string">'rspec/core/rake_task'</span>
+<span class="org-type">RSpec</span>::<span class="org-type">Core</span>::<span class="org-type">RakeTask</span>.new(<span class="org-constant">:spec</span>) <span class="org-keyword">do</span> |task|
+  task.rspec_opts = [<span class="org-string">'&#8212;color'</span>]
+<span class="org-keyword">end</span>
+task <span class="org-constant">default:</span> <span class="org-constant">:spec</span>
+</pre>
+</div></li>
+</ul>
+</div>
+<h2><a id="gemdependencies" class="anchor" href="#gemdependencies"><i># </i></a>Gem Dependencies</h2><div class="outline-text-2" id="text-org0f8d97c">
+<p>
+Do not add gems to the Gemfile, just define the dependencies in the <code>.gemspec</code>
+</p>
+
+<ul class="org-ul">
+<li>Optimistic Version Constraint
+Specify any version above a certain version gem <code>'some_dependency, '&gt;= 1.0'</code></li>
+<li>Exact Version <code>gem 'rails', '4.0.2'</code></li>
+<li>Pessimistic Version Constraint
+<ul class="org-ul">
+<li>Keep the version between minor releases. Example below will
+install most recent version between 4.0.0 and 4.1.0. gem
+<code>'sass-rails', '~&gt; 4.0.0'</code></li>
+<li>The decimal places change the version range. This example will
+accept patches and minor releases: (4.1, 4.2, 4.0.1,&#x2026;) gem
+<code>'sass-rails', '~&gt; 4.0'</code></li>
+</ul></li>
+</ul>
+</div>
+<h2><a id="loadingsupportlibraries" class="anchor" href="#loadingsupportlibraries"><i># </i></a>Loading Support Libraries</h2><div class="outline-text-2" id="text-org79d3f58">
+<ul class="org-ul">
+<li>An optional support library can be loaded in the Gemfile when adding
+the gem: <code>gem ‘locotimezone' require: ‘locotimezone/web'</code>.</li>
+<li>Or use an initializer in Rails to add the require statement.</li>
+<li>Since a support library is optional, don&rsquo;t require it in the main file of
+my_gem.rb</li>
+</ul>
+</div>
+<h2><a id="addinganexecutabletobin" class="anchor" href="#addinganexecutabletobin"><i># </i></a>Adding an Executable to bin/</h2><div class="outline-text-2" id="text-org8f11f00">
+<ul class="org-ul">
+<li><p>
+In addition to providing libraries of Ruby code, gems can also expose
+one or many executable files to your shell&rsquo;s PATH.* You just need to
+place the file in your gem&rsquo;s bin directory, and then add it to the
+list of executables in the gemspec.* touch bin/my_executable* the name
+of the file is how it will be called in the terminal* chmod a+x
+bin/my_executable* include the executable and dir in the gemspec
+</p>
+
+<div class="org-src-container">
+<pre class="src src-ruby"><span class="org-comment-delimiter"># </span><span class="org-comment">!/usr/bin/env ruby
+</span><span class="org-builtin">require_relative</span> <span class="org-string">"../lib/locotimezone"</span>
+</pre>
+</div>
+
+<ul class="org-ul">
+<li><code>rake install</code> to test it. If using rbenv, might need to rehash before it
+becomes available</li>
+<li>Use the Ruby <a href="//ruby-doc.org/stdlib-2.3.1/libdoc/optparse/rdoc/OptionParser.html">OptionParser</a> to give the script the ability to use switches.
+See <a href="//github.com/resque/resque/blob/master/bin/resque?utm_source=build-a-ruby-gem&utm_medium=ebook&utm_campaign=command-line">resque cmd line example</a></li>
+</ul></li>
+</ul>
+</div>
+<h2><a id="building" class="anchor" href="#building"><i># </i></a>Building</h2><div class="outline-text-2" id="text-orga3dc081">
+<div class="org-src-container">
+<pre class="src src-nil">gem build my_gem.gemspec
+</pre>
+</div>
+</div>
+<h2><a id="install" class="anchor" href="#install"><i># </i></a>Install</h2><div class="outline-text-2" id="text-org5d4464b">
+<div class="org-src-container">
+<pre class="src src-nil">gem install my_gem
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>It will look locally first for a gem of that name, before going to rubygems.org</li>
+<li>Rake install in the gem project root will build and install it.</li>
+</ul>
+</div>
+<h2><a id="push" class="anchor" href="#push"><i># </i></a>Push</h2><h3><a id="setuptopushtorubygemsorg" class="anchor" href="#setuptopushtorubygemsorg"><i># </i></a>Setup to Push to rubygems.org</h3><div class="outline-text-3" id="text-org1d33736">
+<div class="org-src-container">
+<pre class="src src-nil">curl -u {{ USERNAME }} https://rubygems.org/api/v1/api_key.yaml &gt; ~/.gem/credentials; chmod 0600 ~/.gem/credentials
+</pre>
+</div>
+</div>
+<h3><a id="pushtorubygemsorg" class="anchor" href="#pushtorubygemsorg"><i># </i></a>Push to Rubygems.org</h3><div class="outline-text-3" id="text-orge44b90f">
+<div class="org-src-container">
+<pre class="src src-nil">gem push my_gem.gem
+</pre>
+</div>
+
+<p>
+Build and push in one command with <code>rake release</code>
+</p>
+</div>
+<h2><a id="misc" class="anchor" href="#misc"><i># </i></a>Misc</h2><h3><a id="copyaninstalledgemrsquossourcecodetocwd" class="anchor" href="#copyaninstalledgemrsquossourcecodetocwd"><i># </i></a>Copy an installed Gem&rsquo;s source code to CWD</h3><div class="outline-text-3" id="text-orga444c4e">
+<div class="org-src-container">
+<pre class="src src-shell">$ gem unpack some-gem
+</pre>
+</div>
+</div>
+</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>
