@@ -1,46 +1,43 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-YM3EHHB2YQ');</script><title>Build a Ruby Gem - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Build a Ruby Gem</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on April 11, 2018</p><p class="note-updated uk-article-meta">Updated on December 23, 2023</p></div><p class="blog-post-tags">Tags: <a href="/?tag=ruby">ruby</a></p><div id="table-of-contents" role="doc-toc">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Ankan Biswas"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><title>Build a Ruby Gem - Spyjetfayed's Blog</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Spyjetfayed's Blog</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">FOSS, Internet Freedom, Systems Programming</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/spyjetfayed">Github</a></li><li><a class="nav-link" href="https://codeberg.org/spyjetfayed">Codeberg</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Build a Ruby Gem</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on April 11, 2018</p><p class="note-updated uk-article-meta">Updated on December 23, 2023</p></div><p class="blog-post-tags">Tags: <a href="/?tag=ruby">ruby</a></p><div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org843ef78">What is this?</a></li>
-<li><a href="#org3076d88">Naming Conventions</a></li>
-<li><a href="#org39fd05f">Scaffold the Gem</a>
+<li><a href="#org4eb23e0">What is this?</a></li>
+<li><a href="#org180cefc">Naming Conventions</a></li>
+<li><a href="#orged7f372">Scaffold the Gem</a>
 <ul>
-<li><a href="#org6eca730">The .gemspec file</a></li>
+<li><a href="#orgbff906f">The .gemspec file</a></li>
 </ul>
 </li>
-<li><a href="#org63fbd2c">Configuration</a>
+<li><a href="#org2c3613d">Configuration</a>
 <ul>
-<li><a href="#org3e6f28c">Global Configuration</a></li>
-<li><a href="#org4487b4b">Local Configuration</a></li>
-<li><a href="#org5a2e5a6">Middleware configuration</a></li>
+<li><a href="#org9f105fd">Global Configuration</a></li>
+<li><a href="#orgbb39b4e">Local Configuration</a></li>
+<li><a href="#org1f15e08">Middleware configuration</a></li>
 </ul>
 </li>
-<li><a href="#org72ec47a">Versioning</a></li>
-<li><a href="#org5447d67">Extending Rails with Railties</a>
+<li><a href="#org43def47">Versioning</a></li>
+<li><a href="#org2a67b7a">Extending Rails with Railties</a>
 <ul>
-<li><a href="#org2141f14">ActiveSupport on_load</a></li>
+<li><a href="#orge8c9442">ActiveSupport on_load</a></li>
 </ul>
 </li>
-<li><a href="#org0ba8656">Running the Gem Locally</a></li>
-<li><a href="#orga519014">Testing</a></li>
-<li><a href="#org0f8d97c">Gem Dependencies</a></li>
-<li><a href="#org79d3f58">Loading Support Libraries</a></li>
-<li><a href="#org8f11f00">Adding an Executable to bin/</a></li>
-<li><a href="#orga3dc081">Building</a></li>
-<li><a href="#org5d4464b">Install</a></li>
-<li><a href="#orgbd222b3">Push</a>
+<li><a href="#orge4e7621">Running the Gem Locally</a></li>
+<li><a href="#org9dc0312">Testing</a></li>
+<li><a href="#orgcb8a678">Gem Dependencies</a></li>
+<li><a href="#org93edda6">Loading Support Libraries</a></li>
+<li><a href="#org0ddbf7c">Adding an Executable to bin/</a></li>
+<li><a href="#orgade4403">Building</a></li>
+<li><a href="#org06466e8">Install</a></li>
+<li><a href="#org2fb395a">Push</a>
 <ul>
-<li><a href="#org1d33736">Setup to Push to rubygems.org</a></li>
-<li><a href="#orge44b90f">Push to Rubygems.org</a></li>
+<li><a href="#org75adf75">Setup to Push to rubygems.org</a></li>
+<li><a href="#org88d21a5">Push to Rubygems.org</a></li>
 </ul>
 </li>
-<li><a href="#org7e35a05">Misc</a>
+<li><a href="#org7046cc2">Misc</a>
 <ul>
-<li><a href="#orga444c4e">Copy an installed Gem&rsquo;s source code to CWD</a></li>
+<li><a href="#org1999e21">Copy an installed Gem&rsquo;s source code to CWD</a></li>
 </ul>
 </li>
 </ul>
@@ -49,7 +46,7 @@
 <p>
 :ID:       E7593CFF-18DA-4385-A78C-C879ADDA7E3B
 </p>
-<h2><a id="whatisthis" class="anchor" href="#whatisthis"><i># </i></a>What is this?</h2><div class="outline-text-2" id="text-org843ef78">
+<h2><a id="whatisthis" class="anchor" href="#whatisthis"><i># </i></a>What is this?</h2><div class="outline-text-2" id="text-org4eb23e0">
 <p>
 A reference for building a Ruby gem. See also the official <a href="//guides.rubygems.org/make-your-own-gem/">RubyGem.org
 Instructions</a> for the latest info on this. There&rsquo;s probably a bunch of stuff
@@ -60,14 +57,14 @@ here that is outdated.
 There&rsquo;s a cool <code>8min</code> synopsis of most of this <a href="https://www.youtube.com/watch?v=g2zJC2XKblo">https://www.youtube.com/watch?v=g2zJC2XKblo</a>
 </p>
 </div>
-<h2><a id="namingconventions" class="anchor" href="#namingconventions"><i># </i></a>Naming Conventions</h2><div class="outline-text-2" id="text-org3076d88">
+<h2><a id="namingconventions" class="anchor" href="#namingconventions"><i># </i></a>Naming Conventions</h2><div class="outline-text-2" id="text-org180cefc">
 <ul class="org-ul">
 <li>Lowercase</li>
 <li>Underscores to separate words</li>
 <li>Dash to indicate an extension of an existing gem</li>
 </ul>
 </div>
-<h2><a id="scaffoldthegem" class="anchor" href="#scaffoldthegem"><i># </i></a>Scaffold the Gem</h2><div class="outline-text-2" id="text-org39fd05f">
+<h2><a id="scaffoldthegem" class="anchor" href="#scaffoldthegem"><i># </i></a>Scaffold the Gem</h2><div class="outline-text-2" id="text-orged7f372">
 <div class="org-src-container">
 <pre class="src src-nil">bundle gem {{ GEM_NAME }}
 </pre>
@@ -79,29 +76,29 @@ conduct, changelog, etc.</li>
 <li>In the root dir</li>
 </ul>
 </div>
-<h3><a id="thegemspecfile" class="anchor" href="#thegemspecfile"><i># </i></a>The .gemspec file</h3><div class="outline-text-3" id="text-org6eca730">
+<h3><a id="thegemspecfile" class="anchor" href="#thegemspecfile"><i># </i></a>The .gemspec file</h3><div class="outline-text-3" id="text-orgbff906f">
 <p>
 See the <a href="//guides.rubygems.org/specification-reference/">the specifiction reference on rubygems.org</a>.
 </p>
 </div>
-<h2><a id="configuration" class="anchor" href="#configuration"><i># </i></a>Configuration</h2><h3><a id="globalconfiguration" class="anchor" href="#globalconfiguration"><i># </i></a>Global Configuration</h3><div class="outline-text-3" id="text-org3e6f28c">
+<h2><a id="configuration" class="anchor" href="#configuration"><i># </i></a>Configuration</h2><h3><a id="globalconfiguration" class="anchor" href="#globalconfiguration"><i># </i></a>Global Configuration</h3><div class="outline-text-3" id="text-org9f105fd">
 <ul class="org-ul">
 <li>Create a configuration <code>attr_accessor</code> on the main module</li>
 <li><code>def self.configure(configuration_class)</code> class method takes a block and
 instantiates a <code>Configuration</code> object. See <a href="//github.com/apmiller108/locotimezone/blob/master/lib/locotimezone.rb#L24-L37">this example</a>.</li>
 </ul>
 </div>
-<h3><a id="localconfiguration" class="anchor" href="#localconfiguration"><i># </i></a>Local Configuration</h3><div class="outline-text-3" id="text-org4487b4b">
+<h3><a id="localconfiguration" class="anchor" href="#localconfiguration"><i># </i></a>Local Configuration</h3><div class="outline-text-3" id="text-orgbb39b4e">
 <p>
 This things is instantiated with a config object.
 </p>
 </div>
-<h3><a id="middlewareconfiguration" class="anchor" href="#middlewareconfiguration"><i># </i></a>Middleware configuration</h3><div class="outline-text-3" id="text-org5a2e5a6">
+<h3><a id="middlewareconfiguration" class="anchor" href="#middlewareconfiguration"><i># </i></a>Middleware configuration</h3><div class="outline-text-3" id="text-org1f15e08">
 <p>
 See <a href="//github.com/mperham/sidekiq/wiki/Middleware?utm_source=build-a-ruby-gem&utm_medium=ebook&utm_campaign=configuration">sidekiq example</a>.
 </p>
 </div>
-<h2><a id="versioning" class="anchor" href="#versioning"><i># </i></a>Versioning</h2><div class="outline-text-2" id="text-org72ec47a">
+<h2><a id="versioning" class="anchor" href="#versioning"><i># </i></a>Versioning</h2><div class="outline-text-2" id="text-org43def47">
 <ul class="org-ul">
 <li>Version numbers by default are in <code>lib/my-gem/version.rb</code> file. Why is there a
 file for this and not just hardcoded in the gemspec. No idea.</li>
@@ -109,7 +106,7 @@ file for this and not just hardcoded in the gemspec. No idea.</li>
 <li>See also <a href="https://bundler.io/guides/gemfile.html">https://bundler.io/guides/gemfile.html</a></li>
 </ul>
 </div>
-<h2><a id="extendingrailswithrailties" class="anchor" href="#extendingrailswithrailties"><i># </i></a>Extending Rails with Railties</h2><div class="outline-text-2" id="text-org5447d67">
+<h2><a id="extendingrailswithrailties" class="anchor" href="#extendingrailswithrailties"><i># </i></a>Extending Rails with Railties</h2><div class="outline-text-2" id="text-org2a67b7a">
 <ul class="org-ul">
 <li><code>Rails::Railtie</code> provides several hooks to extend Rails and/or modify the
 initialization process.</li>
@@ -133,7 +130,7 @@ Use an initializer to load a module into a Rails component.
 </div></li>
 </ul>
 </div>
-<h3><a id="activesupporton_load" class="anchor" href="#activesupporton_load"><i># </i></a>ActiveSupport on_load</h3><div class="outline-text-3" id="text-org2141f14">
+<h3><a id="activesupporton_load" class="anchor" href="#activesupporton_load"><i># </i></a>ActiveSupport on_load</h3><div class="outline-text-3" id="text-orge8c9442">
 <p>
 See also <a href="//github.com/mislav/will_paginate/blob/master/lib/will_paginate/railtie.rb?utm_source=build-a-ruby-gem&utm_medium=ebook&utm_campaign=rails-hooks">will_paginate example</a>.
 </p>
@@ -158,7 +155,7 @@ An alternative, and possibly safer approach is to just manually include the
 gem&rsquo;s module in the Rails&rsquo; class where you want to use it.
 </p>
 </div>
-<h2><a id="runningthegemlocally" class="anchor" href="#runningthegemlocally"><i># </i></a>Running the Gem Locally</h2><div class="outline-text-2" id="text-org0ba8656">
+<h2><a id="runningthegemlocally" class="anchor" href="#runningthegemlocally"><i># </i></a>Running the Gem Locally</h2><div class="outline-text-2" id="text-orge4e7621">
 <ul class="org-ul">
 <li><code>bin/console</code></li>
 <li><code>bundle console</code></li>
@@ -183,7 +180,7 @@ need to run a config block.</li>
 </div></li>
 </ul>
 </div>
-<h2><a id="testing" class="anchor" href="#testing"><i># </i></a>Testing</h2><div class="outline-text-2" id="text-orga519014">
+<h2><a id="testing" class="anchor" href="#testing"><i># </i></a>Testing</h2><div class="outline-text-2" id="text-org9dc0312">
 <ul class="org-ul">
 <li><p>
 The Rakefile should already be setup to gather test files and run them using
@@ -201,7 +198,7 @@ task <span class="org-constant">default:</span> <span class="org-constant">:spec
 </div></li>
 </ul>
 </div>
-<h2><a id="gemdependencies" class="anchor" href="#gemdependencies"><i># </i></a>Gem Dependencies</h2><div class="outline-text-2" id="text-org0f8d97c">
+<h2><a id="gemdependencies" class="anchor" href="#gemdependencies"><i># </i></a>Gem Dependencies</h2><div class="outline-text-2" id="text-orgcb8a678">
 <p>
 Do not add gems to the Gemfile, just define the dependencies in the <code>.gemspec</code>
 </p>
@@ -221,7 +218,7 @@ accept patches and minor releases: (4.1, 4.2, 4.0.1,&#x2026;) gem
 </ul></li>
 </ul>
 </div>
-<h2><a id="loadingsupportlibraries" class="anchor" href="#loadingsupportlibraries"><i># </i></a>Loading Support Libraries</h2><div class="outline-text-2" id="text-org79d3f58">
+<h2><a id="loadingsupportlibraries" class="anchor" href="#loadingsupportlibraries"><i># </i></a>Loading Support Libraries</h2><div class="outline-text-2" id="text-org93edda6">
 <ul class="org-ul">
 <li>An optional support library can be loaded in the Gemfile when adding
 the gem: <code>gem ‘locotimezone' require: ‘locotimezone/web'</code>.</li>
@@ -230,7 +227,7 @@ the gem: <code>gem ‘locotimezone' require: ‘locotimezone/web'</code>.</li>
 my_gem.rb</li>
 </ul>
 </div>
-<h2><a id="addinganexecutabletobin" class="anchor" href="#addinganexecutabletobin"><i># </i></a>Adding an Executable to bin/</h2><div class="outline-text-2" id="text-org8f11f00">
+<h2><a id="addinganexecutabletobin" class="anchor" href="#addinganexecutabletobin"><i># </i></a>Adding an Executable to bin/</h2><div class="outline-text-2" id="text-org0ddbf7c">
 <ul class="org-ul">
 <li><p>
 In addition to providing libraries of Ruby code, gems can also expose
@@ -255,13 +252,13 @@ See <a href="//github.com/resque/resque/blob/master/bin/resque?utm_source=build-
 </ul></li>
 </ul>
 </div>
-<h2><a id="building" class="anchor" href="#building"><i># </i></a>Building</h2><div class="outline-text-2" id="text-orga3dc081">
+<h2><a id="building" class="anchor" href="#building"><i># </i></a>Building</h2><div class="outline-text-2" id="text-orgade4403">
 <div class="org-src-container">
 <pre class="src src-nil">gem build my_gem.gemspec
 </pre>
 </div>
 </div>
-<h2><a id="install" class="anchor" href="#install"><i># </i></a>Install</h2><div class="outline-text-2" id="text-org5d4464b">
+<h2><a id="install" class="anchor" href="#install"><i># </i></a>Install</h2><div class="outline-text-2" id="text-org06466e8">
 <div class="org-src-container">
 <pre class="src src-nil">gem install my_gem
 </pre>
@@ -272,13 +269,13 @@ See <a href="//github.com/resque/resque/blob/master/bin/resque?utm_source=build-
 <li>Rake install in the gem project root will build and install it.</li>
 </ul>
 </div>
-<h2><a id="push" class="anchor" href="#push"><i># </i></a>Push</h2><h3><a id="setuptopushtorubygemsorg" class="anchor" href="#setuptopushtorubygemsorg"><i># </i></a>Setup to Push to rubygems.org</h3><div class="outline-text-3" id="text-org1d33736">
+<h2><a id="push" class="anchor" href="#push"><i># </i></a>Push</h2><h3><a id="setuptopushtorubygemsorg" class="anchor" href="#setuptopushtorubygemsorg"><i># </i></a>Setup to Push to rubygems.org</h3><div class="outline-text-3" id="text-org75adf75">
 <div class="org-src-container">
 <pre class="src src-nil">curl -u {{ USERNAME }} https://rubygems.org/api/v1/api_key.yaml &gt; ~/.gem/credentials; chmod 0600 ~/.gem/credentials
 </pre>
 </div>
 </div>
-<h3><a id="pushtorubygemsorg" class="anchor" href="#pushtorubygemsorg"><i># </i></a>Push to Rubygems.org</h3><div class="outline-text-3" id="text-orge44b90f">
+<h3><a id="pushtorubygemsorg" class="anchor" href="#pushtorubygemsorg"><i># </i></a>Push to Rubygems.org</h3><div class="outline-text-3" id="text-org88d21a5">
 <div class="org-src-container">
 <pre class="src src-nil">gem push my_gem.gem
 </pre>
@@ -288,10 +285,10 @@ See <a href="//github.com/resque/resque/blob/master/bin/resque?utm_source=build-
 Build and push in one command with <code>rake release</code>
 </p>
 </div>
-<h2><a id="misc" class="anchor" href="#misc"><i># </i></a>Misc</h2><h3><a id="copyaninstalledgemrsquossourcecodetocwd" class="anchor" href="#copyaninstalledgemrsquossourcecodetocwd"><i># </i></a>Copy an installed Gem&rsquo;s source code to CWD</h3><div class="outline-text-3" id="text-orga444c4e">
+<h2><a id="misc" class="anchor" href="#misc"><i># </i></a>Misc</h2><h3><a id="copyaninstalledgemrsquossourcecodetocwd" class="anchor" href="#copyaninstalledgemrsquossourcecodetocwd"><i># </i></a>Copy an installed Gem&rsquo;s source code to CWD</h3><div class="outline-text-3" id="text-org1999e21">
 <div class="org-src-container">
 <pre class="src src-shell">$ gem unpack some-gem
 </pre>
 </div>
 </div>
-</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>
+</div><script src="https://utteranc.es/client.js" repo="spyjetfayed/spyjetfayed.github.io" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/spyjetfayed" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://codeberg.org/spyjetfayed/" class="footer-link" uk-icon="icon: album">Codeberg</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Ankan Biswas. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

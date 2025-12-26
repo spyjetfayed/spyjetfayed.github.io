@@ -1,33 +1,30 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-YM3EHHB2YQ');</script><title>Scrubbing data - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Scrubbing data</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on September 29, 2023</p><p class="note-updated uk-article-meta">Updated on October 13, 2023</p></div><p class="blog-post-tags">Tags: <a href="/?tag=postgres">postgres</a></p><div id="table-of-contents" role="doc-toc">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Ankan Biswas"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><title>Scrubbing data - Spyjetfayed's Blog</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Spyjetfayed's Blog</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">FOSS, Internet Freedom, Systems Programming</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/spyjetfayed">Github</a></li><li><a class="nav-link" href="https://codeberg.org/spyjetfayed">Codeberg</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Scrubbing data</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on September 29, 2023</p><p class="note-updated uk-article-meta">Updated on October 13, 2023</p></div><p class="blog-post-tags">Tags: <a href="/?tag=postgres">postgres</a></p><div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orged93965">Compose a function</a>
+<li><a href="#org5a3d1f9">Compose a function</a>
 <ul>
-<li><a href="#orge0e24ac">Email scrubber example</a></li>
+<li><a href="#orgf6eb762">Email scrubber example</a></li>
 </ul>
 </li>
-<li><a href="#orga8661a5">Update table strategy</a>
+<li><a href="#orgfda2a07">Update table strategy</a>
 <ul>
-<li><a href="#org21a1e74">Batches</a></li>
-<li><a href="#orgc177afc">Vacuum</a></li>
-<li><a href="#org8c96a40">Reindex</a></li>
+<li><a href="#orgbbdf685">Batches</a></li>
+<li><a href="#orgfc0cb89">Vacuum</a></li>
+<li><a href="#orge5c2416">Reindex</a></li>
 </ul>
 </li>
-<li><a href="#org8a1366d">Table copying strategy</a>
+<li><a href="#org7c1e5cf">Table copying strategy</a>
 <ul>
-<li><a href="#org393f89a">Copy table</a>
+<li><a href="#orgb835596">Copy table</a>
 <ul>
-<li><a href="#org7a0a85f">Excluding things for speedier copying</a></li>
+<li><a href="#org877aabe">Excluding things for speedier copying</a></li>
 </ul>
 </li>
-<li><a href="#org43250e1">Copy data</a></li>
-<li><a href="#org850386d">Change sequence ownership</a></li>
-<li><a href="#org77cc476">Copy indexes and FKs</a></li>
-<li><a href="#org2f2eae6">Drop and rename</a></li>
+<li><a href="#orga57f5a4">Copy data</a></li>
+<li><a href="#org9b48118">Change sequence ownership</a></li>
+<li><a href="#org94c4177">Copy indexes and FKs</a></li>
+<li><a href="#orgeca6a7e">Drop and rename</a></li>
 </ul>
 </li>
 </ul>
@@ -47,7 +44,7 @@ The dump could be loaded by someone authorized to do so, a SQL script run
 against the loaded data to scrub the sensitive data, then dumped again and
 shared with developers.
 </p>
-<h2><a id="composeafunction" class="anchor" href="#composeafunction"><i># </i></a>Compose a function</h2><div class="outline-text-2" id="text-orged93965">
+<h2><a id="composeafunction" class="anchor" href="#composeafunction"><i># </i></a>Compose a function</h2><div class="outline-text-2" id="text-org5a3d1f9">
 <p>
 See also <a href="https://github.com/teoljungberg/fx">https://github.com/teoljungberg/fx</a> for database function version
 management in Rails.
@@ -68,7 +65,7 @@ functions that are useful such as
 <li>SPLIT_PART</li>
 </ul>
 </div>
-<h3><a id="emailscrubberexample" class="anchor" href="#emailscrubberexample"><i># </i></a>Email scrubber example</h3><div class="outline-text-3" id="text-orge0e24ac">
+<h3><a id="emailscrubberexample" class="anchor" href="#emailscrubberexample"><i># </i></a>Email scrubber example</h3><div class="outline-text-3" id="text-orgf6eb762">
 <p>
 Here is an example of an email scrubbing function.
 </p>
@@ -99,7 +96,7 @@ To use it:
 </pre>
 </div>
 </div>
-<h2><a id="updatetablestrategy" class="anchor" href="#updatetablestrategy"><i># </i></a>Update table strategy</h2><div class="outline-text-2" id="text-orga8661a5">
+<h2><a id="updatetablestrategy" class="anchor" href="#updatetablestrategy"><i># </i></a>Update table strategy</h2><div class="outline-text-2" id="text-orgfda2a07">
 <p>
 Use the function to update the table, destructively. Use vacuum and reindex
 after the updates. Also consider update in batches.
@@ -109,12 +106,12 @@ after the updates. Also consider update in batches.
 </pre>
 </div>
 </div>
-<h3><a id="batches" class="anchor" href="#batches"><i># </i></a>Batches</h3><div class="outline-text-3" id="text-org21a1e74">
+<h3><a id="batches" class="anchor" href="#batches"><i># </i></a>Batches</h3><div class="outline-text-3" id="text-orgbbdf685">
 <p>
 See also <a href="F544CDDD-34B9-4475-B265-1139F18D9090">Large SQL data migrations</a> for using stored procedures
 </p>
 </div>
-<h3><a id="vacuum" class="anchor" href="#vacuum"><i># </i></a>Vacuum</h3><div class="outline-text-3" id="text-orgc177afc">
+<h3><a id="vacuum" class="anchor" href="#vacuum"><i># </i></a>Vacuum</h3><div class="outline-text-3" id="text-orgfc0cb89">
 <p>
 After updates to rows, old row versions are still retained.
 </p>
@@ -124,20 +121,20 @@ After updates to rows, old row versions are still retained.
 </pre>
 </div>
 </div>
-<h3><a id="reindex" class="anchor" href="#reindex"><i># </i></a>Reindex</h3><div class="outline-text-3" id="text-org8c96a40">
+<h3><a id="reindex" class="anchor" href="#reindex"><i># </i></a>Reindex</h3><div class="outline-text-3" id="text-orge5c2416">
 <div class="org-src-container">
 <pre class="src src-sql">REINDEX INDEX users_email_idx;
 </pre>
 </div>
 </div>
-<h2><a id="tablecopyingstrategy" class="anchor" href="#tablecopyingstrategy"><i># </i></a>Table copying strategy</h2><div class="outline-text-2" id="text-org8a1366d">
+<h2><a id="tablecopyingstrategy" class="anchor" href="#tablecopyingstrategy"><i># </i></a>Table copying strategy</h2><div class="outline-text-2" id="text-org7c1e5cf">
 <p>
 The copied table will take the place of the original table and will contain
 sensitive data columns with the scrubbed data. This is non-destructive and can
 be rolled back.
 </p>
 </div>
-<h3><a id="copytable" class="anchor" href="#copytable"><i># </i></a>Copy table</h3><div class="outline-text-3" id="text-org393f89a">
+<h3><a id="copytable" class="anchor" href="#copytable"><i># </i></a>Copy table</h3><div class="outline-text-3" id="text-orgb835596">
 <p>
 This just copies the table schema. Not the data.
 See also
@@ -149,7 +146,7 @@ See also
 </pre>
 </div>
 </div>
-<h4><a id="excludingthingsforspeediercopying" class="anchor" href="#excludingthingsforspeediercopying"><i># </i></a>Excluding things for speedier copying</h4><div class="outline-text-4" id="text-org7a0a85f">
+<h4><a id="excludingthingsforspeediercopying" class="anchor" href="#excludingthingsforspeediercopying"><i># </i></a>Excluding things for speedier copying</h4><div class="outline-text-4" id="text-org877aabe">
 <ul class="org-ul">
 <li>You can use <code>EXCLUDING</code> after <code>INCLUDING ALL</code> (eg, <code>LIKE users INCLUDING ALL EXCLUDING INDEXES</code>).</li>
 <li>Not having the indexes in place when the data is copied in the next step
@@ -157,7 +154,7 @@ will be faster. That could be useful for millions of rows.</li>
 <li>The trade off is that the indexes and FKs will still need to be created after the copying is done.</li>
 </ul>
 </div>
-<h3><a id="copydata" class="anchor" href="#copydata"><i># </i></a>Copy data</h3><div class="outline-text-3" id="text-org43250e1">
+<h3><a id="copydata" class="anchor" href="#copydata"><i># </i></a>Copy data</h3><div class="outline-text-3" id="text-orga57f5a4">
 <p>
 Here custom scrubbing functions can be applied to copy data into the new table.
 </p>
@@ -170,7 +167,7 @@ Here custom scrubbing functions can be applied to copy data into the new table.
 </pre>
 </div>
 </div>
-<h3><a id="changesequenceownership" class="anchor" href="#changesequenceownership"><i># </i></a>Change sequence ownership</h3><div class="outline-text-3" id="text-org850386d">
+<h3><a id="changesequenceownership" class="anchor" href="#changesequenceownership"><i># </i></a>Change sequence ownership</h3><div class="outline-text-3" id="text-org9b48118">
 <p>
 If the primary key is generated by a sequence, that sequence is still owned
 by the original table it was copied from.
@@ -181,7 +178,7 @@ by the original table it was copied from.
 </pre>
 </div>
 </div>
-<h3><a id="copyindexesandfks" class="anchor" href="#copyindexesandfks"><i># </i></a>Copy indexes and FKs</h3><div class="outline-text-3" id="text-org77cc476">
+<h3><a id="copyindexesandfks" class="anchor" href="#copyindexesandfks"><i># </i></a>Copy indexes and FKs</h3><div class="outline-text-3" id="text-org94c4177">
 <p>
 <b>*If the table was copied excluding Indexes and Constraints</b>, they will need to
 be copied over but with a slightly different name.
@@ -195,7 +192,7 @@ To list the indexes on the original table:
 </pre>
 </div>
 </div>
-<h3><a id="dropandrename" class="anchor" href="#dropandrename"><i># </i></a>Drop and rename</h3><div class="outline-text-3" id="text-org2f2eae6">
+<h3><a id="dropandrename" class="anchor" href="#dropandrename"><i># </i></a>Drop and rename</h3><div class="outline-text-3" id="text-orgeca6a7e">
 <p>
 Drop the original table and rename the copy in the same transaction. Cascade
 will drop related objects like views.
@@ -208,4 +205,4 @@ will drop related objects like views.
 </pre>
 </div>
 </div>
-</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>
+</div><script src="https://utteranc.es/client.js" repo="spyjetfayed/spyjetfayed.github.io" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/spyjetfayed" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://codeberg.org/spyjetfayed/" class="footer-link" uk-icon="icon: album">Codeberg</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Ankan Biswas. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

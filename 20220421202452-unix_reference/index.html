@@ -1,81 +1,78 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-YM3EHHB2YQ');</script><title>Unix reference - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Unix reference</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on April 21, 2022</p><p class="note-updated uk-article-meta">Updated on August  7, 2025</p></div><p class="blog-post-tags">Tags: <a href="/?tag=unix">unix</a>, <a href="/?tag=linux">linux</a></p><div id="table-of-contents" role="doc-toc">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Ankan Biswas"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><title>Unix reference - Spyjetfayed's Blog</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Spyjetfayed's Blog</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">FOSS, Internet Freedom, Systems Programming</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/spyjetfayed">Github</a></li><li><a class="nav-link" href="https://codeberg.org/spyjetfayed">Codeberg</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Unix reference</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on April 21, 2022</p><p class="note-updated uk-article-meta">Updated on August  7, 2025</p></div><p class="blog-post-tags">Tags: <a href="/?tag=unix">unix</a>, <a href="/?tag=linux">linux</a></p><div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgcdda08e">Permissions</a>
+<li><a href="#org1f687a9">Permissions</a>
 <ul>
-<li><a href="#org70fb439">View file permissions and ownership</a></li>
-<li><a href="#orgd479c9f">Change permissions</a></li>
-<li><a href="#orgb5282fc">Change ownership</a></li>
+<li><a href="#org9529aa1">View file permissions and ownership</a></li>
+<li><a href="#orge6662c3">Change permissions</a></li>
+<li><a href="#org938f27b">Change ownership</a></li>
 </ul>
 </li>
-<li><a href="#orgb760a2c">Groups</a>
+<li><a href="#org26a4c5b">Groups</a>
 <ul>
-<li><a href="#orgd3d76a8">List groups</a></li>
-<li><a href="#org5d52c56">Manage group membership</a></li>
+<li><a href="#org6d3186b">List groups</a></li>
+<li><a href="#org495b8ee">Manage group membership</a></li>
 </ul>
 </li>
-<li><a href="#orgc770a6a">User Information</a></li>
-<li><a href="#orgd587f66">Switching users</a></li>
-<li><a href="#orge1f79d5">Magic SysRq key</a></li>
-<li><a href="#orga7ca194">Repositories (apt)</a>
+<li><a href="#org5244ba6">User Information</a></li>
+<li><a href="#org2703043">Switching users</a></li>
+<li><a href="#org472ad09">Magic SysRq key</a></li>
+<li><a href="#org327887a">Repositories (apt)</a>
 <ul>
-<li><a href="#orge4f038b">Release file expired error</a></li>
-<li><a href="#orgbd6b321">Install specific version (if available)</a>
+<li><a href="#org2dece95">Release file expired error</a></li>
+<li><a href="#org723db78">Install specific version (if available)</a>
 <ul>
-<li><a href="#orgfa13ce0">Check for available versions</a></li>
+<li><a href="#orgc119b37">Check for available versions</a></li>
 </ul>
 </li>
-<li><a href="#org8782764">Add a repository</a></li>
+<li><a href="#orgc1be426">Add a repository</a></li>
 </ul>
 </li>
-<li><a href="#org8701c32">File System</a>
+<li><a href="#orgeb6c86c">File System</a>
 <ul>
-<li><a href="#orge69aa78">Display file system information</a>
+<li><a href="#org69e1cd1">Display file system information</a>
 <ul>
-<li><a href="#orgcaebb50">df</a></li>
+<li><a href="#org306e8b5">df</a></li>
 </ul>
 </li>
-<li><a href="#org0f6e33c">Disk Usage</a>
+<li><a href="#org10f459f">Disk Usage</a>
 <ul>
-<li><a href="#orgb27a080">du (disk usage)</a></li>
+<li><a href="#orged09e5a">du (disk usage)</a></li>
 </ul>
 </li>
-<li><a href="#orgd84bbf4">Copy files over SSH</a>
+<li><a href="#org6517abf">Copy files over SSH</a>
 <ul>
-<li><a href="#orga1f71d3">scp</a></li>
+<li><a href="#org98eb6d0">scp</a></li>
 </ul>
 </li>
-<li><a href="#org76fb457">Make disk image</a></li>
-<li><a href="#orgcc16621">Make a Hexdump</a>
+<li><a href="#orgb4584f9">Make disk image</a></li>
+<li><a href="#orge6a0171">Make a Hexdump</a>
 <ul>
-<li><a href="#orgd72676a">xxd</a></li>
+<li><a href="#orga54c9c2">xxd</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org704e2d8">Devices</a>
+<li><a href="#org9306309">Devices</a>
 <ul>
-<li><a href="#orgfffd70f">Find TTY for USB device</a></li>
+<li><a href="#orgbc2f183">Find TTY for USB device</a></li>
 </ul>
 </li>
-<li><a href="#org02a619e">Logging</a>
+<li><a href="#orge5b7f55">Logging</a>
 <ul>
-<li><a href="#org94b248e">Boot process</a>
+<li><a href="#orgf20fb14">Boot process</a>
 <ul>
-<li><a href="#orgc8a46a9">dmesg</a></li>
+<li><a href="#orge1691ee">dmesg</a></li>
 </ul>
 </li>
-<li><a href="#org4d0134a">System logging</a></li>
-<li><a href="#orge2c5fb7">Other logging</a></li>
+<li><a href="#orgcf5d32a">System logging</a></li>
+<li><a href="#orga915667">Other logging</a></li>
 </ul>
 </li>
-<li><a href="#org6940d10">SSH</a>
+<li><a href="#org67d7336">SSH</a>
 <ul>
-<li><a href="#org143d2b3">Allow SSHing onto a system</a></li>
+<li><a href="#orge5569be">Allow SSHing onto a system</a></li>
 </ul>
 </li>
 </ul>
@@ -92,12 +89,12 @@ configuration.
 <p>
 See also <a href="3453ED9D-38E6-4EDA-9652-189BCABA429F">Shell tips</a>
 </p>
-<h2><a id="permissions" class="anchor" href="#permissions"><i># </i></a>Permissions</h2><div class="outline-text-2" id="text-orgcdda08e">
+<h2><a id="permissions" class="anchor" href="#permissions"><i># </i></a>Permissions</h2><div class="outline-text-2" id="text-org1f687a9">
 <p>
 See also <a href="//github.com/lansana/unix-permissions-cheat-sheet">this cheatsheet</a> for more.
 </p>
 </div>
-<h3><a id="viewfilepermissionsandownership" class="anchor" href="#viewfilepermissionsandownership"><i># </i></a>View file permissions and ownership</h3><div class="outline-text-3" id="text-org70fb439">
+<h3><a id="viewfilepermissionsandownership" class="anchor" href="#viewfilepermissionsandownership"><i># </i></a>View file permissions and ownership</h3><div class="outline-text-3" id="text-org9529aa1">
 <div class="org-src-container">
 <pre class="src src-shell">ls -l
 </pre>
@@ -137,7 +134,7 @@ See also <a href="//github.com/lansana/unix-permissions-cheat-sheet">this cheats
 Type could be <code>d</code> (ie, directory)
 </p>
 </div>
-<h3><a id="changepermissions" class="anchor" href="#changepermissions"><i># </i></a>Change permissions</h3><div class="outline-text-3" id="text-orgd479c9f">
+<h3><a id="changepermissions" class="anchor" href="#changepermissions"><i># </i></a>Change permissions</h3><div class="outline-text-3" id="text-orge6662c3">
 <div class="org-src-container">
 <pre class="src src-shell">chmod u+rw file
 </pre>
@@ -147,7 +144,7 @@ Type could be <code>d</code> (ie, directory)
 Adds (+), for user (u), read and write (rw) permissions. See <code>chmod --help</code>.
 </p>
 </div>
-<h3><a id="changeownership" class="anchor" href="#changeownership"><i># </i></a>Change ownership</h3><div class="outline-text-3" id="text-orgb5282fc">
+<h3><a id="changeownership" class="anchor" href="#changeownership"><i># </i></a>Change ownership</h3><div class="outline-text-3" id="text-org938f27b">
 <div class="org-src-container">
 <pre class="src src-shell">chown username file
 chown username:groupname file
@@ -155,7 +152,7 @@ chgrp groupname file
 </pre>
 </div>
 </div>
-<h2><a id="groups" class="anchor" href="#groups"><i># </i></a>Groups</h2><h3><a id="listgroups" class="anchor" href="#listgroups"><i># </i></a>List groups</h3><div class="outline-text-3" id="text-orgd3d76a8">
+<h2><a id="groups" class="anchor" href="#groups"><i># </i></a>Groups</h2><h3><a id="listgroups" class="anchor" href="#listgroups"><i># </i></a>List groups</h3><div class="outline-text-3" id="text-org6d3186b">
 <table>
 
 
@@ -193,12 +190,12 @@ chgrp groupname file
 </tbody>
 </table>
 </div>
-<h3><a id="managegroupmembership" class="anchor" href="#managegroupmembership"><i># </i></a>Manage group membership</h3><div class="outline-text-3" id="text-org5d52c56">
+<h3><a id="managegroupmembership" class="anchor" href="#managegroupmembership"><i># </i></a>Manage group membership</h3><div class="outline-text-3" id="text-org495b8ee">
 <p>
 Use <code>gpasswd</code>
 </p>
 </div>
-<h2><a id="userinformation" class="anchor" href="#userinformation"><i># </i></a>User Information</h2><div class="outline-text-2" id="text-orgc770a6a">
+<h2><a id="userinformation" class="anchor" href="#userinformation"><i># </i></a>User Information</h2><div class="outline-text-2" id="text-org5244ba6">
 <p>
 The <code>id</code> utility can provide information like uid, groups, etc. Use a flag to
 pull out specific information (<code>-u</code> =&gt; uid)
@@ -212,7 +209,7 @@ pull out specific information (<code>-u</code> =&gt; uid)
 Need to restart after changing group membership
 </p>
 </div>
-<h2><a id="switchingusers" class="anchor" href="#switchingusers"><i># </i></a>Switching users</h2><div class="outline-text-2" id="text-orgd587f66">
+<h2><a id="switchingusers" class="anchor" href="#switchingusers"><i># </i></a>Switching users</h2><div class="outline-text-2" id="text-org2703043">
 <table>
 
 
@@ -261,7 +258,7 @@ Use `sudo su - foo` if you want to simulate a real login as user `foo`, with the
 Use `sudo su foo` if you just want to become user `foo` but keep your current environment and directory.
 </p>
 </div>
-<h2><a id="magicsysrqkey" class="anchor" href="#magicsysrqkey"><i># </i></a>Magic SysRq key</h2><div class="outline-text-2" id="text-orge1f79d5">
+<h2><a id="magicsysrqkey" class="anchor" href="#magicsysrqkey"><i># </i></a>Magic SysRq key</h2><div class="outline-text-2" id="text-org472ad09">
 <p>
 Send low level commands regardless of system state (freeze)
 </p>
@@ -276,7 +273,7 @@ release (be keep holding <code>ALT</code>)</li>
 <li><code>REISUB</code> for a safe restart</li>
 </ul>
 </div>
-<h2><a id="repositoriesapt" class="anchor" href="#repositoriesapt"><i># </i></a>Repositories (apt)</h2><h3><a id="releasefileexpirederror" class="anchor" href="#releasefileexpirederror"><i># </i></a>Release file expired error</h3><div class="outline-text-3" id="text-orge4f038b">
+<h2><a id="repositoriesapt" class="anchor" href="#repositoriesapt"><i># </i></a>Repositories (apt)</h2><h3><a id="releasefileexpirederror" class="anchor" href="#releasefileexpirederror"><i># </i></a>Release file expired error</h3><div class="outline-text-3" id="text-org2dece95">
 <p>
 A couple options:
 </p>
@@ -294,19 +291,19 @@ Instruct apt to always skip the validity check
 </div></li>
 </ol>
 </div>
-<h3><a id="installspecificversionifavailable" class="anchor" href="#installspecificversionifavailable"><i># </i></a>Install specific version (if available)</h3><div class="outline-text-3" id="text-orgbd6b321">
+<h3><a id="installspecificversionifavailable" class="anchor" href="#installspecificversionifavailable"><i># </i></a>Install specific version (if available)</h3><div class="outline-text-3" id="text-org723db78">
 <div class="org-src-container">
 <pre class="src src-shell">apt-get install <span class="org-variable-name">something</span>=1.1.1
 </pre>
 </div>
 </div>
-<h4><a id="checkforavailableversions" class="anchor" href="#checkforavailableversions"><i># </i></a>Check for available versions</h4><div class="outline-text-4" id="text-orgfa13ce0">
+<h4><a id="checkforavailableversions" class="anchor" href="#checkforavailableversions"><i># </i></a>Check for available versions</h4><div class="outline-text-4" id="text-orgc119b37">
 <div class="org-src-container">
 <pre class="src src-nil">apt-cache policy ruby-full
 </pre>
 </div>
 </div>
-<h3><a id="addarepository" class="anchor" href="#addarepository"><i># </i></a>Add a repository</h3><div class="outline-text-3" id="text-org8782764">
+<h3><a id="addarepository" class="anchor" href="#addarepository"><i># </i></a>Add a repository</h3><div class="outline-text-3" id="text-orgc1be426">
 <p>
 First add software-properties-common:
 </p>
@@ -332,13 +329,13 @@ And update
 </pre>
 </div>
 </div>
-<h2><a id="filesystem" class="anchor" href="#filesystem"><i># </i></a>File System</h2><div class="outline-text-2" id="text-org8701c32">
+<h2><a id="filesystem" class="anchor" href="#filesystem"><i># </i></a>File System</h2><div class="outline-text-2" id="text-orgeb6c86c">
 <p>
 The following are just basic examples. There&rsquo;s a lot you can do with these
 tools. Use <code>--help</code> or man pages.
 </p>
 </div>
-<h3><a id="displayfilesysteminformation" class="anchor" href="#displayfilesysteminformation"><i># </i></a>Display file system information</h3><h4><a id="df" class="anchor" href="#df"><i># </i></a>df</h4><div class="outline-text-4" id="text-orgcaebb50">
+<h3><a id="displayfilesysteminformation" class="anchor" href="#displayfilesysteminformation"><i># </i></a>Display file system information</h3><h4><a id="df" class="anchor" href="#df"><i># </i></a>df</h4><div class="outline-text-4" id="text-org306e8b5">
 <p>
 Example: (human-readable)
 </p>
@@ -347,7 +344,7 @@ Example: (human-readable)
 </pre>
 </div>
 </div>
-<h3><a id="diskusage" class="anchor" href="#diskusage"><i># </i></a>Disk Usage</h3><h4><a id="dudiskusage" class="anchor" href="#dudiskusage"><i># </i></a>du (disk usage)</h4><div class="outline-text-4" id="text-orgb27a080">
+<h3><a id="diskusage" class="anchor" href="#diskusage"><i># </i></a>Disk Usage</h3><h4><a id="dudiskusage" class="anchor" href="#dudiskusage"><i># </i></a>du (disk usage)</h4><div class="outline-text-4" id="text-orged09e5a">
 <p>
 Example: (human-readable)
 </p>
@@ -356,7 +353,7 @@ Example: (human-readable)
 </pre>
 </div>
 </div>
-<h3><a id="copyfilesoverssh" class="anchor" href="#copyfilesoverssh"><i># </i></a>Copy files over SSH</h3><h4><a id="scp" class="anchor" href="#scp"><i># </i></a>scp</h4><div class="outline-text-4" id="text-orga1f71d3">
+<h3><a id="copyfilesoverssh" class="anchor" href="#copyfilesoverssh"><i># </i></a>Copy files over SSH</h3><h4><a id="scp" class="anchor" href="#scp"><i># </i></a>scp</h4><div class="outline-text-4" id="text-org98eb6d0">
 <p>
 Example: (recursive). This will use remote directories the map to the
 specified user&rsquo;s home directory. Enter remote user&rsquo;s pw when prompted.
@@ -366,7 +363,7 @@ specified user&rsquo;s home directory. Enter remote user&rsquo;s pw when prompte
 </pre>
 </div>
 </div>
-<h3><a id="makediskimage" class="anchor" href="#makediskimage"><i># </i></a>Make disk image</h3><div class="outline-text-3" id="text-org76fb457">
+<h3><a id="makediskimage" class="anchor" href="#makediskimage"><i># </i></a>Make disk image</h3><div class="outline-text-3" id="text-orgb4584f9">
 <p>
 After attaching the disk you want imaged, use <code>df -h</code> to
 get the mount point. Then use use the <code>dd</code> utility and specify the imput and
@@ -382,18 +379,18 @@ output. Example:
 There will be no output while the image is made.
 </p>
 </div>
-<h3><a id="makeahexdump" class="anchor" href="#makeahexdump"><i># </i></a>Make a Hexdump</h3><h4><a id="xxd" class="anchor" href="#xxd"><i># </i></a>xxd</h4><div class="outline-text-4" id="text-orgd72676a">
+<h3><a id="makeahexdump" class="anchor" href="#makeahexdump"><i># </i></a>Make a Hexdump</h3><h4><a id="xxd" class="anchor" href="#xxd"><i># </i></a>xxd</h4><div class="outline-text-4" id="text-orga54c9c2">
 <div class="org-src-container">
 <pre class="src src-shell">xxd -ps /path/to/file | tr -d <span class="org-string">'\n'</span>
 </pre>
 </div>
 </div>
-<h2><a id="devices" class="anchor" href="#devices"><i># </i></a>Devices</h2><div class="outline-text-2" id="text-org704e2d8">
+<h2><a id="devices" class="anchor" href="#devices"><i># </i></a>Devices</h2><div class="outline-text-2" id="text-org9306309">
 <p>
 See also <a href="d5d67aa4-e66e-48de-90d1-051ef3a8df77">Pop_os</a> (eg, <code>lsusb</code>, etc)
 </p>
 </div>
-<h3><a id="findttyforusbdevice" class="anchor" href="#findttyforusbdevice"><i># </i></a>Find TTY for USB device</h3><div class="outline-text-3" id="text-orgfffd70f">
+<h3><a id="findttyforusbdevice" class="anchor" href="#findttyforusbdevice"><i># </i></a>Find TTY for USB device</h3><div class="outline-text-3" id="text-orgbc2f183">
 <p>
 Run dmesg in watch mode and look for tty, then plug in the device
 </p>
@@ -410,29 +407,29 @@ It will print something like:
 </pre>
 </div>
 </div>
-<h2><a id="logging" class="anchor" href="#logging"><i># </i></a>Logging</h2><h3><a id="bootprocess" class="anchor" href="#bootprocess"><i># </i></a>Boot process</h3><h4><a id="dmesg" class="anchor" href="#dmesg"><i># </i></a>dmesg</h4><div class="outline-text-4" id="text-orgc8a46a9">
+<h2><a id="logging" class="anchor" href="#logging"><i># </i></a>Logging</h2><h3><a id="bootprocess" class="anchor" href="#bootprocess"><i># </i></a>Boot process</h3><h4><a id="dmesg" class="anchor" href="#dmesg"><i># </i></a>dmesg</h4><div class="outline-text-4" id="text-orge1691ee">
 <p>
 A command line utility to view (among other things) kernel messages
 regarding hardware devices. Is something going wrong with the boot process,
 some devices not working? Look at <code>dmesg</code>.
 </p>
 </div>
-<h3><a id="systemlogging" class="anchor" href="#systemlogging"><i># </i></a>System logging</h3><div class="outline-text-3" id="text-org4d0134a">
+<h3><a id="systemlogging" class="anchor" href="#systemlogging"><i># </i></a>System logging</h3><div class="outline-text-3" id="text-orgcf5d32a">
 <p>
 <code>/var/log/syslog</code>
 </p>
 </div>
-<h3><a id="otherlogging" class="anchor" href="#otherlogging"><i># </i></a>Other logging</h3><div class="outline-text-3" id="text-orge2c5fb7">
+<h3><a id="otherlogging" class="anchor" href="#otherlogging"><i># </i></a>Other logging</h3><div class="outline-text-3" id="text-orga915667">
 <p>
 Look in <code>/var/log/</code> directory at all the other log files. Applications will
 write logs here. For example <code>/var/log/httpd</code>
 </p>
 </div>
-<h2><a id="ssh" class="anchor" href="#ssh"><i># </i></a>SSH</h2><h3><a id="allowsshingontoasystem" class="anchor" href="#allowsshingontoasystem"><i># </i></a>Allow SSHing onto a system</h3><div class="outline-text-3" id="text-org143d2b3">
+<h2><a id="ssh" class="anchor" href="#ssh"><i># </i></a>SSH</h2><h3><a id="allowsshingontoasystem" class="anchor" href="#allowsshingontoasystem"><i># </i></a>Allow SSHing onto a system</h3><div class="outline-text-3" id="text-orge5569be">
 <ol class="org-ol">
 <li>Install <code>openssh-server</code>. This is configured via <code>systemd</code> to automatically
 start.</li>
 <li>Use <code>ufw</code> to open port 22  (if firewall is active)</li>
 </ol>
 </div>
-</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>
+</div><script src="https://utteranc.es/client.js" repo="spyjetfayed/spyjetfayed.github.io" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/spyjetfayed" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://codeberg.org/spyjetfayed/" class="footer-link" uk-icon="icon: album">Codeberg</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Ankan Biswas. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

@@ -1,34 +1,31 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-YM3EHHB2YQ');</script><title>Turbo Streams - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Turbo Streams</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on November 25, 2023</p><p class="note-updated uk-article-meta">Updated on May 19, 2025</p></div><p class="blog-post-tags">Tags: <a href="/?tag=hotwire">hotwire</a>, <a href="/?tag=rails">rails</a></p><div id="table-of-contents" role="doc-toc">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Ankan Biswas"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><title>Turbo Streams - Spyjetfayed's Blog</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Spyjetfayed's Blog</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">FOSS, Internet Freedom, Systems Programming</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/spyjetfayed">Github</a></li><li><a class="nav-link" href="https://codeberg.org/spyjetfayed">Codeberg</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Turbo Streams</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on November 25, 2023</p><p class="note-updated uk-article-meta">Updated on May 19, 2025</p></div><p class="blog-post-tags">Tags: <a href="/?tag=hotwire">hotwire</a>, <a href="/?tag=rails">rails</a></p><div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0abfdc0">A turbo stream request</a></li>
-<li><a href="#orge3bf470">The turbo stream response</a>
+<li><a href="#org161e931">A turbo stream request</a></li>
+<li><a href="#org292671a">The turbo stream response</a>
 <ul>
-<li><a href="#org4090ec5">turbo-stream tag</a></li>
-<li><a href="#org0201385">Rendering inline with view components</a></li>
+<li><a href="#org82a940d">turbo-stream tag</a></li>
+<li><a href="#org7c54205">Rendering inline with view components</a></li>
 </ul>
 </li>
-<li><a href="#org31bef6f">Deletes</a>
+<li><a href="#org88f4004">Deletes</a>
 <ul>
-<li><a href="#org3187295">What about redirects?</a></li>
+<li><a href="#org4ccd389">What about redirects?</a></li>
 </ul>
 </li>
-<li><a href="#org734f50a">turbo_stream_from (turbo streams over WebSocket connection)</a>
+<li><a href="#org0ef6acd">turbo_stream_from (turbo streams over WebSocket connection)</a>
 <ul>
-<li><a href="#orge2087fc">Broacast turbo streams</a>
+<li><a href="#orgea2fa74">Broacast turbo streams</a>
 <ul>
-<li><a href="#org96b7cd2">with view_component components</a></li>
+<li><a href="#org216ecb0">with view_component components</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org6f68424">Programatically submitting a Turbo form with JS</a></li>
-<li><a href="#org4b13d74">TurboStream request with fetch</a></li>
-<li><a href="#orgc3642f2">Custom TurboStream ActionCable Channel</a></li>
+<li><a href="#orgbc7edbf">Programatically submitting a Turbo form with JS</a></li>
+<li><a href="#org46310de">TurboStream request with fetch</a></li>
+<li><a href="#orgba5ccae">Custom TurboStream ActionCable Channel</a></li>
 </ul>
 </div>
 </div>
@@ -66,7 +63,7 @@ me on how this is integrated with Rails via the <a href="//github.com/hotwired/t
 <p>
 See also <a href="1E969F0A-52A6-4D2C-A227-5BF6AE253044">Hotwire rails</a>
 </p>
-<h2><a id="aturbostreamrequest" class="anchor" href="#aturbostreamrequest"><i># </i></a>A turbo stream request</h2><div class="outline-text-2" id="text-org0abfdc0">
+<h2><a id="aturbostreamrequest" class="anchor" href="#aturbostreamrequest"><i># </i></a>A turbo stream request</h2><div class="outline-text-2" id="text-org161e931">
 <p>
 How does the front end send an HTTP request to the sever indicating that it
 wants a turbo stream response? This is done by setting the <code>Accept</code> header to
@@ -94,7 +91,7 @@ stream format say for a link (GET request), set the <code>tubo_stream</code> dat
 For POST requests, this is done automatically.
 </p>
 </div>
-<h2><a id="theturbostreamresponse" class="anchor" href="#theturbostreamresponse"><i># </i></a>The turbo stream response</h2><div class="outline-text-2" id="text-orge3bf470">
+<h2><a id="theturbostreamresponse" class="anchor" href="#theturbostreamresponse"><i># </i></a>The turbo stream response</h2><div class="outline-text-2" id="text-org292671a">
 <p>
 The controller can be configured to handle a turbo stream format
 independently.
@@ -143,7 +140,7 @@ This can be quite useful at times.
 </pre>
 </div>
 </div>
-<h3><a id="turbostreamtag" class="anchor" href="#turbostreamtag"><i># </i></a>turbo-stream tag</h3><div class="outline-text-3" id="text-org4090ec5">
+<h3><a id="turbostreamtag" class="anchor" href="#turbostreamtag"><i># </i></a>turbo-stream tag</h3><div class="outline-text-3" id="text-org82a940d">
 <p>
 The server will render the following with help from the <code>turbo_stream</code> tag
 helper:
@@ -169,7 +166,7 @@ the target (the DOM id on which the action is applied)</li>
 <li>A <code>template</code> tag.</li>
 </ol>
 </div>
-<h3><a id="renderinginlinewithviewcomponents" class="anchor" href="#renderinginlinewithviewcomponents"><i># </i></a>Rendering inline with view components</h3><div class="outline-text-3" id="text-org0201385">
+<h3><a id="renderinginlinewithviewcomponents" class="anchor" href="#renderinginlinewithviewcomponents"><i># </i></a>Rendering inline with view components</h3><div class="outline-text-3" id="text-org7c54205">
 <p>
 View components can be rendered from the controller for turbo stream
 requests instead of defining the <code>new.turbo_stream.haml</code> template.
@@ -197,7 +194,7 @@ See also
 <li><a href="https://viewcomponent.org/guide/getting-started.html#rendering-viewcomponents-to-strings-inside-controller-actions">https://viewcomponent.org/guide/getting-started.html#rendering-viewcomponents-to-strings-inside-controller-actions</a></li>
 </ul>
 </div>
-<h2><a id="deletes" class="anchor" href="#deletes"><i># </i></a>Deletes</h2><div class="outline-text-2" id="text-org31bef6f">
+<h2><a id="deletes" class="anchor" href="#deletes"><i># </i></a>Deletes</h2><div class="outline-text-2" id="text-org88f4004">
 <p>
 Deletes can be handled also by setting data attributes on a link, optionally
 with a confirmation prompt.
@@ -237,7 +234,7 @@ remove the DOM element with id <code>message_4</code> by returning an empty, tem
 </pre>
 </div>
 </div>
-<h3><a id="whataboutredirects" class="anchor" href="#whataboutredirects"><i># </i></a>What about redirects?</h3><div class="outline-text-3" id="text-org3187295">
+<h3><a id="whataboutredirects" class="anchor" href="#whataboutredirects"><i># </i></a>What about redirects?</h3><div class="outline-text-3" id="text-org4ccd389">
 <p>
 We might just want to redirect instead, even conditionally. If we&rsquo;re reusing
 view components or partials, we might have the ability to delete from an
@@ -274,7 +271,7 @@ See also
 <li><a href="https://turbo.hotwired.dev/handbook/drive#redirecting-after-a-form-submission">https://turbo.hotwired.dev/handbook/drive#redirecting-after-a-form-submission</a></li>
 </ul>
 </div>
-<h2><a id="turbo_stream_fromturbostreamsoverwebsocketconnection" class="anchor" href="#turbo_stream_fromturbostreamsoverwebsocketconnection"><i># </i></a>turbo_stream_from (turbo streams over WebSocket connection)</h2><div class="outline-text-2" id="text-org734f50a">
+<h2><a id="turbo_stream_fromturbostreamsoverwebsocketconnection" class="anchor" href="#turbo_stream_fromturbostreamsoverwebsocketconnection"><i># </i></a>turbo_stream_from (turbo streams over WebSocket connection)</h2><div class="outline-text-2" id="text-org0ef6acd">
 <p>
 This method is used in the view templates to generate a
 <code>turbo-cable-stream-source</code> HTML tag with a couple data attributes describing
@@ -305,7 +302,7 @@ to narrow scope of the stream. Include the a user object to setup a stream
 for a particular user&rsquo;s posts
 </p>
 </div>
-<h3><a id="broacastturbostreams" class="anchor" href="#broacastturbostreams"><i># </i></a>Broacast turbo streams</h3><div class="outline-text-3" id="text-orge2087fc">
+<h3><a id="broacastturbostreams" class="anchor" href="#broacastturbostreams"><i># </i></a>Broacast turbo streams</h3><div class="outline-text-3" id="text-orgea2fa74">
 <p>
 Now to broadcast a message, you can do this from the code:
 </p>
@@ -334,7 +331,7 @@ partial path. Include the <code>formats</code> option if rendering a turbo_strea
 </pre>
 </div>
 </div>
-<h4><a id="withview_componentcomponents" class="anchor" href="#withview_componentcomponents"><i># </i></a>with view_component components</h4><div class="outline-text-4" id="text-org96b7cd2">
+<h4><a id="withview_componentcomponents" class="anchor" href="#withview_componentcomponents"><i># </i></a>with view_component components</h4><div class="outline-text-4" id="text-org216ecb0">
 <p>
 There are several approaches to this, all kind of hacky.
 See also <a href="https://github.com/ViewComponent/view_component/issues/1106">https://github.com/ViewComponent/view_component/issues/1106</a>
@@ -371,14 +368,14 @@ Might be helpful to wrap this in a function
 </pre>
 </div>
 </div>
-<h2><a id="programaticallysubmittingaturboformwithjs" class="anchor" href="#programaticallysubmittingaturboformwithjs"><i># </i></a>Programatically submitting a Turbo form with JS</h2><div class="outline-text-2" id="text-org6f68424">
+<h2><a id="programaticallysubmittingaturboformwithjs" class="anchor" href="#programaticallysubmittingaturboformwithjs"><i># </i></a>Programatically submitting a Turbo form with JS</h2><div class="outline-text-2" id="text-orgbc7edbf">
 <p>
 Use <code>requestSubmit</code> instead of <code>submit</code> which does not emit a submit event that
 Turbo is listening for.
 <a href="https://stackoverflow.com/a/69537709">https://stackoverflow.com/a/69537709</a>
 </p>
 </div>
-<h2><a id="turbostreamrequestwithfetch" class="anchor" href="#turbostreamrequestwithfetch"><i># </i></a>TurboStream request with fetch</h2><div class="outline-text-2" id="text-org4b13d74">
+<h2><a id="turbostreamrequestwithfetch" class="anchor" href="#turbostreamrequestwithfetch"><i># </i></a>TurboStream request with fetch</h2><div class="outline-text-2" id="text-org46310de">
 <div class="org-src-container">
 <pre class="src src-js"><span class="org-keyword">const</span> <span class="org-variable-name">body</span> = JSON.stringify({ ... });
 <span class="org-keyword">const</span> <span class="org-variable-name">headers</span> = {
@@ -404,9 +401,9 @@ tempTemplate.innerHTML = responseBody
 </pre>
 </div>
 </div>
-<h2><a id="customturbostreamactioncablechannel" class="anchor" href="#customturbostreamactioncablechannel"><i># </i></a>Custom TurboStream ActionCable Channel</h2><div class="outline-text-2" id="text-orgc3642f2">
+<h2><a id="customturbostreamactioncablechannel" class="anchor" href="#customturbostreamactioncablechannel"><i># </i></a>Custom TurboStream ActionCable Channel</h2><div class="outline-text-2" id="text-orgba5ccae">
 <p>
 See also <a href="https://github.com/hotwired/turbo-rails/blob/main/app/channels/turbo/streams_channel.rb">https://github.com/hotwired/turbo-rails/blob/main/app/channels/turbo/streams_channel.rb</a>
 </p>
 </div>
-</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>
+</div><script src="https://utteranc.es/client.js" repo="spyjetfayed/spyjetfayed.github.io" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/spyjetfayed" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://codeberg.org/spyjetfayed/" class="footer-link" uk-icon="icon: album">Codeberg</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Ankan Biswas. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

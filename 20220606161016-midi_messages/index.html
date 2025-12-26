@@ -1,47 +1,44 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-YM3EHHB2YQ');</script><title>MIDI messages - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">MIDI messages</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on June  6, 2022</p><p class="note-updated uk-article-meta">Updated on November 13, 2024</p></div><p class="blog-post-tags">Tags: <a href="/?tag=audio">audio</a>, <a href="/?tag=midi">midi</a></p><div id="table-of-contents" role="doc-toc">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Ankan Biswas"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><title>MIDI messages - Spyjetfayed's Blog</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Spyjetfayed's Blog</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">FOSS, Internet Freedom, Systems Programming</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/spyjetfayed">Github</a></li><li><a class="nav-link" href="https://codeberg.org/spyjetfayed">Codeberg</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">MIDI messages</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on June  6, 2022</p><p class="note-updated uk-article-meta">Updated on November 13, 2024</p></div><p class="blog-post-tags">Tags: <a href="/?tag=audio">audio</a>, <a href="/?tag=midi">midi</a></p><div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org36429ab">Channels</a></li>
-<li><a href="#orgace4990">Anatomy of a MIDI message</a>
+<li><a href="#orge093c5c">Channels</a></li>
+<li><a href="#org9bb9a14">Anatomy of a MIDI message</a>
 <ul>
-<li><a href="#org76a5f15">Midi over USB</a></li>
-<li><a href="#org8af8675">Hexadecimal Notation</a></li>
+<li><a href="#orgc950298">Midi over USB</a></li>
+<li><a href="#orge1fe70b">Hexadecimal Notation</a></li>
 </ul>
 </li>
-<li><a href="#orgba5b4de">Note On / Off</a>
+<li><a href="#org45e8d01">Note On / Off</a>
 <ul>
-<li><a href="#orgda2846d">Status Byte (first byte)</a></li>
-<li><a href="#orga17a61b">Bitwise AND</a></li>
-<li><a href="#orgcddbca1">Data Bytes</a></li>
-<li><a href="#orgd8cff93">Note off alternative</a></li>
-<li><a href="#org95cbe9b">Note values</a></li>
+<li><a href="#org64b4443">Status Byte (first byte)</a></li>
+<li><a href="#org1939548">Bitwise AND</a></li>
+<li><a href="#orgd333e30">Data Bytes</a></li>
+<li><a href="#org429bf64">Note off alternative</a></li>
+<li><a href="#org6b58f68">Note values</a></li>
 </ul>
 </li>
-<li><a href="#org36faeef">Pitch Bend (LSB and MSB)</a></li>
-<li><a href="#org7470c7c">Sending and Receiving MIDI notes</a>
+<li><a href="#org4853532">Pitch Bend (LSB and MSB)</a></li>
+<li><a href="#org6d2eab8">Sending and Receiving MIDI notes</a>
 <ul>
-<li><a href="#org07bace1">C / C++</a>
+<li><a href="#org0027cb5">C / C++</a>
 <ul>
-<li><a href="#orgfe0b4d0">RtMidi</a></li>
-<li><a href="#org7a66623">Arduino Libs</a></li>
+<li><a href="#orgeff7523">RtMidi</a></li>
+<li><a href="#org42f731a">Arduino Libs</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org9933fce">Midi Jack Wiring</a>
+<li><a href="#orgb7ce643">Midi Jack Wiring</a>
 <ul>
-<li><a href="#org14efb29">Midi input</a></li>
-<li><a href="#orgee83a69">Midi output</a></li>
+<li><a href="#org8988037">Midi input</a></li>
+<li><a href="#org29ae935">Midi output</a></li>
 </ul>
 </li>
-<li><a href="#orgfcecf24">Tools</a>
+<li><a href="#orga6898ca">Tools</a>
 <ul>
-<li><a href="#org7851c16">SendMIDI</a></li>
-<li><a href="#orgbd3986d">midisnoop</a></li>
+<li><a href="#org1f1456a">SendMIDI</a></li>
+<li><a href="#org04c5700">midisnoop</a></li>
 </ul>
 </li>
 </ul>
@@ -53,7 +50,7 @@
 <p>
 See also <a href="24E1468A-279A-4B44-8AB8-A8A1C5D8D42D">MIDI clock</a>
 </p>
-<h2><a id="channels" class="anchor" href="#channels"><i># </i></a>Channels</h2><div class="outline-text-2" id="text-org36429ab">
+<h2><a id="channels" class="anchor" href="#channels"><i># </i></a>Channels</h2><div class="outline-text-2" id="text-orge093c5c">
 <ul class="org-ul">
 <li>Each MIDI connections can communicate of 16 channels (0-15)</li>
 <li>MIDI devices can switch channels they send messages over.</li>
@@ -61,7 +58,7 @@ See also <a href="24E1468A-279A-4B44-8AB8-A8A1C5D8D42D">MIDI clock</a>
 or all channels at once.</li>
 </ul>
 </div>
-<h2><a id="anatomyofamidimessage" class="anchor" href="#anatomyofamidimessage"><i># </i></a>Anatomy of a MIDI message</h2><div class="outline-text-2" id="text-orgace4990">
+<h2><a id="anatomyofamidimessage" class="anchor" href="#anatomyofamidimessage"><i># </i></a>Anatomy of a MIDI message</h2><div class="outline-text-2" id="text-org9bb9a14">
 <ul class="org-ul">
 <li>MIDI messages are composed of several bytes. Just how many depends on the
 type of messages</li>
@@ -79,20 +76,20 @@ containing the message type and channel info (ie, status)</li>
 </ul></li>
 </ul>
 </div>
-<h3><a id="midioverusb" class="anchor" href="#midioverusb"><i># </i></a>Midi over USB</h3><div class="outline-text-3" id="text-org76a5f15">
+<h3><a id="midioverusb" class="anchor" href="#midioverusb"><i># </i></a>Midi over USB</h3><div class="outline-text-3" id="text-orgc950298">
 <p>
 These messages will be 4 bytes. There is an extra header byte that comes first
 which contains the cable and command.
 </p>
 </div>
-<h3><a id="hexadecimalnotation" class="anchor" href="#hexadecimalnotation"><i># </i></a>Hexadecimal Notation</h3><div class="outline-text-3" id="text-org8af8675">
+<h3><a id="hexadecimalnotation" class="anchor" href="#hexadecimalnotation"><i># </i></a>Hexadecimal Notation</h3><div class="outline-text-3" id="text-orge1fe70b">
 <ul class="org-ul">
 <li>Send message bytes using Hex notation, prefixed with <code>0x</code>. For example,
 <code>00111100</code> (60) is sent as <code>0x3c</code>.</li>
 <li>See also <a href="https://kb.iu.edu/d/afdl">https://kb.iu.edu/d/afdl</a></li>
 </ul>
 </div>
-<h2><a id="noteonoff" class="anchor" href="#noteonoff"><i># </i></a>Note On / Off</h2><h3><a id="statusbytefirstbyte" class="anchor" href="#statusbytefirstbyte"><i># </i></a>Status Byte (first byte)</h3><div class="outline-text-3" id="text-orgda2846d">
+<h2><a id="noteonoff" class="anchor" href="#noteonoff"><i># </i></a>Note On / Off</h2><h3><a id="statusbytefirstbyte" class="anchor" href="#statusbytefirstbyte"><i># </i></a>Status Byte (first byte)</h3><div class="outline-text-3" id="text-org64b4443">
 <p>
 The first byte is the status indicating message type (1001 = 9/Note On) and
 channel (0100 = 4/midi channel 5)
@@ -127,7 +124,7 @@ channel (0100 = 4/midi channel 5)
 channel 0 - 15)</li>
 </ul>
 </div>
-<h3><a id="bitwiseand" class="anchor" href="#bitwiseand"><i># </i></a>Bitwise AND</h3><div class="outline-text-3" id="text-orga17a61b">
+<h3><a id="bitwiseand" class="anchor" href="#bitwiseand"><i># </i></a>Bitwise AND</h3><div class="outline-text-3" id="text-org1939548">
 <p>
 In order to determine if the status byte is On or Off, we just need to look
 at the first 4 bits. We can mask out the last four bits with a bitwise &amp;
@@ -151,7 +148,7 @@ type). By comparing the result to <code>0x80</code> or <code>0x90</code> (100000
 this checks for note Off or On, respectively.</li>
 </ol>
 </div>
-<h3><a id="databytes" class="anchor" href="#databytes"><i># </i></a>Data Bytes</h3><div class="outline-text-3" id="text-orgcddbca1">
+<h3><a id="databytes" class="anchor" href="#databytes"><i># </i></a>Data Bytes</h3><div class="outline-text-3" id="text-orgd333e30">
 <p>
 The next two bytes are note and velocity data:
 </p>
@@ -192,13 +189,13 @@ The next two bytes are note and velocity data:
 <li>127 is therefore the maximum value</li>
 </ul>
 </div>
-<h3><a id="noteoffalternative" class="anchor" href="#noteoffalternative"><i># </i></a>Note off alternative</h3><div class="outline-text-3" id="text-orgd8cff93">
+<h3><a id="noteoffalternative" class="anchor" href="#noteoffalternative"><i># </i></a>Note off alternative</h3><div class="outline-text-3" id="text-org429bf64">
 <p>
 Other than sending a note off message (0x80), another common way is to send an
 On message for a given note with value of 0
 </p>
 </div>
-<h3><a id="notevalues" class="anchor" href="#notevalues"><i># </i></a>Note values</h3><div class="outline-text-3" id="text-org95cbe9b">
+<h3><a id="notevalues" class="anchor" href="#notevalues"><i># </i></a>Note values</h3><div class="outline-text-3" id="text-org6b58f68">
 <table>
 
 
@@ -425,7 +422,7 @@ On message for a given note with value of 0
 </tbody>
 </table>
 </div>
-<h2><a id="pitchbendlsbandmsb" class="anchor" href="#pitchbendlsbandmsb"><i># </i></a>Pitch Bend (LSB and MSB)</h2><div class="outline-text-2" id="text-org36faeef">
+<h2><a id="pitchbendlsbandmsb" class="anchor" href="#pitchbendlsbandmsb"><i># </i></a>Pitch Bend (LSB and MSB)</h2><div class="outline-text-2" id="text-org4853532">
 <p>
 The message structure is Status byte, LSB, MSB
 </p>
@@ -447,28 +444,28 @@ See also <a href="https://www.instructables.com/Send-and-Receive-MIDI-with-Ardui
 a good example.
 </p>
 </div>
-<h2><a id="sendingandreceivingmidinotes" class="anchor" href="#sendingandreceivingmidinotes"><i># </i></a>Sending and Receiving MIDI notes</h2><h3><a id="cc" class="anchor" href="#cc"><i># </i></a>C / C++</h3><div class="outline-text-3" id="text-org07bace1">
+<h2><a id="sendingandreceivingmidinotes" class="anchor" href="#sendingandreceivingmidinotes"><i># </i></a>Sending and Receiving MIDI notes</h2><h3><a id="cc" class="anchor" href="#cc"><i># </i></a>C / C++</h3><div class="outline-text-3" id="text-org0027cb5">
 <p>
 <a href="https://ccrma.stanford.edu/~craig/articles/linuxmidi/">https://ccrma.stanford.edu/~craig/articles/linuxmidi/</a>
 </p>
 </div>
-<h4><a id="rtmidi" class="anchor" href="#rtmidi"><i># </i></a>RtMidi</h4><div class="outline-text-4" id="text-orgfe0b4d0">
+<h4><a id="rtmidi" class="anchor" href="#rtmidi"><i># </i></a>RtMidi</h4><div class="outline-text-4" id="text-orgeff7523">
 <p>
 <a href="https://www.music.mcgill.ca/~gary/rtmidi/">https://www.music.mcgill.ca/~gary/rtmidi/</a>
 </p>
 </div>
-<h4><a id="arduinolibs" class="anchor" href="#arduinolibs"><i># </i></a>Arduino Libs</h4><div class="outline-text-4" id="text-org7a66623">
+<h4><a id="arduinolibs" class="anchor" href="#arduinolibs"><i># </i></a>Arduino Libs</h4><div class="outline-text-4" id="text-org42f731a">
 <ul class="org-ul">
 <li><a href="https://github.com/FortySevenEffects/arduino_midi_library">https://github.com/FortySevenEffects/arduino_midi_library</a></li>
 <li><a href="https://github.com/arduino-libraries/MIDIUSB">https://github.com/arduino-libraries/MIDIUSB</a></li>
 </ul>
 </div>
-<h2><a id="midijackwiring" class="anchor" href="#midijackwiring"><i># </i></a>Midi Jack Wiring</h2><h3><a id="midiinput" class="anchor" href="#midiinput"><i># </i></a>Midi input</h3><div class="outline-text-3" id="text-org14efb29">
+<h2><a id="midijackwiring" class="anchor" href="#midijackwiring"><i># </i></a>Midi Jack Wiring</h2><h3><a id="midiinput" class="anchor" href="#midiinput"><i># </i></a>Midi input</h3><div class="outline-text-3" id="text-org8988037">
 <ul class="org-ul">
 <li><a href="https://www.kieranreck.co.uk/MIDI-6N137-vs-6N138-vs-6N139/">https://www.kieranreck.co.uk/MIDI-6N137-vs-6N138-vs-6N139/</a></li>
 </ul>
 </div>
-<h3><a id="midioutput" class="anchor" href="#midioutput"><i># </i></a>Midi output</h3><div class="outline-text-3" id="text-orgee83a69">
+<h3><a id="midioutput" class="anchor" href="#midioutput"><i># </i></a>Midi output</h3><div class="outline-text-3" id="text-org29ae935">
 <p>
 Note the 220ohm resistor is optional and included as a safety precaution
 against connecting miswired cables and whatnot (eg, current flowing into the
@@ -476,13 +473,13 @@ TX pin).
 <img src=/images/schematic_midi_out.jpg >
 </p>
 </div>
-<h2><a id="tools" class="anchor" href="#tools"><i># </i></a>Tools</h2><h3><a id="sendmidi" class="anchor" href="#sendmidi"><i># </i></a>SendMIDI</h3><div class="outline-text-3" id="text-org7851c16">
+<h2><a id="tools" class="anchor" href="#tools"><i># </i></a>Tools</h2><h3><a id="sendmidi" class="anchor" href="#sendmidi"><i># </i></a>SendMIDI</h3><div class="outline-text-3" id="text-org1f1456a">
 <p>
 <a href="https://github.com/gbevin/SendMIDI">https://github.com/gbevin/SendMIDI</a>
 Send MIDI from the command line.
 </p>
 </div>
-<h3><a id="midisnoop" class="anchor" href="#midisnoop"><i># </i></a>midisnoop</h3><div class="outline-text-3" id="text-orgbd3986d">
+<h3><a id="midisnoop" class="anchor" href="#midisnoop"><i># </i></a>midisnoop</h3><div class="outline-text-3" id="text-org04c5700">
 <p>
 <a href="https://github.com/surfacepatterns/midisnoop">https://github.com/surfacepatterns/midisnoop</a>
 Receive and print MIDI messages. Use this in conjunction with sendMIDI to try
@@ -490,4 +487,4 @@ things out. Uses Alsa or JACK midi drivers.
 See also <a href="abbff1aa-b163-4f08-ba2c-c7ed8ca8ef12">Mixxx, Ardour, JACK and MIDI</a>
 </p>
 </div>
-</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>
+</div><script src="https://utteranc.es/client.js" repo="spyjetfayed/spyjetfayed.github.io" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/spyjetfayed" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://codeberg.org/spyjetfayed/" class="footer-link" uk-icon="icon: album">Codeberg</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Ankan Biswas. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

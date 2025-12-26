@@ -1,34 +1,31 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-YM3EHHB2YQ');</script><title>pulseaudio - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">pulseaudio</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on June 10, 2022</p><p class="note-updated uk-article-meta">Updated on September  1, 2023</p></div><p class="blog-post-tags">Tags: <a href="/?tag=linux">linux</a>, <a href="/?tag=audio">audio</a></p><div id="table-of-contents" role="doc-toc">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Ankan Biswas"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><title>pulseaudio - Spyjetfayed's Blog</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Spyjetfayed's Blog</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">FOSS, Internet Freedom, Systems Programming</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/spyjetfayed">Github</a></li><li><a class="nav-link" href="https://codeberg.org/spyjetfayed">Codeberg</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">pulseaudio</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on June 10, 2022</p><p class="note-updated uk-article-meta">Updated on September  1, 2023</p></div><p class="blog-post-tags">Tags: <a href="/?tag=linux">linux</a>, <a href="/?tag=audio">audio</a></p><div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org9d3b924">Configuration</a>
+<li><a href="#org6258b7f">Configuration</a>
 <ul>
-<li><a href="#orgb87db81">Prevent switching when interface is connected</a></li>
+<li><a href="#org2a7d764">Prevent switching when interface is connected</a></li>
 </ul>
 </li>
-<li><a href="#org10131ef">CLI (pactl)</a>
+<li><a href="#org4152160">CLI (pactl)</a>
 <ul>
-<li><a href="#org1178f69">Get information</a>
+<li><a href="#orgfb4b779">Get information</a>
 <ul>
-<li><a href="#org21a46b6">sinks and cards</a></li>
+<li><a href="#orgb5c92e4">sinks and cards</a></li>
 </ul>
 </li>
-<li><a href="#org417575e">Delay (module-loopback)</a></li>
-<li><a href="#orgbeac26a">Unloading modules</a></li>
+<li><a href="#org062d5c7">Delay (module-loopback)</a></li>
+<li><a href="#org13b517d">Unloading modules</a></li>
 </ul>
 </li>
-<li><a href="#org0985482">Troubleshooting</a></li>
+<li><a href="#org99cd32d">Troubleshooting</a></li>
 </ul>
 </div>
 </div>
 <p>
 :ID:       959acd5a-c6f7-4247-baf6-d8f5c7fd765a
 </p>
-<h2><a id="configuration" class="anchor" href="#configuration"><i># </i></a>Configuration</h2><div class="outline-text-2" id="text-org9d3b924">
+<h2><a id="configuration" class="anchor" href="#configuration"><i># </i></a>Configuration</h2><div class="outline-text-2" id="text-org6258b7f">
 <p>
 <code>/etc/pulse/default.pa</code>
 </p>
@@ -38,19 +35,19 @@ After editing this, <code>pulseaudio -k</code> to kill the daemon. It should res
 just restart the machine.
 </p>
 </div>
-<h3><a id="preventswitchingwheninterfaceisconnected" class="anchor" href="#preventswitchingwheninterfaceisconnected"><i># </i></a>Prevent switching when interface is connected</h3><div class="outline-text-3" id="text-orgb87db81">
+<h3><a id="preventswitchingwheninterfaceisconnected" class="anchor" href="#preventswitchingwheninterfaceisconnected"><i># </i></a>Prevent switching when interface is connected</h3><div class="outline-text-3" id="text-org2a7d764">
 <p>
 Comment out <code>load-module module-switch-on-connect</code>
 </p>
 </div>
-<h2><a id="clipactl" class="anchor" href="#clipactl"><i># </i></a>CLI (pactl)</h2><h3><a id="getinformation" class="anchor" href="#getinformation"><i># </i></a>Get information</h3><h4><a id="sinksandcards" class="anchor" href="#sinksandcards"><i># </i></a>sinks and cards</h4><div class="outline-text-4" id="text-org21a46b6">
+<h2><a id="clipactl" class="anchor" href="#clipactl"><i># </i></a>CLI (pactl)</h2><h3><a id="getinformation" class="anchor" href="#getinformation"><i># </i></a>Get information</h3><h4><a id="sinksandcards" class="anchor" href="#sinksandcards"><i># </i></a>sinks and cards</h4><div class="outline-text-4" id="text-orgb5c92e4">
 <div class="org-src-container">
 <pre class="src src-nil">pactl list cards
 pactl list sinks
 </pre>
 </div>
 </div>
-<h3><a id="delaymoduleloopback" class="anchor" href="#delaymoduleloopback"><i># </i></a>Delay (module-loopback)</h3><div class="outline-text-3" id="text-org417575e">
+<h3><a id="delaymoduleloopback" class="anchor" href="#delaymoduleloopback"><i># </i></a>Delay (module-loopback)</h3><div class="outline-text-3" id="text-org062d5c7">
 <p>
 This can help resolve timing issues between multiple sound cards. You need to play around with the <code>latency_msec</code> value to find the sweet spot.
 </p>
@@ -74,16 +71,16 @@ I don&rsquo;t think you really need the null-sink. Just route directly to the lo
 <img src=/images/module-loopback.png > 
 </p>
 </div>
-<h3><a id="unloadingmodules" class="anchor" href="#unloadingmodules"><i># </i></a>Unloading modules</h3><div class="outline-text-3" id="text-orgbeac26a">
+<h3><a id="unloadingmodules" class="anchor" href="#unloadingmodules"><i># </i></a>Unloading modules</h3><div class="outline-text-3" id="text-org13b517d">
 <div class="org-src-container">
 <pre class="src src-nil">pactl unload-module module-loopback
 pactl unload-module module-null-sink
 </pre>
 </div>
 </div>
-<h2><a id="troubleshooting" class="anchor" href="#troubleshooting"><i># </i></a>Troubleshooting</h2><div class="outline-text-2" id="text-org0985482">
+<h2><a id="troubleshooting" class="anchor" href="#troubleshooting"><i># </i></a>Troubleshooting</h2><div class="outline-text-2" id="text-org99cd32d">
 <p>
 <a href="https://support.system76.com/articles/audio/">https://support.system76.com/articles/audio/</a>
 </p>
 </div>
-</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>
+</div><script src="https://utteranc.es/client.js" repo="spyjetfayed/spyjetfayed.github.io" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/spyjetfayed" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://codeberg.org/spyjetfayed/" class="footer-link" uk-icon="icon: album">Codeberg</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Ankan Biswas. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

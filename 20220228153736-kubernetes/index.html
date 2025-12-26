@@ -1,69 +1,66 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-YM3EHHB2YQ');</script><title>Kubernetes - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Kubernetes</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on February 28, 2022</p><p class="note-updated uk-article-meta">Updated on June  8, 2023</p></div><p class="blog-post-tags">Tags: <a href="/?tag=kubernetes">kubernetes</a></p><div id="table-of-contents" role="doc-toc">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Ankan Biswas"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><title>Kubernetes - Spyjetfayed's Blog</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Spyjetfayed's Blog</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">FOSS, Internet Freedom, Systems Programming</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/spyjetfayed">Github</a></li><li><a class="nav-link" href="https://codeberg.org/spyjetfayed">Codeberg</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Kubernetes</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on February 28, 2022</p><p class="note-updated uk-article-meta">Updated on June  8, 2023</p></div><p class="blog-post-tags">Tags: <a href="/?tag=kubernetes">kubernetes</a></p><div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgc91da87">Fundamental k8 objects</a>
+<li><a href="#org9f4c41a">Fundamental k8 objects</a>
 <ul>
-<li><a href="#orgf9f45c8">Pods</a></li>
-<li><a href="#org88e496e">Replica Set</a></li>
-<li><a href="#org0db5832">Deployment</a></li>
-<li><a href="#org41f913f">Services</a></li>
-<li><a href="#orgecacb0c">Ingress</a></li>
-<li><a href="#org3b2d29d">YAML files</a></li>
+<li><a href="#orgf31e9fa">Pods</a></li>
+<li><a href="#orgd6df6ee">Replica Set</a></li>
+<li><a href="#org2ab324d">Deployment</a></li>
+<li><a href="#orga27e843">Services</a></li>
+<li><a href="#org63444ad">Ingress</a></li>
+<li><a href="#org7c5f554">YAML files</a></li>
 </ul>
 </li>
-<li><a href="#org50479bd">Dashboard</a></li>
-<li><a href="#orgfeee5a8">K9s GUI tool</a></li>
-<li><a href="#org6be4b80">Kubectl cli tool</a>
+<li><a href="#org8d81f33">Dashboard</a></li>
+<li><a href="#org179753c">K9s GUI tool</a></li>
+<li><a href="#orgda2aed5">Kubectl cli tool</a>
 <ul>
-<li><a href="#orgbb83fc5">Some common commands for getting info</a></li>
-<li><a href="#org185366a">Create deployment</a></li>
-<li><a href="#org042ffe1">Updates and Rollbacks</a></li>
+<li><a href="#org08f1635">Some common commands for getting info</a></li>
+<li><a href="#org537e10e">Create deployment</a></li>
+<li><a href="#org4cd5a6c">Updates and Rollbacks</a></li>
 </ul>
 </li>
-<li><a href="#orga9fb7a0">YAMLs</a>
+<li><a href="#org2a9351b">YAMLs</a>
 <ul>
-<li><a href="#org60ef198">Getting started</a>
+<li><a href="#org1926a8a">Getting started</a>
 <ul>
-<li><a href="#orgdad234b">&#x2013;dry-run</a></li>
+<li><a href="#orgca49c60">&#x2013;dry-run</a></li>
 </ul>
 </li>
-<li><a href="#org37d1fcc">Creating stuff from YAML</a></li>
-<li><a href="#org28f14e0">Update stuff</a></li>
-<li><a href="#org2b6d7db">Labels</a></li>
-<li><a href="#orgd75152e">Namespaces</a></li>
+<li><a href="#org4bc644a">Creating stuff from YAML</a></li>
+<li><a href="#org947f1a9">Update stuff</a></li>
+<li><a href="#orgd8a9529">Labels</a></li>
+<li><a href="#orge3e7c29">Namespaces</a></li>
 </ul>
 </li>
-<li><a href="#orge9fe785">Secrets</a>
+<li><a href="#org435e3ee">Secrets</a>
 <ul>
-<li><a href="#orgda6908d">imagePullSecrets</a></li>
-<li><a href="#org079986e">Environment variables</a></li>
+<li><a href="#orgbdb71e1">imagePullSecrets</a></li>
+<li><a href="#orgb9c1424">Environment variables</a></li>
 </ul>
 </li>
-<li><a href="#org5264550">Networking</a>
+<li><a href="#org8269adc">Networking</a>
 <ul>
-<li><a href="#org78e95c1">Service object</a></li>
-<li><a href="#org8051b75">LoadBalancer example</a></li>
-<li><a href="#org76ecc67">Database example</a></li>
-<li><a href="#org207e30f">hostNetwork</a></li>
+<li><a href="#org5afe322">Service object</a></li>
+<li><a href="#orgb1f9ae3">LoadBalancer example</a></li>
+<li><a href="#orgc311852">Database example</a></li>
+<li><a href="#orge823a89">hostNetwork</a></li>
 </ul>
 </li>
-<li><a href="#org9d8f777">Volumes</a>
+<li><a href="#org2ae12db">Volumes</a>
 <ul>
-<li><a href="#org0451425">Persistent Volume Claim</a></li>
-<li><a href="#orga66ef00">ConfigMap</a></li>
+<li><a href="#orge3f9324">Persistent Volume Claim</a></li>
+<li><a href="#org5427b16">ConfigMap</a></li>
 </ul>
 </li>
-<li><a href="#org179470b">Tilt</a></li>
-<li><a href="#orgb1135d3">Helm Charts</a>
+<li><a href="#org216185c">Tilt</a></li>
+<li><a href="#org0260954">Helm Charts</a>
 <ul>
-<li><a href="#orgd840e3b">The files</a></li>
+<li><a href="#org7a88edb">The files</a></li>
 </ul>
 </li>
-<li><a href="#org16fbbef">Resources</a></li>
+<li><a href="#org403651e">Resources</a></li>
 </ul>
 </div>
 </div>
@@ -73,24 +70,24 @@
 <p>
 See also <a href="https://kubernetes.io/">https://kubernetes.io/</a>
 </p>
-<h2><a id="fundamentalk8objects" class="anchor" href="#fundamentalk8objects"><i># </i></a>Fundamental k8 objects</h2><h3><a id="pods" class="anchor" href="#pods"><i># </i></a>Pods</h3><div class="outline-text-3" id="text-orgf9f45c8">
+<h2><a id="fundamentalk8objects" class="anchor" href="#fundamentalk8objects"><i># </i></a>Fundamental k8 objects</h2><h3><a id="pods" class="anchor" href="#pods"><i># </i></a>Pods</h3><div class="outline-text-3" id="text-orgf31e9fa">
 <ul class="org-ul">
 <li>k8s is all about managing pods.</li>
 <li>A Pod can encapsulate multiple running containers and volumes</li>
 </ul>
 </div>
-<h3><a id="replicaset" class="anchor" href="#replicaset"><i># </i></a>Replica Set</h3><div class="outline-text-3" id="text-org88e496e">
+<h3><a id="replicaset" class="anchor" href="#replicaset"><i># </i></a>Replica Set</h3><div class="outline-text-3" id="text-orgd6df6ee">
 <p>
 Contains Pod replicas for redundancy.
 </p>
 </div>
-<h3><a id="deployment" class="anchor" href="#deployment"><i># </i></a>Deployment</h3><div class="outline-text-3" id="text-org0db5832">
+<h3><a id="deployment" class="anchor" href="#deployment"><i># </i></a>Deployment</h3><div class="outline-text-3" id="text-org2ab324d">
 <p>
 This is the application. They contain the replica sets. Replica sets contain
 the pods. Deployments contain the scalability and availability configurations.
 </p>
 </div>
-<h3><a id="services" class="anchor" href="#services"><i># </i></a>Services</h3><div class="outline-text-3" id="text-org41f913f">
+<h3><a id="services" class="anchor" href="#services"><i># </i></a>Services</h3><div class="outline-text-3" id="text-orga27e843">
 <ul class="org-ul">
 <li>Used to expose container ports to other containers and host machine.</li>
 <li>Can make containers reachable by other containers by name. DNS resolution
@@ -99,18 +96,18 @@ happens automatically.</li>
 pods in a deployment.</li>
 </ul>
 </div>
-<h3><a id="ingress" class="anchor" href="#ingress"><i># </i></a>Ingress</h3><div class="outline-text-3" id="text-orgecacb0c">
+<h3><a id="ingress" class="anchor" href="#ingress"><i># </i></a>Ingress</h3><div class="outline-text-3" id="text-org63444ad">
 <p>
 For http/https only. It provides URL access to services.
 </p>
 </div>
-<h3><a id="yamlfiles" class="anchor" href="#yamlfiles"><i># </i></a>YAML files</h3><div class="outline-text-3" id="text-org3b2d29d">
+<h3><a id="yamlfiles" class="anchor" href="#yamlfiles"><i># </i></a>YAML files</h3><div class="outline-text-3" id="text-org7c5f554">
 <p>
 These are used to declare k8 cluster configuration as opposed to using the web
 interface or cli.
 </p>
 </div>
-<h2><a id="dashboard" class="anchor" href="#dashboard"><i># </i></a>Dashboard</h2><div class="outline-text-2" id="text-org50479bd">
+<h2><a id="dashboard" class="anchor" href="#dashboard"><i># </i></a>Dashboard</h2><div class="outline-text-2" id="text-org8d81f33">
 <p>
 A web interface for managing the k8 cluster. You get this with minikube.
 </p>
@@ -124,14 +121,14 @@ A web interface for managing the k8 cluster. You get this with minikube.
 Otherwise, use <code>kubectl</code> cli tool to manage the cluster.
 </p>
 </div>
-<h2><a id="k9sguitool" class="anchor" href="#k9sguitool"><i># </i></a>K9s GUI tool</h2><div class="outline-text-2" id="text-orgfeee5a8">
+<h2><a id="k9sguitool" class="anchor" href="#k9sguitool"><i># </i></a>K9s GUI tool</h2><div class="outline-text-2" id="text-org179753c">
 <p>
 Useful tool that provides a TUI (with vim key bindings) for doing comment commands
 to the cluster that you&rsquo;d otherwise do using a GUI or CLI.
 <a href="https://k9scli.io/topics/commands/">https://k9scli.io/topics/commands/</a>
 </p>
 </div>
-<h2><a id="kubectlclitool" class="anchor" href="#kubectlclitool"><i># </i></a>Kubectl cli tool</h2><div class="outline-text-2" id="text-org6be4b80">
+<h2><a id="kubectlclitool" class="anchor" href="#kubectlclitool"><i># </i></a>Kubectl cli tool</h2><div class="outline-text-2" id="text-orgda2aed5">
 <p>
 See also my notes/command reference on <a href="BC7E2058-A3F6-4149-9CA3-902B6BDE5D1F">Kubectl</a>
 </p>
@@ -140,7 +137,7 @@ See also my notes/command reference on <a href="BC7E2058-A3F6-4149-9CA3-902B6BDE
 This is also for managing the k8 cluster.
 </p>
 </div>
-<h3><a id="somecommoncommandsforgettinginfo" class="anchor" href="#somecommoncommandsforgettinginfo"><i># </i></a>Some common commands for getting info</h3><div class="outline-text-3" id="text-orgbb83fc5">
+<h3><a id="somecommoncommandsforgettinginfo" class="anchor" href="#somecommoncommandsforgettinginfo"><i># </i></a>Some common commands for getting info</h3><div class="outline-text-3" id="text-org08f1635">
 <ul class="org-ul">
 <li><code>kubectl api-resources</code> to see all the different types of resources that can
 be managed.</li>
@@ -157,7 +154,7 @@ with <code>--dry-run</code> option and <code>&gt; my_resource.yml</code> to quic
 See also <a href="https://kubernetes.io/docs/reference/kubectl/cheatsheet/">https://kubernetes.io/docs/reference/kubectl/cheatsheet/</a>
 </p>
 </div>
-<h3><a id="createdeployment" class="anchor" href="#createdeployment"><i># </i></a>Create deployment</h3><div class="outline-text-3" id="text-org185366a">
+<h3><a id="createdeployment" class="anchor" href="#createdeployment"><i># </i></a>Create deployment</h3><div class="outline-text-3" id="text-org537e10e">
 <p>
 One way is to:
 </p>
@@ -174,7 +171,7 @@ More often you&rsquo;ll create from a yaml file (more on this below)
 </pre>
 </div>
 </div>
-<h3><a id="updatesandrollbacks" class="anchor" href="#updatesandrollbacks"><i># </i></a>Updates and Rollbacks</h3><div class="outline-text-3" id="text-org042ffe1">
+<h3><a id="updatesandrollbacks" class="anchor" href="#updatesandrollbacks"><i># </i></a>Updates and Rollbacks</h3><div class="outline-text-3" id="text-org4cd5a6c">
 <p>
 Lets say you <code>apply -f deployment.yaml</code> with a newer version of a container
 image. This will by default be deployed as a rolling update. Then you can see
@@ -195,12 +192,12 @@ It can be rolled back with:
 </pre>
 </div>
 </div>
-<h2><a id="yamls" class="anchor" href="#yamls"><i># </i></a>YAMLs</h2><div class="outline-text-2" id="text-orga9fb7a0">
+<h2><a id="yamls" class="anchor" href="#yamls"><i># </i></a>YAMLs</h2><div class="outline-text-2" id="text-org2a9351b">
 <p>
 See <a href="https://github.com/sandervanvugt/kubernetes">https://github.com/sandervanvugt/kubernetes</a> for examples
 </p>
 </div>
-<h3><a id="gettingstarted" class="anchor" href="#gettingstarted"><i># </i></a>Getting started</h3><div class="outline-text-3" id="text-org60ef198">
+<h3><a id="gettingstarted" class="anchor" href="#gettingstarted"><i># </i></a>Getting started</h3><div class="outline-text-3" id="text-org1926a8a">
 <p>
 One easy way to build these yamls is to use the dashboard or cli to build
 deployments, then &ldquo;export&rdquo; the configuration to a yaml file.
@@ -228,7 +225,7 @@ You can make further changes, delete the previous deployment and re-created
 it from the yaml file (see below)
 </p>
 </div>
-<h4><a id="x2013dryrun" class="anchor" href="#x2013dryrun"><i># </i></a>&#x2013;dry-run</h4><div class="outline-text-4" id="text-orgdad234b">
+<h4><a id="x2013dryrun" class="anchor" href="#x2013dryrun"><i># </i></a>&#x2013;dry-run</h4><div class="outline-text-4" id="text-orgca49c60">
 <p>
 Or use the <code>--dry-run</code> if nothing has been build yet. Dry runs can be
 exported just the same.
@@ -239,23 +236,23 @@ exported just the same.
 </pre>
 </div>
 </div>
-<h3><a id="creatingstufffromyaml" class="anchor" href="#creatingstufffromyaml"><i># </i></a>Creating stuff from YAML</h3><div class="outline-text-3" id="text-org37d1fcc">
+<h3><a id="creatingstufffromyaml" class="anchor" href="#creatingstufffromyaml"><i># </i></a>Creating stuff from YAML</h3><div class="outline-text-3" id="text-org4bc644a">
 <div class="org-src-container">
 <pre class="src src-shell">kubectl apply -f foo-nginx.yml
 </pre>
 </div>
 </div>
-<h3><a id="updatestuff" class="anchor" href="#updatestuff"><i># </i></a>Update stuff</h3><div class="outline-text-3" id="text-org28f14e0">
+<h3><a id="updatestuff" class="anchor" href="#updatestuff"><i># </i></a>Update stuff</h3><div class="outline-text-3" id="text-org947f1a9">
 <p>
 Same as creating, use <code>apply -f</code>
 </p>
 </div>
-<h3><a id="labels" class="anchor" href="#labels"><i># </i></a>Labels</h3><div class="outline-text-3" id="text-org2b6d7db">
+<h3><a id="labels" class="anchor" href="#labels"><i># </i></a>Labels</h3><div class="outline-text-3" id="text-orgd8a9529">
 <p>
 API objects use labels to connect to other objects
 </p>
 </div>
-<h3><a id="namespaces" class="anchor" href="#namespaces"><i># </i></a>Namespaces</h3><div class="outline-text-3" id="text-orgd75152e">
+<h3><a id="namespaces" class="anchor" href="#namespaces"><i># </i></a>Namespaces</h3><div class="outline-text-3" id="text-orge3e7c29">
 <ul class="org-ul">
 <li>Isolated environments, whereas a Context is a cluster (ie, you have have
 access to multiple clusters each with multiple namespaces).</li>
@@ -264,13 +261,13 @@ access to multiple clusters each with multiple namespaces).</li>
 switching between namespaces.</li>
 </ul>
 </div>
-<h2><a id="secrets" class="anchor" href="#secrets"><i># </i></a>Secrets</h2><div class="outline-text-2" id="text-orge9fe785">
+<h2><a id="secrets" class="anchor" href="#secrets"><i># </i></a>Secrets</h2><div class="outline-text-2" id="text-org435e3ee">
 <p>
 Secret values are Base64 encoded in the yamls/config but plain text in the
 containers.
 </p>
 </div>
-<h3><a id="imagepullsecrets" class="anchor" href="#imagepullsecrets"><i># </i></a>imagePullSecrets</h3><div class="outline-text-3" id="text-orgda6908d">
+<h3><a id="imagepullsecrets" class="anchor" href="#imagepullsecrets"><i># </i></a>imagePullSecrets</h3><div class="outline-text-3" id="text-orgbdb71e1">
 <p>
 Most likely I&rsquo;ll be working with private container registries. To specify a
 private registry and auth details:
@@ -304,7 +301,7 @@ spec:
 </div></li>
 </ol>
 </div>
-<h3><a id="environmentvariables" class="anchor" href="#environmentvariables"><i># </i></a>Environment variables</h3><div class="outline-text-3" id="text-org079986e">
+<h3><a id="environmentvariables" class="anchor" href="#environmentvariables"><i># </i></a>Environment variables</h3><div class="outline-text-3" id="text-orgb9c1424">
 <p>
 There are many ways to supply env vars to containers. Here is one:
 </p>
@@ -331,7 +328,7 @@ Then just reference the secret using the <code>envFrom</code> property
 </div></li>
 </ol>
 </div>
-<h2><a id="networking" class="anchor" href="#networking"><i># </i></a>Networking</h2><div class="outline-text-2" id="text-org5264550">
+<h2><a id="networking" class="anchor" href="#networking"><i># </i></a>Networking</h2><div class="outline-text-2" id="text-org8269adc">
 <p>
 Pods and Services are the things that have IP addresses. All the containers
 within the Pod will share the Pod&rsquo;s IP address.
@@ -341,7 +338,7 @@ within the Pod will share the Pod&rsquo;s IP address.
 <li>How do running containers within a pod communicate with each other?</li>
 </ul>
 </div>
-<h3><a id="serviceobject" class="anchor" href="#serviceobject"><i># </i></a>Service object</h3><div class="outline-text-3" id="text-org78e95c1">
+<h3><a id="serviceobject" class="anchor" href="#serviceobject"><i># </i></a>Service object</h3><div class="outline-text-3" id="text-org5afe322">
 <p>
 There&rsquo;s a bunch of different service types.
 </p>
@@ -350,7 +347,7 @@ There&rsquo;s a bunch of different service types.
 <li><code>targetPort</code> is the exposed port of the containers (the <code>containerPort</code> property)</li>
 </ul>
 </div>
-<h3><a id="loadbalancerexample" class="anchor" href="#loadbalancerexample"><i># </i></a>LoadBalancer example</h3><div class="outline-text-3" id="text-org8051b75">
+<h3><a id="loadbalancerexample" class="anchor" href="#loadbalancerexample"><i># </i></a>LoadBalancer example</h3><div class="outline-text-3" id="text-orgb1f9ae3">
 <p>
 Exposing an app.
 </p>
@@ -378,7 +375,7 @@ Then, find the <code>EXTERNAL-IP</code> and ports with <code>kubectl get svc</co
 also <a href="//minikube.sigs.k8s.io/docs/handbook/accessing/#example">this example</a>.
 </p>
 </div>
-<h3><a id="databaseexample" class="anchor" href="#databaseexample"><i># </i></a>Database example</h3><div class="outline-text-3" id="text-org76ecc67">
+<h3><a id="databaseexample" class="anchor" href="#databaseexample"><i># </i></a>Database example</h3><div class="outline-text-3" id="text-orgc311852">
 <p>
 How to connect an app deployment to a database deployment?
 </p>
@@ -442,12 +439,12 @@ nslookup postgres
 that as a <code>DATABASE_HOST</code> env var to your app.</li>
 </ol>
 </div>
-<h3><a id="hostnetwork" class="anchor" href="#hostnetwork"><i># </i></a>hostNetwork</h3><div class="outline-text-3" id="text-org207e30f">
+<h3><a id="hostnetwork" class="anchor" href="#hostnetwork"><i># </i></a>hostNetwork</h3><div class="outline-text-3" id="text-orge823a89">
 <p>
 <code>spec.template.spec.hostNetwork</code>
 </p>
 </div>
-<h2><a id="volumes" class="anchor" href="#volumes"><i># </i></a>Volumes</h2><h3><a id="persistentvolumeclaim" class="anchor" href="#persistentvolumeclaim"><i># </i></a>Persistent Volume Claim</h3><div class="outline-text-3" id="text-org0451425">
+<h2><a id="volumes" class="anchor" href="#volumes"><i># </i></a>Volumes</h2><h3><a id="persistentvolumeclaim" class="anchor" href="#persistentvolumeclaim"><i># </i></a>Persistent Volume Claim</h3><div class="outline-text-3" id="text-orge3f9324">
 <p>
 When using <code>minikube</code>, it is the host. So, the directory to which the volume
 is mounted should exist there. So do <code>minikube ssh</code> and <code>sudo mkdir /mydata</code>.
@@ -466,7 +463,7 @@ step 2.</li>
 See examples in <a href="https://github.com/apmiller108/kubernetes_rails">https://github.com/apmiller108/kubernetes_rails</a>
 </p>
 </div>
-<h3><a id="configmap" class="anchor" href="#configmap"><i># </i></a>ConfigMap</h3><div class="outline-text-3" id="text-orga66ef00">
+<h3><a id="configmap" class="anchor" href="#configmap"><i># </i></a>ConfigMap</h3><div class="outline-text-3" id="text-org5427b16">
 <p>
 ConfigMaps can be mounted as a volume and used to provide configuration files.
 </p>
@@ -475,7 +472,7 @@ ConfigMaps can be mounted as a volume and used to provide configuration files.
 See <a href="https://kubernetes.io/docs/concepts/configuration/configmap/#using-configmaps">https://kubernetes.io/docs/concepts/configuration/configmap/#using-configmaps</a>
 </p>
 </div>
-<h2><a id="tilt" class="anchor" href="#tilt"><i># </i></a>Tilt</h2><div class="outline-text-2" id="text-org179470b">
+<h2><a id="tilt" class="anchor" href="#tilt"><i># </i></a>Tilt</h2><div class="outline-text-2" id="text-org216185c">
 <p>
 <a href="//docs.tilt.dev/index.html">Tilt</a> is cool for doing local development against a local or remote K8s
 cluster. It handles exposing rebuilding the image with code changes and
@@ -496,7 +493,7 @@ k8s_resource('web', port_forwards='3000')
 </pre>
 </div>
 </div>
-<h2><a id="helmcharts" class="anchor" href="#helmcharts"><i># </i></a>Helm Charts</h2><div class="outline-text-2" id="text-orgb1135d3">
+<h2><a id="helmcharts" class="anchor" href="#helmcharts"><i># </i></a>Helm Charts</h2><div class="outline-text-2" id="text-org0260954">
 <p>
 <a href="https://helm.sh/docs/intro/install/">https://helm.sh/docs/intro/install/</a>
 </p>
@@ -506,14 +503,14 @@ k8s_resource('web', port_forwards='3000')
 <li>requires the use of a Helm client</li>
 </ul>
 </div>
-<h3><a id="thefiles" class="anchor" href="#thefiles"><i># </i></a>The files</h3><div class="outline-text-3" id="text-orgd840e3b">
+<h3><a id="thefiles" class="anchor" href="#thefiles"><i># </i></a>The files</h3><div class="outline-text-3" id="text-org7a88edb">
 <ul class="org-ul">
 <li><code>chart.yml</code>: metadata about the chart</li>
 <li><code>values.yml</code>: key/value pairs</li>
 <li>templates: yaml manifests that define the application</li>
 </ul>
 </div>
-<h2><a id="resources" class="anchor" href="#resources"><i># </i></a>Resources</h2><div class="outline-text-2" id="text-org16fbbef">
+<h2><a id="resources" class="anchor" href="#resources"><i># </i></a>Resources</h2><div class="outline-text-2" id="text-org403651e">
 <ul class="org-ul">
 <li><a href="//kubernetes.io/docs/reference/kubectl/kubectl/">kubectl</a> is a cmd line tool for k8 cluster management</li>
 <li><a href="//minikube.sigs.k8s.io/docs/start/">minikube</a> used to run a single node k8 cluster locally</li>
@@ -522,4 +519,4 @@ k8s_resource('web', port_forwards='3000')
 <li><a href="https://github.com/apmiller108/kubernetes_rails">https://github.com/apmiller108/kubernetes_rails</a></li>
 </ul>
 </div>
-</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>
+</div><script src="https://utteranc.es/client.js" repo="spyjetfayed/spyjetfayed.github.io" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/spyjetfayed" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://codeberg.org/spyjetfayed/" class="footer-link" uk-icon="icon: album">Codeberg</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Ankan Biswas. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

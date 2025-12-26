@@ -1,48 +1,45 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-YM3EHHB2YQ');</script><title>Mixxx, Ardour, JACK and MIDI - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Mixxx, Ardour, JACK and MIDI</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on May 30, 2022</p><p class="note-updated uk-article-meta">Updated on June 21, 2022</p></div><p class="blog-post-tags">Tags: <a href="/?tag=midi">midi</a>, <a href="/?tag=linux">linux</a>, <a href="/?tag=audio">audio</a></p><div id="table-of-contents" role="doc-toc">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Ankan Biswas"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><title>Mixxx, Ardour, JACK and MIDI - Spyjetfayed's Blog</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Spyjetfayed's Blog</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">FOSS, Internet Freedom, Systems Programming</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/spyjetfayed">Github</a></li><li><a class="nav-link" href="https://codeberg.org/spyjetfayed">Codeberg</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Mixxx, Ardour, JACK and MIDI</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on May 30, 2022</p><p class="note-updated uk-article-meta">Updated on June 21, 2022</p></div><p class="blog-post-tags">Tags: <a href="/?tag=midi">midi</a>, <a href="/?tag=linux">linux</a>, <a href="/?tag=audio">audio</a></p><div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgab5fc8e">My Setup</a></li>
-<li><a href="#orgf91ecb2">The software</a>
+<li><a href="#org164f774">My Setup</a></li>
+<li><a href="#org5f69258">The software</a>
 <ul>
-<li><a href="#orgbfa0bd6">Mixxx</a>
+<li><a href="#org471d77c">Mixxx</a>
 <ul>
-<li><a href="#org266083b">Developer mode</a></li>
-<li><a href="#org09efd6f">MIDI for light</a></li>
+<li><a href="#orgdec703e">Developer mode</a></li>
+<li><a href="#orge1aaa49">MIDI for light</a></li>
 </ul>
 </li>
-<li><a href="#org65d476c">Ardour</a>
+<li><a href="#orgf76434b">Ardour</a>
 <ul>
-<li><a href="#org0f869ca">MIDI Control</a></li>
-<li><a href="#org45cc708">Using Windows VSTs in Linux</a></li>
+<li><a href="#orgf0cad5d">MIDI Control</a></li>
+<li><a href="#org5cc763b">Using Windows VSTs in Linux</a></li>
 </ul>
 </li>
-<li><a href="#orgd95bbc6">Jack Audio Connection Kit</a>
+<li><a href="#org0014827">Jack Audio Connection Kit</a>
 <ul>
-<li><a href="#org3e2fb14">QjackCtl</a></li>
-<li><a href="#orged813a3">MIDI routing</a></li>
-<li><a href="#org27ae2ae">Multiple audio interfaces</a></li>
-<li><a href="#org0c40573">Enable Realtime (Optional)</a></li>
-<li><a href="#org6234f5a">Jack scripting (Optional)</a></li>
+<li><a href="#org865fe30">QjackCtl</a></li>
+<li><a href="#orga7c1891">MIDI routing</a></li>
+<li><a href="#org990998c">Multiple audio interfaces</a></li>
+<li><a href="#org5a63c10">Enable Realtime (Optional)</a></li>
+<li><a href="#orgc648070">Jack scripting (Optional)</a></li>
 </ul>
 </li>
-<li><a href="#org3a5b84c">snd_virmidi</a></li>
-<li><a href="#orge030caf">snd-seq-dummy</a>
+<li><a href="#org76f903c">snd_virmidi</a></li>
+<li><a href="#org1f07d93">snd-seq-dummy</a>
 <ul>
-<li><a href="#orgfc755e6">To start it</a></li>
-<li><a href="#org7af0a1e">To unload it</a></li>
+<li><a href="#org5f9ab6d">To start it</a></li>
+<li><a href="#org7fadc3b">To unload it</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org400ae09">Putting it all together</a>
+<li><a href="#org8489bff">Putting it all together</a>
 <ul>
-<li><a href="#orgc7b737c">JACK</a></li>
-<li><a href="#org0f5f04a">Ardour</a></li>
-<li><a href="#org57316f2">Mixxx</a></li>
+<li><a href="#orgd6d5bae">JACK</a></li>
+<li><a href="#org659a579">Ardour</a></li>
+<li><a href="#orgd8cadf3">Mixxx</a></li>
 </ul>
 </li>
 </ul>
@@ -76,7 +73,7 @@ be recorded in Mixxx or Ardour</li>
 <p>
 Here&rsquo;s how I am doing it:
 </p>
-<h2><a id="mysetup" class="anchor" href="#mysetup"><i># </i></a>My Setup</h2><div class="outline-text-2" id="text-orgab5fc8e">
+<h2><a id="mysetup" class="anchor" href="#mysetup"><i># </i></a>My Setup</h2><div class="outline-text-2" id="text-org164f774">
 <p>
 But first, an explanation of my hardware setup:
 </p>
@@ -85,14 +82,14 @@ But first, an explanation of my hardware setup:
 See <a href="712d972d-79ea-4fe4-8d42-592ace4cefc8">My audio setup</a>
 </p>
 </div>
-<h2><a id="thesoftware" class="anchor" href="#thesoftware"><i># </i></a>The software</h2><div class="outline-text-2" id="text-orgf91ecb2">
+<h2><a id="thesoftware" class="anchor" href="#thesoftware"><i># </i></a>The software</h2><div class="outline-text-2" id="text-org5f69258">
 <p>
 I use Linux. This is the software I use. Some of the software mentioned here
 isn&rsquo;t directly used for this particular project, but I mention here since it&rsquo;s
 good to know about it in general for Linux audio production.
 </p>
 </div>
-<h3><a id="mixxx" class="anchor" href="#mixxx"><i># </i></a>Mixxx</h3><div class="outline-text-3" id="text-orgbfa0bd6">
+<h3><a id="mixxx" class="anchor" href="#mixxx"><i># </i></a>Mixxx</h3><div class="outline-text-3" id="text-org471d77c">
 <p>
 <a href="https://mixxx.org/">https://mixxx.org/</a>
 </p>
@@ -102,7 +99,7 @@ Free, open source DJ software. Stands up to paid versions and works on Linux.
 It really is great.
 </p>
 </div>
-<h4><a id="developermode" class="anchor" href="#developermode"><i># </i></a>Developer mode</h4><div class="outline-text-4" id="text-org266083b">
+<h4><a id="developermode" class="anchor" href="#developermode"><i># </i></a>Developer mode</h4><div class="outline-text-4" id="text-orgdec703e">
 <p>
 You can start Mixxx with the <code>--developer</code> flag. In addition to extra logging
 and a developer menu in the GUI, it also adds the <code>Midi Through Port-0</code> as an
@@ -115,7 +112,7 @@ Mixxx without having to depending on a sound card.
 </pre>
 </div>
 </div>
-<h4><a id="midiforlight" class="anchor" href="#midiforlight"><i># </i></a>MIDI for light</h4><div class="outline-text-4" id="text-org09efd6f">
+<h4><a id="midiforlight" class="anchor" href="#midiforlight"><i># </i></a>MIDI for light</h4><div class="outline-text-4" id="text-orge1aaa49">
 <p>
 The <code>MIDI for light</code>
 can to send MIDI timecode from Mixxx to wherever you want (like a DAW, FX
@@ -128,7 +125,7 @@ details.</li>
 <li>See also Mixxx&rsquo;s <a href="//mixxx.discourse.group/t/midi-output-for-lightcontrol/13224/38">forum for MIDI output</a></li>
 </ul>
 </div>
-<h3><a id="ardour" class="anchor" href="#ardour"><i># </i></a>Ardour</h3><div class="outline-text-3" id="text-org65d476c">
+<h3><a id="ardour" class="anchor" href="#ardour"><i># </i></a>Ardour</h3><div class="outline-text-3" id="text-orgf76434b">
 <p>
 <a href="https://ardour.org/">https://ardour.org/</a>
 </p>
@@ -140,7 +137,7 @@ great software and it can be a slave to an external MIDI clock source.
 </p>
 </div>
 <h4><a id="midicontrol" class="anchor" href="#midicontrol"><i># </i></a>MIDI Control</h4><ul><li>MIDI sync</li></ul>
-<h4><a id="usingwindowsvstsinlinux" class="anchor" href="#usingwindowsvstsinlinux"><i># </i></a>Using Windows VSTs in Linux</h4><div class="outline-text-4" id="text-org45cc708">
+<h4><a id="usingwindowsvstsinlinux" class="anchor" href="#usingwindowsvstsinlinux"><i># </i></a>Using Windows VSTs in Linux</h4><div class="outline-text-4" id="text-org5cc763b">
 <p>
 Yes, this can be done, although I was only able to get VST3 (not VST 2) to
 work. I was probably doing something wrong, but I didn&rsquo;t care, only
@@ -148,7 +145,7 @@ interested in VST3 anyhow. Doing this requires <a href="284b93d5-e030-4c8a-932b-
 section) and <a href="//github.com/robbert-vdh/yabridge">yabridge</a>.  
 </p>
 </div>
-<h3><a id="jackaudioconnectionkit" class="anchor" href="#jackaudioconnectionkit"><i># </i></a>Jack Audio Connection Kit</h3><div class="outline-text-3" id="text-orgd95bbc6">
+<h3><a id="jackaudioconnectionkit" class="anchor" href="#jackaudioconnectionkit"><i># </i></a>Jack Audio Connection Kit</h3><div class="outline-text-3" id="text-org0014827">
 <p>
 <a href="https://jackaudio.org/">https://jackaudio.org/</a>
 </p>
@@ -157,13 +154,13 @@ section) and <a href="//github.com/robbert-vdh/yabridge">yabridge</a>.
 A Sound server. Lets you route audio and MIDI all over the place.
 </p>
 </div>
-<h4><a id="qjackctl" class="anchor" href="#qjackctl"><i># </i></a>QjackCtl</h4><div class="outline-text-4" id="text-org3e2fb14">
+<h4><a id="qjackctl" class="anchor" href="#qjackctl"><i># </i></a>QjackCtl</h4><div class="outline-text-4" id="text-org865fe30">
 <p>
 <a href="https://github.com/rncbc/qjackctl">https://github.com/rncbc/qjackctl</a>
 This is a GUI for managing the Jack server.
 </p>
 </div>
-<h4><a id="midirouting" class="anchor" href="#midirouting"><i># </i></a>MIDI routing</h4><div class="outline-text-4" id="text-orged813a3">
+<h4><a id="midirouting" class="anchor" href="#midirouting"><i># </i></a>MIDI routing</h4><div class="outline-text-4" id="text-orga7c1891">
 <p>
 Need to install <a href="//github.com/jackaudio/a2jmidid">a2jmidid</a>. This somehow bridges the jack server MIDI port to
 ALSA MIDI.
@@ -191,19 +188,19 @@ settings where it can be enabled for input and control.
 </p>
 
 
-<div id="org142f821" class="figure">
+<div id="orgad7bd53" class="figure">
 <p><img src=/images/qjackctl-midi.png > 
 </p>
 </div>
 </div>
-<h4><a id="multipleaudiointerfaces" class="anchor" href="#multipleaudiointerfaces"><i># </i></a>Multiple audio interfaces</h4><div class="outline-text-4" id="text-org27ae2ae">
+<h4><a id="multipleaudiointerfaces" class="anchor" href="#multipleaudiointerfaces"><i># </i></a>Multiple audio interfaces</h4><div class="outline-text-4" id="text-org990998c">
 <p>
 JACK is designed to support a single audio interface. There are several
 work-arounds for those of us with several audio interfaces. See also
 <a href="https://jackaudio.org/faq/multiple_devices.html">https://jackaudio.org/faq/multiple_devices.html</a>
 </p>
 </div>
-<ul><li>alsa_in / alsa_out<div class="outline-text-5" id="text-org0129213">
+<ul><li>alsa_in / alsa_out<div class="outline-text-5" id="text-orgc00459c">
 <p>
 The <a href="//manpages.ubuntu.com/manpages/bionic/man1/alsa_in.1.html">alsa_in / alsa_out</a> programs can expose additional audio interfaces to
 JACK and sync their clocks. It basically works like this:
@@ -217,7 +214,7 @@ JACK and sync their clocks. It basically works like this:
 </ol>
 </div>
 </li>
-<li>zita-ajbridge<div class="outline-text-5" id="text-orgb54f705">
+<li>zita-ajbridge<div class="outline-text-5" id="text-org6fee94e">
 <p>
 <a href="https://kokkinizita.linuxaudio.org/linuxaudio/zita-ajbridge-doc/quickguide.html">https://kokkinizita.linuxaudio.org/linuxaudio/zita-ajbridge-doc/quickguide.html</a>
 </p>
@@ -229,7 +226,7 @@ this to add a second audio interface to JACK.
 </p>
 </div>
 </li></ul>
-<h4><a id="enablerealtimeoptional" class="anchor" href="#enablerealtimeoptional"><i># </i></a>Enable Realtime (Optional)</h4><div class="outline-text-4" id="text-org0c40573">
+<h4><a id="enablerealtimeoptional" class="anchor" href="#enablerealtimeoptional"><i># </i></a>Enable Realtime (Optional)</h4><div class="outline-text-4" id="text-org5a63c10">
 <p>
 Enabling this can help performance / latency. Most Linux distros have
 permissions around Realtime scheduling. See
@@ -241,14 +238,14 @@ really not hard).
 Then you can check the box &ldquo;Realtime&rdquo; in the Jack settings to use it.
 </p>
 </div>
-<h4><a id="jackscriptingoptional" class="anchor" href="#jackscriptingoptional"><i># </i></a>Jack scripting (Optional)</h4><div class="outline-text-4" id="text-org6234f5a">
+<h4><a id="jackscriptingoptional" class="anchor" href="#jackscriptingoptional"><i># </i></a>Jack scripting (Optional)</h4><div class="outline-text-4" id="text-orgc648070">
 <p>
 This is just here for reference. It can be useful to do some things via
 scripts, like make connections between ports in order to automate repetitive
 tasks. See <a href="//askubuntu.com/questions/1153655/making-connections-in-jack-on-the-command-line">making connection in jack on the command line</a>.
 </p>
 </div>
-<h3><a id="snd_virmidi" class="anchor" href="#snd_virmidi"><i># </i></a>snd_virmidi</h3><div class="outline-text-3" id="text-org3a5b84c">
+<h3><a id="snd_virmidi" class="anchor" href="#snd_virmidi"><i># </i></a>snd_virmidi</h3><div class="outline-text-3" id="text-org76f903c">
 <p>
 This is Linux kernel module that can create virtual midi interfaces that
 appear as sound cards to the system. This isn&rsquo;t needed for this project, but
@@ -261,14 +258,14 @@ it&rsquo;s good to know about.
 <li><a href="https://music.stackexchange.com/questions/51463/how-to-use-snd-virmidi-on-linux">https://music.stackexchange.com/questions/51463/how-to-use-snd-virmidi-on-linux</a></li>
 </ul>
 </div>
-<h3><a id="sndseqdummy" class="anchor" href="#sndseqdummy"><i># </i></a>snd-seq-dummy</h3><div class="outline-text-3" id="text-orge030caf">
+<h3><a id="sndseqdummy" class="anchor" href="#sndseqdummy"><i># </i></a>snd-seq-dummy</h3><div class="outline-text-3" id="text-org1f07d93">
 <p>
 This is a Linux kernel module that can create midi through ports. This is
 only needed if you don&rsquo;t already have an ALSA midi through port or you need
 an extra one for some reason.
 </p>
 </div>
-<h4><a id="tostartit" class="anchor" href="#tostartit"><i># </i></a>To start it</h4><div class="outline-text-4" id="text-orgfc755e6">
+<h4><a id="tostartit" class="anchor" href="#tostartit"><i># </i></a>To start it</h4><div class="outline-text-4" id="text-org5f9ab6d">
 <p>
 n = how many ports you want
 </p>
@@ -277,13 +274,13 @@ n = how many ports you want
 </pre>
 </div>
 </div>
-<ul><li>To make it available after reboots<div class="outline-text-5" id="text-org1bbb32e">
+<ul><li>To make it available after reboots<div class="outline-text-5" id="text-org5caa6e1">
 <p>
 Edit <code>/etc/modprobe.d/midi.conf</code> and add line <code>options snd-seq-dummy ports=n</code>
 </p>
 </div>
 </li></ul>
-<h4><a id="tounloadit" class="anchor" href="#tounloadit"><i># </i></a>To unload it</h4><div class="outline-text-4" id="text-org7af0a1e">
+<h4><a id="tounloadit" class="anchor" href="#tounloadit"><i># </i></a>To unload it</h4><div class="outline-text-4" id="text-org7fadc3b">
 <div class="org-src-container">
 <pre class="src src-shell">sudo modprobe -r snd-seq-dummy
 </pre>
@@ -292,4 +289,4 @@ Edit <code>/etc/modprobe.d/midi.conf</code> and add line <code>options snd-seq-d
 <h2><a id="puttingitalltogether" class="anchor" href="#puttingitalltogether"><i># </i></a>Putting it all together</h2><h3><a id="jack" class="anchor" href="#jack"><i># </i></a>JACK</h3>
 <h3><a id="ardour" class="anchor" href="#ardour"><i># </i></a>Ardour</h3>
 <h3><a id="mixxx" class="anchor" href="#mixxx"><i># </i></a>Mixxx</h3>
-</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>
+</div><script src="https://utteranc.es/client.js" repo="spyjetfayed/spyjetfayed.github.io" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/spyjetfayed" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://codeberg.org/spyjetfayed/" class="footer-link" uk-icon="icon: album">Codeberg</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Ankan Biswas. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

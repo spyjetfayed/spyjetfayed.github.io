@@ -1,53 +1,50 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-YM3EHHB2YQ');</script><title>psql - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">psql</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on September 22, 2023</p><p class="note-updated uk-article-meta">Updated on May 17, 2024</p></div><p class="blog-post-tags">Tags: <a href="/?tag=postgres">postgres</a></p><div id="table-of-contents" role="doc-toc">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Ankan Biswas"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><title>psql - Spyjetfayed's Blog</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Spyjetfayed's Blog</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">FOSS, Internet Freedom, Systems Programming</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/spyjetfayed">Github</a></li><li><a class="nav-link" href="https://codeberg.org/spyjetfayed">Codeberg</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">psql</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on September 22, 2023</p><p class="note-updated uk-article-meta">Updated on May 17, 2024</p></div><p class="blog-post-tags">Tags: <a href="/?tag=postgres">postgres</a></p><div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org8e4664b">Authentication</a>
+<li><a href="#org0c2e082">Authentication</a>
 <ul>
-<li><a href="#org98c5be7">Using env vars</a></li>
+<li><a href="#org33b2500">Using env vars</a></li>
 </ul>
 </li>
-<li><a href="#orgbd6a1a3">.psqlrc</a></li>
-<li><a href="#org75647a4">Logs</a>
+<li><a href="#orga7890df">.psqlrc</a></li>
+<li><a href="#org0fe1327">Logs</a>
 <ul>
-<li><a href="#org4fd33ff">Where are the logs?</a></li>
+<li><a href="#org781f5ac">Where are the logs?</a></li>
 </ul>
 </li>
-<li><a href="#orge7b9287">Meta commands</a>
+<li><a href="#org9d87910">Meta commands</a>
 <ul>
-<li><a href="#org6beb095">\c</a></li>
-<li><a href="#org3cd595e">\dx</a></li>
-<li><a href="#org1fb06e1">\dv</a></li>
-<li><a href="#orgdf08a25">\g</a></li>
-<li><a href="#org5f2fb64">\l</a></li>
-<li><a href="#org2a1e5eb">\o</a></li>
-<li><a href="#org9869fa9">\pset format wrapped</a></li>
-<li><a href="#org1fda495">\s</a></li>
-<li><a href="#org7031fe5">\timing</a></li>
-<li><a href="#org88d7766">\x</a></li>
+<li><a href="#orge35e240">\c</a></li>
+<li><a href="#org3d94d5c">\dx</a></li>
+<li><a href="#org0088bf4">\dv</a></li>
+<li><a href="#org7ffbef1">\g</a></li>
+<li><a href="#org3c5e05b">\l</a></li>
+<li><a href="#org6b65e72">\o</a></li>
+<li><a href="#orgf203daa">\pset format wrapped</a></li>
+<li><a href="#org3418926">\s</a></li>
+<li><a href="#org219fb34">\timing</a></li>
+<li><a href="#org4958389">\x</a></li>
 </ul>
 </li>
-<li><a href="#orgd59234b">Restore a dump</a></li>
-<li><a href="#orgdcb17b1">System catalog tables</a>
+<li><a href="#orgec73bf1">Restore a dump</a></li>
+<li><a href="#orgeb44d39">System catalog tables</a>
 <ul>
-<li><a href="#orgf19c0db">pg_extension</a></li>
-<li><a href="#org3154639">pg_stat_activity</a></li>
-<li><a href="#orga9a7ac8">pg_locks</a></li>
+<li><a href="#org096a21e">pg_extension</a></li>
+<li><a href="#orgfd32fca">pg_stat_activity</a></li>
+<li><a href="#org7490bb7">pg_locks</a></li>
 </ul>
 </li>
-<li><a href="#org54f1300">Terminate queries</a></li>
-<li><a href="#org80c7dd1">Transactions</a></li>
-<li><a href="#orgc0c8da1">Miscellaneous</a>
+<li><a href="#orge943cfb">Terminate queries</a></li>
+<li><a href="#orgb6f67dd">Transactions</a></li>
+<li><a href="#org8d1b425">Miscellaneous</a>
 <ul>
-<li><a href="#orgb19c956">PG_BACKEND_PID()</a></li>
-<li><a href="#org89a4099">Find PostgreSQL config file</a></li>
-<li><a href="#org20a2594">Find the data directory</a></li>
+<li><a href="#org02b10d4">PG_BACKEND_PID()</a></li>
+<li><a href="#org299de97">Find PostgreSQL config file</a></li>
+<li><a href="#org6d5518b">Find the data directory</a></li>
 </ul>
 </li>
-<li><a href="#orgc43fd8b">Scripting</a></li>
+<li><a href="#org65792f6">Scripting</a></li>
 </ul>
 </div>
 </div>
@@ -58,19 +55,19 @@
 See also <a href="CD58C290-AF97-4882-98D9-2FCC7B61763E">postgresql.conf</a>
 See also <a href="D111FFA2-4A9D-41F4-87DC-E59F3D6E8564">Row locking</a>
 </p>
-<h2><a id="authentication" class="anchor" href="#authentication"><i># </i></a>Authentication</h2><div class="outline-text-2" id="text-org8e4664b">
+<h2><a id="authentication" class="anchor" href="#authentication"><i># </i></a>Authentication</h2><div class="outline-text-2" id="text-org0c2e082">
 <p>
 There are several methods.
 See also <a href="https://stackoverflow.com/a/6524167">https://stackoverflow.com/a/6524167</a>
 </p>
 </div>
-<h3><a id="usingenvvars" class="anchor" href="#usingenvvars"><i># </i></a>Using env vars</h3><div class="outline-text-3" id="text-org98c5be7">
+<h3><a id="usingenvvars" class="anchor" href="#usingenvvars"><i># </i></a>Using env vars</h3><div class="outline-text-3" id="text-org33b2500">
 <ul class="org-ul">
 <li><code>PGUSER</code></li>
 <li><code>PGPASSWORD</code></li>
 </ul>
 </div>
-<h2><a id="psqlrc" class="anchor" href="#psqlrc"><i># </i></a>.psqlrc</h2><div class="outline-text-2" id="text-orgbd6a1a3">
+<h2><a id="psqlrc" class="anchor" href="#psqlrc"><i># </i></a>.psqlrc</h2><div class="outline-text-2" id="text-orga7890df">
 <p>
 To me the most important one is <code>\pset null '(null)'</code> in order to distinguish
 between empty string and null.
@@ -84,7 +81,7 @@ See also
 <li><a href="https://thoughtbot.com/blog/an-explained-psqlrc">https://thoughtbot.com/blog/an-explained-psqlrc</a></li>
 </ul>
 </div>
-<h2><a id="logs" class="anchor" href="#logs"><i># </i></a>Logs</h2><h3><a id="wherearethelogs" class="anchor" href="#wherearethelogs"><i># </i></a>Where are the logs?</h3><div class="outline-text-3" id="text-org4fd33ff">
+<h2><a id="logs" class="anchor" href="#logs"><i># </i></a>Logs</h2><h3><a id="wherearethelogs" class="anchor" href="#wherearethelogs"><i># </i></a>Where are the logs?</h3><div class="outline-text-3" id="text-org781f5ac">
 <p>
 See also <a href="https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHERE">https://www.postgresql.org/docs/current/runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHERE</a>
 </p>
@@ -144,58 +141,58 @@ of the data directory:
 Putting those two things together, you can tail the logs.
 </p>
 </div>
-<h2><a id="metacommands" class="anchor" href="#metacommands"><i># </i></a>Meta commands</h2><h3><a id="c" class="anchor" href="#c"><i># </i></a>\c</h3><div class="outline-text-3" id="text-org6beb095">
+<h2><a id="metacommands" class="anchor" href="#metacommands"><i># </i></a>Meta commands</h2><h3><a id="c" class="anchor" href="#c"><i># </i></a>\c</h3><div class="outline-text-3" id="text-orge35e240">
 <p>
 &#x2026;followed by the database name to connect to it.
 </p>
 </div>
-<h3><a id="dx" class="anchor" href="#dx"><i># </i></a>\dx</h3><div class="outline-text-3" id="text-org3cd595e">
+<h3><a id="dx" class="anchor" href="#dx"><i># </i></a>\dx</h3><div class="outline-text-3" id="text-org3d94d5c">
 <p>
 list installed extensions
 </p>
 </div>
-<h3><a id="dv" class="anchor" href="#dv"><i># </i></a>\dv</h3><div class="outline-text-3" id="text-org1fb06e1">
+<h3><a id="dv" class="anchor" href="#dv"><i># </i></a>\dv</h3><div class="outline-text-3" id="text-org0088bf4">
 <p>
 list views
 </p>
 </div>
-<h3><a id="g" class="anchor" href="#g"><i># </i></a>\g</h3><div class="outline-text-3" id="text-orgdf08a25">
+<h3><a id="g" class="anchor" href="#g"><i># </i></a>\g</h3><div class="outline-text-3" id="text-org7ffbef1">
 <p>
 Run the last command. Also use up arrow enter.
 </p>
 </div>
-<h3><a id="l" class="anchor" href="#l"><i># </i></a>\l</h3><div class="outline-text-3" id="text-org5f2fb64">
+<h3><a id="l" class="anchor" href="#l"><i># </i></a>\l</h3><div class="outline-text-3" id="text-org3c5e05b">
 <p>
 List the databases on the server
 </p>
 </div>
-<h3><a id="o" class="anchor" href="#o"><i># </i></a>\o</h3><div class="outline-text-3" id="text-org2a1e5eb">
+<h3><a id="o" class="anchor" href="#o"><i># </i></a>\o</h3><div class="outline-text-3" id="text-org6b65e72">
 <p>
 &#x2026;followed by a filename, to toggle writing query output to that file.
 </p>
 </div>
-<h3><a id="psetformatwrapped" class="anchor" href="#psetformatwrapped"><i># </i></a>\pset format wrapped</h3><div class="outline-text-3" id="text-org9869fa9">
+<h3><a id="psetformatwrapped" class="anchor" href="#psetformatwrapped"><i># </i></a>\pset format wrapped</h3><div class="outline-text-3" id="text-orgf203daa">
 <p>
 Turn on wrapping of the results
 </p>
 </div>
-<h3><a id="s" class="anchor" href="#s"><i># </i></a>\s</h3><div class="outline-text-3" id="text-org1fda495">
+<h3><a id="s" class="anchor" href="#s"><i># </i></a>\s</h3><div class="outline-text-3" id="text-org3418926">
 <p>
 Prints history of commands run previously.
 TIP: <code>ctrl r</code> &ldquo;reverse search&rdquo; is available
 </p>
 </div>
-<h3><a id="timing" class="anchor" href="#timing"><i># </i></a>\timing</h3><div class="outline-text-3" id="text-org7031fe5">
+<h3><a id="timing" class="anchor" href="#timing"><i># </i></a>\timing</h3><div class="outline-text-3" id="text-org219fb34">
 <p>
 Toggles timing which prints the time each command takes
 </p>
 </div>
-<h3><a id="x" class="anchor" href="#x"><i># </i></a>\x</h3><div class="outline-text-3" id="text-org88d7766">
+<h3><a id="x" class="anchor" href="#x"><i># </i></a>\x</h3><div class="outline-text-3" id="text-org4958389">
 <p>
 Expanded display to make output more readable
 </p>
 </div>
-<h2><a id="restoreadump" class="anchor" href="#restoreadump"><i># </i></a>Restore a dump</h2><div class="outline-text-2" id="text-orgd59234b">
+<h2><a id="restoreadump" class="anchor" href="#restoreadump"><i># </i></a>Restore a dump</h2><div class="outline-text-2" id="text-orgec73bf1">
 <p>
 See also
 </p>
@@ -213,7 +210,7 @@ See also
 </pre>
 </div>
 </div>
-<h2><a id="systemcatalogtables" class="anchor" href="#systemcatalogtables"><i># </i></a>System catalog tables</h2><div class="outline-text-2" id="text-orgdcb17b1">
+<h2><a id="systemcatalogtables" class="anchor" href="#systemcatalogtables"><i># </i></a>System catalog tables</h2><div class="outline-text-2" id="text-orgeb44d39">
 <ul class="org-ul">
 <li>These are tables that begin with <code>pg_*</code> (use tab completion to see the list)</li>
 <li><code>SELECT * FROM</code> these tables to get system information.</li>
@@ -222,19 +219,19 @@ See also
 Here&rsquo;s just a few for reference:
 </p>
 </div>
-<h3><a id="pg_extension" class="anchor" href="#pg_extension"><i># </i></a>pg_extension</h3><div class="outline-text-3" id="text-orgf19c0db">
+<h3><a id="pg_extension" class="anchor" href="#pg_extension"><i># </i></a>pg_extension</h3><div class="outline-text-3" id="text-org096a21e">
 <p>
 Contains installed extensions
 </p>
 </div>
-<h3><a id="pg_stat_activity" class="anchor" href="#pg_stat_activity"><i># </i></a>pg_stat_activity</h3><div class="outline-text-3" id="text-org3154639">
+<h3><a id="pg_stat_activity" class="anchor" href="#pg_stat_activity"><i># </i></a>pg_stat_activity</h3><div class="outline-text-3" id="text-orgfd32fca">
 <p>
 Database activity. This will show the <code>pid</code> of the activity owner. Use the <code>pid</code>
 to cancel or terminate queries.
 </p>
 </div>
 <h3><a id="pg_locks" class="anchor" href="#pg_locks"><i># </i></a>pg_locks</h3>
-<h2><a id="terminatequeries" class="anchor" href="#terminatequeries"><i># </i></a>Terminate queries</h2><div class="outline-text-2" id="text-org54f1300">
+<h2><a id="terminatequeries" class="anchor" href="#terminatequeries"><i># </i></a>Terminate queries</h2><div class="outline-text-2" id="text-orge943cfb">
 <p>
 Find the pid by querying <code>pg_stat_activity</code>, then&#x2026;
 </p>
@@ -243,7 +240,7 @@ Find the pid by querying <code>pg_stat_activity</code>, then&#x2026;
 <li><code>SELECT pg_terminate_backend(pid)</code></li>
 </ul>
 </div>
-<h2><a id="transactions" class="anchor" href="#transactions"><i># </i></a>Transactions</h2><div class="outline-text-2" id="text-org80c7dd1">
+<h2><a id="transactions" class="anchor" href="#transactions"><i># </i></a>Transactions</h2><div class="outline-text-2" id="text-orgb6f67dd">
 <p>
 Do things in transactions and validate them before committing them. Use
 rollback when things get weird.
@@ -258,7 +255,7 @@ rollback when things get weird.
 </pre>
 </div>
 </div>
-<h2><a id="miscellaneous" class="anchor" href="#miscellaneous"><i># </i></a>Miscellaneous</h2><h3><a id="pg_backend_pid" class="anchor" href="#pg_backend_pid"><i># </i></a>PG_BACKEND_PID()</h3><div class="outline-text-3" id="text-orgb19c956">
+<h2><a id="miscellaneous" class="anchor" href="#miscellaneous"><i># </i></a>Miscellaneous</h2><h3><a id="pg_backend_pid" class="anchor" href="#pg_backend_pid"><i># </i></a>PG_BACKEND_PID()</h3><div class="outline-text-3" id="text-org02b10d4">
 <p>
 <code>psql</code> process ID
 </p>
@@ -267,7 +264,7 @@ rollback when things get weird.
 </pre>
 </div>
 </div>
-<h3><a id="findpostgresqlconfigfile" class="anchor" href="#findpostgresqlconfigfile"><i># </i></a>Find PostgreSQL config file</h3><div class="outline-text-3" id="text-org89a4099">
+<h3><a id="findpostgresqlconfigfile" class="anchor" href="#findpostgresqlconfigfile"><i># </i></a>Find PostgreSQL config file</h3><div class="outline-text-3" id="text-org299de97">
 <p>
 This will print the file path to the config file.
 </p>
@@ -279,13 +276,13 @@ This will print the file path to the config file.
 See also <a href="CD58C290-AF97-4882-98D9-2FCC7B61763E">postgresql.conf</a>
 </p>
 </div>
-<h3><a id="findthedatadirectory" class="anchor" href="#findthedatadirectory"><i># </i></a>Find the data directory</h3><div class="outline-text-3" id="text-org20a2594">
+<h3><a id="findthedatadirectory" class="anchor" href="#findthedatadirectory"><i># </i></a>Find the data directory</h3><div class="outline-text-3" id="text-org6d5518b">
 <div class="org-src-container">
 <pre class="src src-sql">SHOW data_directory;
 </pre>
 </div>
 </div>
-<h2><a id="scripting" class="anchor" href="#scripting"><i># </i></a>Scripting</h2><div class="outline-text-2" id="text-orgc43fd8b">
+<h2><a id="scripting" class="anchor" href="#scripting"><i># </i></a>Scripting</h2><div class="outline-text-2" id="text-org65792f6">
 <p>
 Commands can be passed to <code>psql</code> using the <code>-c</code> switch, which outputs the results
 to stdout. If you need to supply a password for the user supplied by the <code>-U</code>
@@ -306,4 +303,4 @@ Use the <code>-f</code> followed by a file path to run commands from a file.
 </pre>
 </div>
 </div>
-</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>
+</div><script src="https://utteranc.es/client.js" repo="spyjetfayed/spyjetfayed.github.io" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/spyjetfayed" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://codeberg.org/spyjetfayed/" class="footer-link" uk-icon="icon: album">Codeberg</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Ankan Biswas. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

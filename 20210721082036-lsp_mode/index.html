@@ -1,35 +1,32 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-YM3EHHB2YQ');</script><title>lsp-mode - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">lsp-mode</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on July 21, 2021</p><p class="note-updated uk-article-meta">Updated on September 12, 2025</p></div><p class="blog-post-tags">Tags: <a href="/?tag=lsp">lsp</a>, <a href="/?tag=emacs">emacs</a></p><div id="table-of-contents" role="doc-toc">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Ankan Biswas"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><title>lsp-mode - Spyjetfayed's Blog</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Spyjetfayed's Blog</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">FOSS, Internet Freedom, Systems Programming</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/spyjetfayed">Github</a></li><li><a class="nav-link" href="https://codeberg.org/spyjetfayed">Codeberg</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">lsp-mode</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on July 21, 2021</p><p class="note-updated uk-article-meta">Updated on September 12, 2025</p></div><p class="blog-post-tags">Tags: <a href="/?tag=lsp">lsp</a>, <a href="/?tag=emacs">emacs</a></p><div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org57c1f5b">Selecting language servers</a></li>
-<li><a href="#org1a649e2">Typescript / Javascript</a>
+<li><a href="#org5de6f0a">Selecting language servers</a></li>
+<li><a href="#orga2f0410">Typescript / Javascript</a>
 <ul>
-<li><a href="#orgb0d47f8">Setup</a></li>
+<li><a href="#org5b7abac">Setup</a></li>
 </ul>
 </li>
-<li><a href="#orgc037a9a">Ruby</a>
+<li><a href="#org20329a0">Ruby</a>
 <ul>
-<li><a href="#org4d734d7">Ruby LSP</a></li>
-<li><a href="#org69b1433">Solargraph</a>
+<li><a href="#org612af94">Ruby LSP</a></li>
+<li><a href="#orgf388d0f">Solargraph</a>
 <ul>
-<li><a href="#orgadf6701">Setup</a></li>
-<li><a href="#orgec6dc32">Features</a></li>
+<li><a href="#org907f2b1">Setup</a></li>
+<li><a href="#org60ffdd4">Features</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orge618218">Vue2</a>
+<li><a href="#orge7788aa">Vue2</a>
 <ul>
-<li><a href="#orge406588">Issues</a></li>
+<li><a href="#orgf3d8417">Issues</a></li>
 </ul>
 </li>
-<li><a href="#orgafa242e">Performance</a></li>
-<li><a href="#orga02d040">In editor docs</a></li>
-<li><a href="#org4acdd08">Listing all available clients</a></li>
+<li><a href="#org35cb87d">Performance</a></li>
+<li><a href="#orgce16762">In editor docs</a></li>
+<li><a href="#org591f449">Listing all available clients</a></li>
 </ul>
 </div>
 </div>
@@ -40,7 +37,7 @@
 <a href="https://emacs-lsp.github.io/lsp-mode/">https://emacs-lsp.github.io/lsp-mode/</a>
 <a href="https://develop.spacemacs.org/layers/+lang/ruby/README.html#language-server-protocol">https://develop.spacemacs.org/layers/+lang/ruby/README.html#language-server-protocol</a>
 </p>
-<h2><a id="selectinglanguageservers" class="anchor" href="#selectinglanguageservers"><i># </i></a>Selecting language servers</h2><div class="outline-text-2" id="text-org57c1f5b">
+<h2><a id="selectinglanguageservers" class="anchor" href="#selectinglanguageservers"><i># </i></a>Selecting language servers</h2><div class="outline-text-2" id="text-org5de6f0a">
 <p>
 If there are multiple installed, the highest priority will win. To select the
 server you want independent of priority you can do this:
@@ -52,7 +49,7 @@ server you want independent of priority you can do this:
 </pre>
 </div>
 </div>
-<h2><a id="typescriptjavascript" class="anchor" href="#typescriptjavascript"><i># </i></a>Typescript / Javascript</h2><h3><a id="setup" class="anchor" href="#setup"><i># </i></a>Setup</h3><div class="outline-text-3" id="text-orgb0d47f8">
+<h2><a id="typescriptjavascript" class="anchor" href="#typescriptjavascript"><i># </i></a>Typescript / Javascript</h2><h3><a id="setup" class="anchor" href="#setup"><i># </i></a>Setup</h3><div class="outline-text-3" id="text-org5b7abac">
 <p>
 Followed these instructions <a href="https://emacs-lsp.github.io/lsp-mode/page/lsp-typescript/">https://emacs-lsp.github.io/lsp-mode/page/lsp-typescript/</a> for ls-ts
 Node dependencies needed:
@@ -73,14 +70,14 @@ emacs npm cache:
 </pre>
 </div>
 </div>
-<h2><a id="ruby" class="anchor" href="#ruby"><i># </i></a>Ruby</h2><div class="outline-text-2" id="text-orgc037a9a">
+<h2><a id="ruby" class="anchor" href="#ruby"><i># </i></a>Ruby</h2><div class="outline-text-2" id="text-org20329a0">
 <p>
 There are a bunch of options for LSP servers. You can have multiple servers
 and the one used can be specified in a dir-local file
 See also <a href="//emacs-lsp.github.io/lsp-mode/page/faq/#i-have-multiple-language-servers-registered-for-language-foo-which-one-will-be-used-when-opening-a-project">emacs-lsp FAQ</a>
 </p>
 </div>
-<h3><a id="rubylsp" class="anchor" href="#rubylsp"><i># </i></a>Ruby LSP</h3><div class="outline-text-3" id="text-org4d734d7">
+<h3><a id="rubylsp" class="anchor" href="#rubylsp"><i># </i></a>Ruby LSP</h3><div class="outline-text-3" id="text-org612af94">
 <p>
 <a href="https://github.com/Shopify/ruby-lsp">https://github.com/Shopify/ruby-lsp</a>
 </p>
@@ -90,7 +87,7 @@ See also <a href="//emacs-lsp.github.io/lsp-mode/page/faq/#i-have-multiple-langu
 features for that matter.
 </p>
 </div>
-<h3><a id="solargraph" class="anchor" href="#solargraph"><i># </i></a>Solargraph</h3><div class="outline-text-3" id="text-org69b1433">
+<h3><a id="solargraph" class="anchor" href="#solargraph"><i># </i></a>Solargraph</h3><div class="outline-text-3" id="text-orgf388d0f">
 <ul class="org-ul">
 <li><a href="https://github.com/castwide/solargraph">https://github.com/castwide/solargraph</a></li>
 <li><a href="https://solargraph.org/guides">https://solargraph.org/guides</a></li>
@@ -100,20 +97,20 @@ features for that matter.
 It doesn&rsquo;t require <a href="//yardoc.org/features.html">yard</a>, but it can help it out.
 </p>
 </div>
-<h4><a id="setup" class="anchor" href="#setup"><i># </i></a>Setup</h4><div class="outline-text-4" id="text-orgadf6701">
+<h4><a id="setup" class="anchor" href="#setup"><i># </i></a>Setup</h4><div class="outline-text-4" id="text-org907f2b1">
 <p>
 Just follow the instructions linked above. For spacemacs, set the ruby-mode
 backend to <code>'lsp</code>
 </p>
 </div>
-<ul><li>Rails<div class="outline-text-5" id="text-orga01583d">
+<ul><li>Rails<div class="outline-text-5" id="text-orgc5210c3">
 <p>
 Use the <a href="//github.com/iftheshoefritz/solargraph-rails/">solargraph-rails</a> plugin. When using this you&rsquo;ll need to include
 <code>"**/*.rb"</code> and use the exclude directive in the .solargraph.yml
 </p>
 </div>
 </li></ul>
-<h4><a id="features" class="anchor" href="#features"><i># </i></a>Features</h4><div class="outline-text-4" id="text-orgec6dc32">
+<h4><a id="features" class="anchor" href="#features"><i># </i></a>Features</h4><div class="outline-text-4" id="text-org60ffdd4">
 <ul class="org-ul">
 <li>autocompletion</li>
 <li>other things&#x2026;</li>
@@ -165,12 +162,12 @@ Use the <a href="//github.com/iftheshoefritz/solargraph-rails/">solargraph-rails
 <li>See <a href="//develop.spacemacs.org/layers/+tools/lsp/README.html#core-key-bindings">spacemacs core lsp-mode bindings</a></li>
 </ul>
 </div>
-<h2><a id="vue2" class="anchor" href="#vue2"><i># </i></a>Vue2</h2><div class="outline-text-2" id="text-orge618218">
+<h2><a id="vue2" class="anchor" href="#vue2"><i># </i></a>Vue2</h2><div class="outline-text-2" id="text-orge7788aa">
 <p>
 Install <a href="//github.com/vuejs/vetur/tree/master/server">vls</a>
 </p>
 </div>
-<h3><a id="issues" class="anchor" href="#issues"><i># </i></a>Issues</h3><div class="outline-text-3" id="text-orge406588">
+<h3><a id="issues" class="anchor" href="#issues"><i># </i></a>Issues</h3><div class="outline-text-3" id="text-orgf3d8417">
 <p>
 When trying to start vls:
 </p>
@@ -179,7 +176,7 @@ When trying to start vls:
 </pre>
 </div>
 </div>
-<h2><a id="performance" class="anchor" href="#performance"><i># </i></a>Performance</h2><div class="outline-text-2" id="text-orgafa242e">
+<h2><a id="performance" class="anchor" href="#performance"><i># </i></a>Performance</h2><div class="outline-text-2" id="text-org35cb87d">
 <p>
 I had performance issues with LSP mode, especially with Typescript.
 </p>
@@ -203,12 +200,12 @@ See <a href="https://xenodium.com/emacs-plus-with-native-comp/">https://xenodium
 and <a href="https://github.com/d12frosted/homebrew-emacs-plus#emacs-27-and-emacs-28-options">https://github.com/d12frosted/homebrew-emacs-plus#emacs-27-and-emacs-28-options</a>
 </p>
 </div>
-<h2><a id="ineditordocs" class="anchor" href="#ineditordocs"><i># </i></a>In editor docs</h2><div class="outline-text-2" id="text-orga02d040">
+<h2><a id="ineditordocs" class="anchor" href="#ineditordocs"><i># </i></a>In editor docs</h2><div class="outline-text-2" id="text-orgce16762">
 <p>
 This can sometimes be annoying. Turn it off with lsp-toggle-signature-auto-activate
 </p>
 </div>
-<h2><a id="listingallavailableclients" class="anchor" href="#listingallavailableclients"><i># </i></a>Listing all available clients</h2><div class="outline-text-2" id="text-org4acdd08">
+<h2><a id="listingallavailableclients" class="anchor" href="#listingallavailableclients"><i># </i></a>Listing all available clients</h2><div class="outline-text-2" id="text-org591f449">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(hash-table-keys lsp-clients)
 </pre>
@@ -1112,4 +1109,4 @@ This can sometimes be annoying. Turn it off with lsp-toggle-signature-auto-activ
 </tbody>
 </table>
 </div>
-</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>
+</div><script src="https://utteranc.es/client.js" repo="spyjetfayed/spyjetfayed.github.io" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/spyjetfayed" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://codeberg.org/spyjetfayed/" class="footer-link" uk-icon="icon: album">Codeberg</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Ankan Biswas. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

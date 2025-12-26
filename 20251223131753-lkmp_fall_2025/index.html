@@ -1,0 +1,167 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Ankan Biswas"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><title>Linux Kernel Mentorship Program [Fall 2025] - Spyjetfayed's Blog</title></head><body><div class="header uk-section uk-section-secondary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Spyjetfayed's Blog</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">FOSS, Internet Freedom, Systems Programming</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Posts</a></li><li><a class="nav-link" href="https://github.com/spyjetfayed">Github</a></li><li><a class="nav-link" href="https://codeberg.org/spyjetfayed">Codeberg</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-secondary uk-height-viewport" style="font-size: 20px;"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Linux Kernel Mentorship Program [Fall 2025]</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on December 23, 2025</p></div><p class="blog-post-tags">Tags: <a href="/?tag=linux_kernel">linux_kernel</a></p><div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgf9271c0">Background</a></li>
+<li><a href="#orgd756d92">C programming</a></li>
+<li><a href="#org5e906cb">Resources</a>
+<ul>
+<li><a href="#org1636070">Books</a></li>
+<li><a href="#org871a35f">Documentation</a></li>
+<li><a href="#org75be765">Blogs</a></li>
+<li><a href="#org9ff6676">Videos</a></li>
+</ul>
+</li>
+<li><a href="#org0ed6bec">FAQ</a></li>
+<li><a href="#org917471e">Quick Guides</a></li>
+</ul>
+</div>
+</div>
+<p>
+:ID:       a4125769-f18c-423c-aa6e-2eb2afbe572a
+</p>
+<h2><a id="background" class="anchor" href="#background"><i># </i></a>Background</h2><div class="outline-text-2" id="text-orgf9271c0">
+<p>
+Deep diving into a linux system was something that I got interested in 2020,
+having a lot of time on my hand during the lockdown era. My idea was still
+limited to exploring the userspace with <a href="//www.linuxfromscratch.org/lfs/">LFS</a> or start with Gentoo. I had tried
+reading Robert Love&rsquo;s <a href="//archive.org/details/linuxsystemprogr0000love_h9n0">Linux System Programming</a>, but it felt too difficult to
+start with and C programming was something I had little experience in.
+</p>
+
+<p>
+So when I found out about the Linux Kernel Mentorship Program from an accidental
+reddit post I applied without any other thought. And it turned out to be the
+best decision since the time years back I installed Ubuntu on my laptop in my
+college dorm.
+</p>
+</div>
+<h2><a id="cprogramming" class="anchor" href="#cprogramming"><i># </i></a>C programming</h2><div class="outline-text-2" id="text-orgd756d92">
+<p>
+Compared to all the high-level languages my work primarily involved python &amp;
+javascript where the tooling is something that just works out of the box, in
+C you have to set things up painstakingly. C will provide a lot of friction
+to a programmer in general who hasn&rsquo;t had much low-level programming experience,
+so it was often very frustrating  for me.
+</p>
+</div>
+<h2><a id="resources" class="anchor" href="#resources"><i># </i></a>Resources</h2><h3><a id="books" class="anchor" href="#books"><i># </i></a>Books</h3><div class="outline-text-3" id="text-org1636070">
+<p>
+I find books useful for the initial learning phase since they provide
+well-structured information that is easy to reference later. Although for kernel
+development books become out-dated, I was happy to find Kaiwan Billimoria&rsquo;s,
+<a href="//www.amazon.in/Hands-System-Programming-Linux-programming-ebook/dp/B079RKKKJ7/">Hands-On System Programming with Linux</a> &amp; <a href="//www.amazon.in/Linux-Kernel-Programming-practical-synchronization/dp/1803232226/">Linux Kernel Programming</a>, which were
+comparatively recent and most beginner friendly. All the  foundational knowledge
+required were covered more or less along with github repos for exercises.
+</p>
+
+<p>
+For more advanced books you should definitely checkout Javier&rsquo;s <a href="//hackerbikepacker.com/linux-books">blog</a>.
+</p>
+</div>
+<h3><a id="documentation" class="anchor" href="#documentation"><i># </i></a>Documentation</h3><div class="outline-text-3" id="text-org871a35f">
+<p>
+All the different versions of the docs can be found <a href="//kernel.org/doc/html/">here</a>.
+</p>
+
+<ul class="org-ul">
+<li><a href="https://elixir.bootlin.com/linux/v6.17-rc5/source">https://elixir.bootlin.com/linux/v6.17-rc5/source</a></li>
+<li><a href="https://lwn.net/">https://lwn.net/</a></li>
+</ul>
+</div>
+<h3><a id="blogs" class="anchor" href="#blogs"><i># </i></a>Blogs</h3><div class="outline-text-3" id="text-org75be765">
+<ul class="org-ul">
+<li><a href="https://wiki.linuxfoundation.org/lkmp/lkmp_mentee_blogs">https://wiki.linuxfoundation.org/lkmp/lkmp_mentee_blogs</a></li>
+<li><a href="https://hackerbikepacker.com">https://hackerbikepacker.com</a></li>
+</ul>
+</div>
+<h3><a id="videos" class="anchor" href="#videos"><i># </i></a>Videos</h3>
+<h2><a id="faq" class="anchor" href="#faq"><i># </i></a>FAQ</h2><div class="outline-text-2" id="text-org0ed6bec">
+<p>
+<b><b>Disclaimer</b></b>: These were collected over the course of my mentorship from the
+Office Hours held weekly and the Discord group discussions and best to my knowledge.
+</p>
+
+<p>
+Q. Is it necessary to have the same email account as the signup for Linux Foundation when sending patches?
+A: No it is not necessary, but what is important is you use your legal name for the patches you send, since
+   you are the legal owner and having your legal name helps verify that easily. 
+</p>
+
+<p>
+Q. What is the criteria for patches to get accepted for graduation?
+A: Criteria:
+</p>
+<ol class="org-ol">
+<li>Patch can be a feature, documentation, kernel fix or documentation fix.
+It needs to be something maintained within the kernel and not maintained externally.</li>
+<li>Your patch needs to get merged into any of the branches (linux-stable, linux-next, linux-media, etc. refer <a href="//git.kernel.org/">here</a> to see all the trees),
+within the mentorship period. Depending upon circumstances some additional time may be granted.</li>
+<li>Grammatical and spelling fixes do not count.</li>
+</ol>
+
+<p>
+Q. Am I a Linux Foundation employee?
+A: No, this is a mentorship program to help you get started into the kernel.
+</p>
+
+<p>
+Q. If I have a contributed to the kernel before will it count?
+A: Yes it would.
+</p>
+
+<p>
+Q. Can I stream/record the Office Hours meeting?
+A: No, due to privacy concerns of all the paricipants that is not allowed by the Linux Foundation.
+   But you are free to stream your personal development process away from Office Hours. 
+</p>
+
+
+
+<p>
+The good thing about books is that it is very easy to reference something which
+you forgot.  Even when something is outdated in the book it provides a good
+marker, from where you can go and look up the source or <a href="//lwn.net/">LWN</a> (it is amazing).
+</p>
+
+<p>
+There is no substitute for the source code however, I would encourage you to do
+documentation or backporting work along with this. I made a mistake by not
+looking into the source as often.h This is something I learn&rsquo;t about C
+development, you don&rsquo;t try too hard to rummage through the docs and blogs to
+search for an explanation, you look directly look at the source and try to
+understand and you may often make a wrong assumption (and so do the LLMs!) of
+what it does, which is part of the learning process, nothing to get frustrated
+about.
+</p>
+
+<p>
+Lastly 
+only book I would add to it would be Rami Rosen&rsquo;s <a href="//www.amazon.in/Linux-Kernel-Networking-Implementation-Experts/dp/143026196X">Linux Kernel Networking</a> if you
+were interested in netdev.
+</p>
+</div>
+<h2><a id="quickguides" class="anchor" href="#quickguides"><i># </i></a>Quick Guides</h2><div class="outline-text-2" id="text-org917471e">
+<p>
+<a href="222f6b47-302c-48f6-bdf9-3793e6124fca">Building The Kernel</a>
+Cross-Compiling for a different architecture
+</p>
+<ol class="org-ol">
+<li>gcc
+<ul class="org-ul">
+<li><a href="//developer.arm.com/downloads/-/arm-gnu-toolchain-downloads">ARM cross-compiler</a> ARM target</li>
+<li><a href="https://toolchains.bootlin.com/">https://toolchains.bootlin.com/</a></li>
+</ul></li>
+</ol>
+
+<p>
+Minimal rootfs with busybox
+Minimal rootfs with archlinux
+Minimal rootfs with ubuntu/debian
+GCC basics
+QEMU
+Cscope
+Emacs
+</p>
+</div>
+</div><script src="https://utteranc.es/client.js" repo="spyjetfayed/spyjetfayed.github.io" issue-term="title" label="comments" theme="github-dark" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/spyjetfayed" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://codeberg.org/spyjetfayed/" class="footer-link" uk-icon="icon: album">Codeberg</a></div><div class="copyright"><div style="padding-top: 3px;">Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</div><div style="padding-top: 3px;">Copyright © 2025 Ankan Biswas. All rights reserved.</div></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body uk-background-secondary uk-light"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

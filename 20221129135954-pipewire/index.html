@@ -1,43 +1,40 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-YM3EHHB2YQ');</script><title>pipewire - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">pipewire</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on November 29, 2022</p><p class="note-updated uk-article-meta">Updated on October  4, 2025</p></div><p class="blog-post-tags">Tags: <a href="/?tag=linux">linux</a>, <a href="/?tag=audio">audio</a></p><div id="table-of-contents" role="doc-toc">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Ankan Biswas"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><title>pipewire - Spyjetfayed's Blog</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Spyjetfayed's Blog</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">FOSS, Internet Freedom, Systems Programming</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/spyjetfayed">Github</a></li><li><a class="nav-link" href="https://codeberg.org/spyjetfayed">Codeberg</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">pipewire</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on November 29, 2022</p><p class="note-updated uk-article-meta">Updated on October  4, 2025</p></div><p class="blog-post-tags">Tags: <a href="/?tag=linux">linux</a>, <a href="/?tag=audio">audio</a></p><div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgdb6c0ca">GUI</a></li>
-<li><a href="#org2956237">Scripting</a>
+<li><a href="#org06da185">GUI</a></li>
+<li><a href="#org182e398">Scripting</a>
 <ul>
-<li><a href="#org5626ef8">pw-link</a></li>
-<li><a href="#org379eb30">Dump midi messages</a></li>
+<li><a href="#orgf51ea8c">pw-link</a></li>
+<li><a href="#orgb2436c2">Dump midi messages</a></li>
 </ul>
 </li>
-<li><a href="#org31c314b">Latency</a>
+<li><a href="#org90c0fbd">Latency</a>
 <ul>
-<li><a href="#org18b3ad8">Configuration</a></li>
+<li><a href="#orgc4196e5">Configuration</a></li>
 </ul>
 </li>
-<li><a href="#org11819e0">Issues</a>
+<li><a href="#org6dae555">Issues</a>
 <ul>
-<li><a href="#org760bca2">Volume very low</a>
+<li><a href="#org619a144">Volume very low</a>
 <ul>
-<li><a href="#org6270243">Set volume using a mixer tool</a></li>
+<li><a href="#orgffc1219">Set volume using a mixer tool</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgb308b85">Multiple sound cards</a>
+<li><a href="#orgcc030de">Multiple sound cards</a>
 <ul>
-<li><a href="#orgb33ced3">Timing</a></li>
+<li><a href="#org2f496b2">Timing</a></li>
 </ul>
 </li>
-<li><a href="#org6926f56">Troubleshooting</a></li>
-<li><a href="#orgd2586b6">Configuration</a>
+<li><a href="#org3f197a0">Troubleshooting</a></li>
+<li><a href="#org2935784">Configuration</a>
 <ul>
-<li><a href="#orgfc06b84">wireplumber lua scripts</a></li>
-<li><a href="#org2c85194">Multiple audio interfaces</a>
+<li><a href="#orga414d2e">wireplumber lua scripts</a></li>
+<li><a href="#orgd87d121">Multiple audio interfaces</a>
 <ul>
-<li><a href="#org8b386a6">Set the clock.name</a></li>
+<li><a href="#orgd4371b8">Set the clock.name</a></li>
 </ul>
 </li>
 </ul>
@@ -56,18 +53,18 @@
 see also <a href="959acd5a-c6f7-4247-baf6-d8f5c7fd765a">pulseaudio</a>
 see also <a href="d5d67aa4-e66e-48de-90d1-051ef3a8df77">Pop_os</a>
 </p>
-<h2><a id="gui" class="anchor" href="#gui"><i># </i></a>GUI</h2><div class="outline-text-2" id="text-orgdb6c0ca">
+<h2><a id="gui" class="anchor" href="#gui"><i># </i></a>GUI</h2><div class="outline-text-2" id="text-org06da185">
 <p>
 <a href="//gitlab.freedesktop.org/rncbc/qpwgraph">qpwgraph</a> works just like qjackctl
 </p>
 </div>
-<h2><a id="scripting" class="anchor" href="#scripting"><i># </i></a>Scripting</h2><div class="outline-text-2" id="text-org2956237">
+<h2><a id="scripting" class="anchor" href="#scripting"><i># </i></a>Scripting</h2><div class="outline-text-2" id="text-org182e398">
 <p>
 See <a href="https://docs.pipewire.org/page_man_pw-cli_1.html">https://docs.pipewire.org/page_man_pw-cli_1.html</a>
 See <a href="https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Migrate-JACK">https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Migrate-JACK</a>
 </p>
 </div>
-<h3><a id="pwlink" class="anchor" href="#pwlink"><i># </i></a>pw-link</h3><div class="outline-text-3" id="text-org5626ef8">
+<h3><a id="pwlink" class="anchor" href="#pwlink"><i># </i></a>pw-link</h3><div class="outline-text-3" id="text-orgf51ea8c">
 <p>
 Manage IO connections. Takes the place of <code>jack_connect</code>, <code>jack_disconnect</code>
 and <code>jack_lsp</code>
@@ -77,12 +74,12 @@ and <code>jack_lsp</code>
 <a href="https://docs.pipewire.org/page_man_pw-link_1.html">https://docs.pipewire.org/page_man_pw-link_1.html</a>
 </p>
 </div>
-<h3><a id="dumpmidimessages" class="anchor" href="#dumpmidimessages"><i># </i></a>Dump midi messages</h3><div class="outline-text-3" id="text-org379eb30">
+<h3><a id="dumpmidimessages" class="anchor" href="#dumpmidimessages"><i># </i></a>Dump midi messages</h3><div class="outline-text-3" id="text-orgb2436c2">
 <p>
 <a href="https://docs.pipewire.org/page_man_pw-mididump_1.html">https://docs.pipewire.org/page_man_pw-mididump_1.html</a>
 </p>
 </div>
-<h2><a id="latency" class="anchor" href="#latency"><i># </i></a>Latency</h2><div class="outline-text-2" id="text-org31c314b">
+<h2><a id="latency" class="anchor" href="#latency"><i># </i></a>Latency</h2><div class="outline-text-2" id="text-org90c0fbd">
 <p>
 See also
 <a href="https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Config-PipeWire#setting-buffer-size-quantum">https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Config-PipeWire#setting-buffer-size-quantum</a>
@@ -209,12 +206,12 @@ This will determine the latency:
 </tbody>
 </table>
 </div>
-<h3><a id="configuration" class="anchor" href="#configuration"><i># </i></a>Configuration</h3><div class="outline-text-3" id="text-org18b3ad8">
+<h3><a id="configuration" class="anchor" href="#configuration"><i># </i></a>Configuration</h3><div class="outline-text-3" id="text-orgc4196e5">
 <p>
 <a href="https://www.reddit.com/r/rhythmgames/comments/1gamrnc/low_latency_guide_for_linux_using_pipewire/">https://www.reddit.com/r/rhythmgames/comments/1gamrnc/low_latency_guide_for_linux_using_pipewire/</a>
 </p>
 </div>
-<h2><a id="issues" class="anchor" href="#issues"><i># </i></a>Issues</h2><h3><a id="volumeverylow" class="anchor" href="#volumeverylow"><i># </i></a>Volume very low</h3><h4><a id="setvolumeusingamixertool" class="anchor" href="#setvolumeusingamixertool"><i># </i></a>Set volume using a mixer tool</h4><ul><li>alsamixer<div class="outline-text-5" id="text-orgfac7f60">
+<h2><a id="issues" class="anchor" href="#issues"><i># </i></a>Issues</h2><h3><a id="volumeverylow" class="anchor" href="#volumeverylow"><i># </i></a>Volume very low</h3><h4><a id="setvolumeusingamixertool" class="anchor" href="#setvolumeusingamixertool"><i># </i></a>Set volume using a mixer tool</h4><ul><li>alsamixer<div class="outline-text-5" id="text-org123b722">
 <p>
 Use <code>alsamixer</code> tool and set the output gain to whatever.
 </p>
@@ -232,20 +229,20 @@ You can store the alsa config by using <code>alsactl</code>
 </ul>
 </div>
 </li>
-<li>pavucontrol<div class="outline-text-5" id="text-orgfef840c">
+<li>pavucontrol<div class="outline-text-5" id="text-org768e89b">
 <p>
 Pipewire works with Pulse audio, so pavucontrol should work as well. In fact,
 I had better luck with this to set the volume level my Xone k2
 </p>
 </div>
 </li>
-<li>amixer<div class="outline-text-5" id="text-orgd725afb">
+<li>amixer<div class="outline-text-5" id="text-org1abb591">
 <p>
 Like alsamixer, but CLI only (no TUI)
 </p>
 </div>
 </li></ul>
-<h2><a id="multiplesoundcards" class="anchor" href="#multiplesoundcards"><i># </i></a>Multiple sound cards</h2><div class="outline-text-2" id="text-orgb308b85">
+<h2><a id="multiplesoundcards" class="anchor" href="#multiplesoundcards"><i># </i></a>Multiple sound cards</h2><div class="outline-text-2" id="text-orgcc030de">
 <p>
 By default pipewire handles multiple sound cards timing by resampling. In
 pavucontrol you can set the Pro Audio profile on the card which, amonng other
@@ -256,7 +253,7 @@ things will assume all devices share the same clock.
 <a href="https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/FAQ#what-is-the-pro-audio-profile">https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/FAQ#what-is-the-pro-audio-profile</a>
 </p>
 </div>
-<h3><a id="timing" class="anchor" href="#timing"><i># </i></a>Timing</h3><div class="outline-text-3" id="text-orgb33ced3">
+<h3><a id="timing" class="anchor" href="#timing"><i># </i></a>Timing</h3><div class="outline-text-3" id="text-org2f496b2">
 <p>
 Instead of letting pipewire handle timing by resampling, which I found to be
 less than perfect, we can use a module-loopback to introduce a delay on one
@@ -267,12 +264,12 @@ or more devices.
 See also <a href="959acd5a-c6f7-4247-baf6-d8f5c7fd765a">pulseaudio</a> for how to set that up
 </p>
 </div>
-<h2><a id="troubleshooting" class="anchor" href="#troubleshooting"><i># </i></a>Troubleshooting</h2><div class="outline-text-2" id="text-org6926f56">
+<h2><a id="troubleshooting" class="anchor" href="#troubleshooting"><i># </i></a>Troubleshooting</h2><div class="outline-text-2" id="text-org3f197a0">
 <p>
 <a href="https://support.system76.com/articles/audio/">https://support.system76.com/articles/audio/</a>
 </p>
 </div>
-<h2><a id="configuration" class="anchor" href="#configuration"><i># </i></a>Configuration</h2><div class="outline-text-2" id="text-orgd2586b6">
+<h2><a id="configuration" class="anchor" href="#configuration"><i># </i></a>Configuration</h2><div class="outline-text-2" id="text-org2935784">
 <p>
 See also <a href="https://github.com/apmiller108/audio">https://github.com/apmiller108/audio</a>
 &#x2026;and
@@ -284,13 +281,13 @@ See also <a href="https://github.com/apmiller108/audio">https://github.com/apmil
 <li><a href="https://manual.ardour.org/setting-up-your-system/the-right-computer-system-for-digital-audio/">https://manual.ardour.org/setting-up-your-system/the-right-computer-system-for-digital-audio/</a></li>
 </ul>
 </div>
-<h3><a id="wireplumberluascripts" class="anchor" href="#wireplumberluascripts"><i># </i></a>wireplumber lua scripts</h3><div class="outline-text-3" id="text-orgfc06b84">
+<h3><a id="wireplumberluascripts" class="anchor" href="#wireplumberluascripts"><i># </i></a>wireplumber lua scripts</h3><div class="outline-text-3" id="text-orga414d2e">
 <p>
 I used these scripts to configure my audio interfaces.
 See also <a href="https://github.com/apmiller108/audio/tree/main/config/wireplumber/main.lua.d">https://github.com/apmiller108/audio/tree/main/config/wireplumber/main.lua.d</a>
 </p>
 </div>
-<h3><a id="multipleaudiointerfaces" class="anchor" href="#multipleaudiointerfaces"><i># </i></a>Multiple audio interfaces</h3><div class="outline-text-3" id="text-org2c85194">
+<h3><a id="multipleaudiointerfaces" class="anchor" href="#multipleaudiointerfaces"><i># </i></a>Multiple audio interfaces</h3><div class="outline-text-3" id="text-orgd87d121">
 <p>
 Different hardware clocks can create problems. Pipewire will correct for
 different clock rates with adaptive resampling. I found this could create audio
@@ -325,7 +322,7 @@ single format for performance reasons.
 </p>
 </blockquote>
 </div>
-<h4><a id="settheclockname" class="anchor" href="#settheclockname"><i># </i></a>Set the clock.name</h4><div class="outline-text-4" id="text-org8b386a6">
+<h4><a id="settheclockname" class="anchor" href="#settheclockname"><i># </i></a>Set the clock.name</h4><div class="outline-text-4" id="text-orgd4371b8">
 <p>
 Setting the <code>clock.name</code> property on the output nodes of both interfaces to the
 same value seemed to fix it for me. By sharing the <code>clock.name</code> pipewire will
@@ -353,4 +350,4 @@ clock.name on the nodes.
 </p>
 </blockquote>
 </div>
-</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>
+</div><script src="https://utteranc.es/client.js" repo="spyjetfayed/spyjetfayed.github.io" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/spyjetfayed" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://codeberg.org/spyjetfayed/" class="footer-link" uk-icon="icon: album">Codeberg</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Ankan Biswas. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

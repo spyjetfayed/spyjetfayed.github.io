@@ -1,30 +1,27 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-YM3EHHB2YQ');</script><title>Rake Tasks - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Rake Tasks</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on April 17, 2018</p><p class="note-updated uk-article-meta">Updated on April  3, 2023</p></div><p class="blog-post-tags">Tags: <a href="/?tag=rails">rails</a>, <a href="/?tag=rake">rake</a>, <a href="/?tag=ruby">ruby</a></p><div id="table-of-contents" role="doc-toc">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Ankan Biswas"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><title>Rake Tasks - Spyjetfayed's Blog</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Spyjetfayed's Blog</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">FOSS, Internet Freedom, Systems Programming</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/spyjetfayed">Github</a></li><li><a class="nav-link" href="https://codeberg.org/spyjetfayed">Codeberg</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Rake Tasks</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on April 17, 2018</p><p class="note-updated uk-article-meta">Updated on April  3, 2023</p></div><p class="blog-post-tags">Tags: <a href="/?tag=rails">rails</a>, <a href="/?tag=rake">rake</a>, <a href="/?tag=ruby">ruby</a></p><div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3e7aaf8">Testing Rake Tasks</a></li>
-<li><a href="#org25d3ca0">Rails</a>
+<li><a href="#org763185c">Testing Rake Tasks</a></li>
+<li><a href="#org14b4b24">Rails</a>
 <ul>
-<li><a href="#org5f14fc8">Generate a rake task in rails</a>
+<li><a href="#org09d5de2">Generate a rake task in rails</a>
 <ul>
-<li><a href="#orgdd1cf3d">What is environment?</a></li>
+<li><a href="#org604373e">What is environment?</a></li>
 </ul>
 </li>
-<li><a href="#org6943be2">List all available rake tasks</a></li>
+<li><a href="#org02efafd">List all available rake tasks</a></li>
 </ul>
 </li>
-<li><a href="#org97c8618">Some tips</a>
+<li><a href="#orgd704523">Some tips</a>
 <ul>
-<li><a href="#orgc3dcb04">Shell Commands in Rake</a>
+<li><a href="#orgd38ee78">Shell Commands in Rake</a>
 <ul>
-<li><a href="#orgfe11fea">Ignore errors from shelled out commands</a></li>
+<li><a href="#org55e564d">Ignore errors from shelled out commands</a></li>
 </ul>
 </li>
-<li><a href="#org02603d7">Passing Args to Rake Task</a></li>
-<li><a href="#orgff9db62">Invoking Rake Tasks in the Console</a></li>
+<li><a href="#orga931ea2">Passing Args to Rake Task</a></li>
+<li><a href="#orgf7a4eb7">Invoking Rake Tasks in the Console</a></li>
 </ul>
 </li>
 </ul>
@@ -44,7 +41,7 @@ See also <a href="https://ruby.github.io/rake/">https://ruby.github.io/rake/</a>
 <p>
 And <a href="https://graceful.dev/courses/the-freebies/modules/rake-and-project-automation/topic/episode-131-rake-rules/">https://graceful.dev/courses/the-freebies/modules/rake-and-project-automation/topic/episode-131-rake-rules/</a>
 </p>
-<h2><a id="testingraketasks" class="anchor" href="#testingraketasks"><i># </i></a>Testing Rake Tasks</h2><div class="outline-text-2" id="text-org3e7aaf8">
+<h2><a id="testingraketasks" class="anchor" href="#testingraketasks"><i># </i></a>Testing Rake Tasks</h2><div class="outline-text-2" id="text-org763185c">
 <p>
 This is one approach to testing a rake task. Another might be to encapsulate
 the task in a module and test that. That wouldn&rsquo;t quite be a complete, but it
@@ -79,7 +76,7 @@ might be enough is some cases.
 </pre>
 </div>
 </div>
-<h2><a id="rails" class="anchor" href="#rails"><i># </i></a>Rails</h2><h3><a id="generatearaketaskinrails" class="anchor" href="#generatearaketaskinrails"><i># </i></a>Generate a rake task in rails</h3><div class="outline-text-3" id="text-org5f14fc8">
+<h2><a id="rails" class="anchor" href="#rails"><i># </i></a>Rails</h2><h3><a id="generatearaketaskinrails" class="anchor" href="#generatearaketaskinrails"><i># </i></a>Generate a rake task in rails</h3><div class="outline-text-3" id="text-org09d5de2">
 <div class="org-src-container">
 <pre class="src src-ruby">$ rails g task_namespace task_one task_two
 </pre>
@@ -102,19 +99,19 @@ will produce <code>lib/tasks/task_namespace.rake</code>:
 </pre>
 </div>
 </div>
-<h4><a id="whatisenvironment" class="anchor" href="#whatisenvironment"><i># </i></a>What is environment?</h4><div class="outline-text-4" id="text-orgdd1cf3d">
+<h4><a id="whatisenvironment" class="anchor" href="#whatisenvironment"><i># </i></a>What is environment?</h4><div class="outline-text-4" id="text-org604373e">
 <p>
 In this example, the task depends on the <code>environment</code> task. For rails, I
 think this loads the environment as specified in <code>config/environment.rb</code>
 </p>
 </div>
-<h3><a id="listallavailableraketasks" class="anchor" href="#listallavailableraketasks"><i># </i></a>List all available rake tasks</h3><div class="outline-text-3" id="text-org6943be2">
+<h3><a id="listallavailableraketasks" class="anchor" href="#listallavailableraketasks"><i># </i></a>List all available rake tasks</h3><div class="outline-text-3" id="text-org02efafd">
 <div class="org-src-container">
 <pre class="src src-shell">$ rake -T
 </pre>
 </div>
 </div>
-<h2><a id="sometips" class="anchor" href="#sometips"><i># </i></a>Some tips</h2><div class="outline-text-2" id="text-org97c8618">
+<h2><a id="sometips" class="anchor" href="#sometips"><i># </i></a>Some tips</h2><div class="outline-text-2" id="text-orgd704523">
 <ul class="org-ul">
 <li>Write a good description</li>
 <li>Namespace task related tasks</li>
@@ -124,7 +121,7 @@ think this loads the environment as specified in <code>config/environment.rb</co
 <li>Write logs</li>
 </ul>
 </div>
-<h3><a id="shellcommandsinrake" class="anchor" href="#shellcommandsinrake"><i># </i></a>Shell Commands in Rake</h3><h4><a id="ignoreerrorsfromshelledoutcommands" class="anchor" href="#ignoreerrorsfromshelledoutcommands"><i># </i></a>Ignore errors from shelled out commands</h4><div class="outline-text-4" id="text-orgfe11fea">
+<h3><a id="shellcommandsinrake" class="anchor" href="#shellcommandsinrake"><i># </i></a>Shell Commands in Rake</h3><h4><a id="ignoreerrorsfromshelledoutcommands" class="anchor" href="#ignoreerrorsfromshelledoutcommands"><i># </i></a>Ignore errors from shelled out commands</h4><div class="outline-text-4" id="text-org55e564d">
 <p>
 Force a 0 exit code
 </p>
@@ -144,7 +141,7 @@ or pass an empty block
 </pre>
 </div>
 </div>
-<h3><a id="passingargstoraketask" class="anchor" href="#passingargstoraketask"><i># </i></a>Passing Args to Rake Task</h3><div class="outline-text-3" id="text-org02603d7">
+<h3><a id="passingargstoraketask" class="anchor" href="#passingargstoraketask"><i># </i></a>Passing Args to Rake Task</h3><div class="outline-text-3" id="text-orga931ea2">
 <div class="org-src-container">
 <pre class="src src-ruby">namespace <span class="org-constant">:foo</span> <span class="org-keyword">do</span>
   desc <span class="org-string">'Seed flag rules with several conditions each'</span>
@@ -167,7 +164,7 @@ When using zsh, the brackets need to be escaped. Prefix the above command
 with <code>noglob</code>.
 </p>
 </div>
-<h3><a id="invokingraketasksintheconsole" class="anchor" href="#invokingraketasksintheconsole"><i># </i></a>Invoking Rake Tasks in the Console</h3><div class="outline-text-3" id="text-orgff9db62">
+<h3><a id="invokingraketasksintheconsole" class="anchor" href="#invokingraketasksintheconsole"><i># </i></a>Invoking Rake Tasks in the Console</h3><div class="outline-text-3" id="text-orgf7a4eb7">
 <div class="org-src-container">
 <pre class="src src-ruby"><span class="org-builtin">require</span> <span class="org-string">'rake'</span>
 <span class="org-type">Rails</span>.application.load_tasks
@@ -175,4 +172,4 @@ with <code>noglob</code>.
 </pre>
 </div>
 </div>
-</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>
+</div><script src="https://utteranc.es/client.js" repo="spyjetfayed/spyjetfayed.github.io" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/spyjetfayed" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://codeberg.org/spyjetfayed/" class="footer-link" uk-icon="icon: album">Codeberg</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Ankan Biswas. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>

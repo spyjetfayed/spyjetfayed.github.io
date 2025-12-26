@@ -1,26 +1,23 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Alex P. Miller"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><script src="https://www.googletagmanager.com/gtag/js?id=G-YM3EHHB2YQ"></script><script>window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-YM3EHHB2YQ');</script><title>Vector based search - Alex's Notes</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Alex's Slip-box</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">These are my org-mode notes in sort of Zettelkasten style</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/apmiller108">Github</a></li><li><a class="nav-link" href="https://alex-miller.co">alex-miller.co</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Vector based search</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on April  1, 2025</p><p class="note-updated uk-article-meta">Updated on May  6, 2025</p></div><p class="blog-post-tags">Tags: <a href="/?tag=ai">ai</a>, <a href="/?tag=rails">rails</a>, <a href="/?tag=ruby">ruby</a></p><div id="table-of-contents" role="doc-toc">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Ankan Biswas"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><title>Vector based search - Spyjetfayed's Blog</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Spyjetfayed's Blog</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">FOSS, Internet Freedom, Systems Programming</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Notes</a></li><li><a class="nav-link" href="https://github.com/spyjetfayed">Github</a></li><li><a class="nav-link" href="https://codeberg.org/spyjetfayed">Codeberg</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-muted"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">Vector based search</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on April  1, 2025</p><p class="note-updated uk-article-meta">Updated on May  6, 2025</p></div><p class="blog-post-tags">Tags: <a href="/?tag=ai">ai</a>, <a href="/?tag=rails">rails</a>, <a href="/?tag=ruby">ruby</a></p><div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgeaf5373">pgvector</a>
+<li><a href="#orgef7148a">pgvector</a>
 <ul>
-<li><a href="#org476ad91">Docker</a></li>
-<li><a href="#orgbb2a958">create extension</a></li>
+<li><a href="#org7eb4b0a">Docker</a></li>
+<li><a href="#org3518528">create extension</a></li>
 </ul>
 </li>
-<li><a href="#org2156cd3">Database Schema</a></li>
-<li><a href="#orga076a82">Model Configuration</a></li>
-<li><a href="#org7439831">Embedding Generation</a></li>
-<li><a href="#org1f94a2e">Background Processing</a>
+<li><a href="#orgd0e8c69">Database Schema</a></li>
+<li><a href="#orgd98aa99">Model Configuration</a></li>
+<li><a href="#org5deab72">Embedding Generation</a></li>
+<li><a href="#orgacc6343">Background Processing</a>
 <ul>
-<li><a href="#org45f9ef8">Triggering embedding generation after text generation</a></li>
+<li><a href="#org6d27936">Triggering embedding generation after text generation</a></li>
 </ul>
 </li>
-<li><a href="#org078c7ca">Search Implementation</a></li>
-<li><a href="#org574a9a6">Implementation Flow</a></li>
+<li><a href="#orgb06f57a">Search Implementation</a></li>
+<li><a href="#orgec21623">Implementation Flow</a></li>
 </ul>
 </div>
 </div>
@@ -52,16 +49,16 @@ implementation of vector search in a Ruby on Rails application using the
 </div>
 
 
-<div id="org0fe915e" class="figure">
+<div id="org804fc01" class="figure">
 <p><img src=/images/vector-search-architecture-overview.svg >
 </p>
 </div>
-<h2><a id="pgvector" class="anchor" href="#pgvector"><i># </i></a>pgvector</h2><div class="outline-text-2" id="text-orgeaf5373">
+<h2><a id="pgvector" class="anchor" href="#pgvector"><i># </i></a>pgvector</h2><div class="outline-text-2" id="text-orgef7148a">
 <p>
 Install and enable the extension. See also <a href="https://github.com/pgvector/pgvector">https://github.com/pgvector/pgvector</a>.
 </p>
 </div>
-<h3><a id="docker" class="anchor" href="#docker"><i># </i></a>Docker</h3><div class="outline-text-3" id="text-org476ad91">
+<h3><a id="docker" class="anchor" href="#docker"><i># </i></a>Docker</h3><div class="outline-text-3" id="text-org7eb4b0a">
 <p>
 <a href="https://hub.docker.com/r/ankane/pgvector">https://hub.docker.com/r/ankane/pgvector</a>
 This docker image comes with pgvector installed. Otherwise use the regular PG
@@ -74,7 +71,7 @@ image with a custom Dockerfile.
 </pre>
 </div>
 </div>
-<h3><a id="createextension" class="anchor" href="#createextension"><i># </i></a>create extension</h3><div class="outline-text-3" id="text-orgbb2a958">
+<h3><a id="createextension" class="anchor" href="#createextension"><i># </i></a>create extension</h3><div class="outline-text-3" id="text-org3518528">
 <p>
 The implementation relies on the pgvector extension for PostgreSQL:
 </p>
@@ -95,7 +92,7 @@ Migration to enable the pgvector extension
 </pre>
 </div>
 </div>
-<h2><a id="databaseschema" class="anchor" href="#databaseschema"><i># </i></a>Database Schema</h2><div class="outline-text-2" id="text-org2156cd3">
+<h2><a id="databaseschema" class="anchor" href="#databaseschema"><i># </i></a>Database Schema</h2><div class="outline-text-2" id="text-orgd0e8c69">
 <p>
 Adding vector columns to store embeddings (aka vectors)
 </p>
@@ -125,7 +122,7 @@ Consider indexes if using large datasets and it makes sense. There are options
 with trade-offs: See also <a href="https://tembo.io/blog/vector-indexes-in-pgvector">https://tembo.io/blog/vector-indexes-in-pgvector</a>
 </p>
 </div>
-<h2><a id="modelconfiguration" class="anchor" href="#modelconfiguration"><i># </i></a>Model Configuration</h2><div class="outline-text-2" id="text-orga076a82">
+<h2><a id="modelconfiguration" class="anchor" href="#modelconfiguration"><i># </i></a>Model Configuration</h2><div class="outline-text-2" id="text-orgd98aa99">
 <p>
 The Conversation model includes special handling for vector attributes:
 </p>
@@ -159,7 +156,7 @@ you use the <code>has_neighbors :embedding</code> macro.
 </pre>
 </div>
 </div>
-<h2><a id="embeddinggeneration" class="anchor" href="#embeddinggeneration"><i># </i></a>Embedding Generation</h2><div class="outline-text-2" id="text-org7439831">
+<h2><a id="embeddinggeneration" class="anchor" href="#embeddinggeneration"><i># </i></a>Embedding Generation</h2><div class="outline-text-2" id="text-org5deab72">
 <p>
 Using the Voyage API for generating embeddings:
 </p>
@@ -210,7 +207,7 @@ are embedded with a baked in prompt. See <a href="https://docs.voyageai.com/refe
 </pre>
 </div>
 </div>
-<h2><a id="backgroundprocessing" class="anchor" href="#backgroundprocessing"><i># </i></a>Background Processing</h2><div class="outline-text-2" id="text-org1f94a2e">
+<h2><a id="backgroundprocessing" class="anchor" href="#backgroundprocessing"><i># </i></a>Background Processing</h2><div class="outline-text-2" id="text-orgacc6343">
 <p>
 Using Sidekiq for asynchronous embedding generation:
 </p>
@@ -231,7 +228,7 @@ Using Sidekiq for asynchronous embedding generation:
 </pre>
 </div>
 </div>
-<h3><a id="triggeringembeddinggenerationaftertextgeneration" class="anchor" href="#triggeringembeddinggenerationaftertextgeneration"><i># </i></a>Triggering embedding generation after text generation</h3><div class="outline-text-3" id="text-org45f9ef8">
+<h3><a id="triggeringembeddinggenerationaftertextgeneration" class="anchor" href="#triggeringembeddinggenerationaftertextgeneration"><i># </i></a>Triggering embedding generation after text generation</h3><div class="outline-text-3" id="text-org6d27936">
 <p>
 Update the conversation embedding when the content changes. schedule it out
 some minutes with a unique job constraint so we don&rsquo;t create too many
@@ -249,7 +246,7 @@ unecessary jobs.
 </pre>
 </div>
 </div>
-<h2><a id="searchimplementation" class="anchor" href="#searchimplementation"><i># </i></a>Search Implementation</h2><div class="outline-text-2" id="text-org078c7ca">
+<h2><a id="searchimplementation" class="anchor" href="#searchimplementation"><i># </i></a>Search Implementation</h2><div class="outline-text-2" id="text-orgb06f57a">
 <p>
 The search query class handles vector similarity search:
 </p>
@@ -327,7 +324,7 @@ threshold</li>
 </div>
 
 
-<div id="org6f1586b" class="figure">
+<div id="org07447c6" class="figure">
 <p><img src=/images/vector-search-vector-similarity-viz.svg >
 </p>
 </div>
@@ -348,7 +345,7 @@ Cosine Distance:
 <li>It’s widely used in production semantic search systems and has proven effectiveness</li>
 </ul>
 </div>
-<h2><a id="implementationflow" class="anchor" href="#implementationflow"><i># </i></a>Implementation Flow</h2><div class="outline-text-2" id="text-org574a9a6">
+<h2><a id="implementationflow" class="anchor" href="#implementationflow"><i># </i></a>Implementation Flow</h2><div class="outline-text-2" id="text-orgec21623">
 <p>
 Setup: Enable pgvector extension and add vector column to conversations table
 </p>
@@ -400,9 +397,9 @@ UI: Create search interface components for user interaction
 </div>
 
 
-<div id="orgc59ff5c" class="figure">
+<div id="orgb6c64c9" class="figure">
 <p><img src=/images/vector-search-process-flow.svg >
 </p>
 </div>
 </div>
-</div><script src="https://utteranc.es/client.js" repo="apmiller108/slip-box" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/apmiller108" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://notes.alex-miller.co/" class="footer-link" uk-icon="icon: album">notes</a><a href="https://alex-miller.co/" class="footer-link" uk-icon="icon: home">alex-miller.co</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Alex P. Miller. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>
+</div><script src="https://utteranc.es/client.js" repo="spyjetfayed/spyjetfayed.github.io" issue-term="title" label="comments" theme="boxy-light" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/spyjetfayed" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://codeberg.org/spyjetfayed/" class="footer-link" uk-icon="icon: album">Codeberg</a></div><div class="copyright"><p>Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</p><p>Copyright © 2025 Ankan Biswas. All rights reserved.</p></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>
