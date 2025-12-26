@@ -3,6 +3,8 @@
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
 <li><a href="#orgf9271c0">Background</a></li>
+<li><a href="#org1e24fda">The first few weeks</a></li>
+<li><a href="#orgf214a89"></a></li>
 <li><a href="#orgd756d92">C programming</a></li>
 <li><a href="#org5e906cb">Resources</a>
 <ul>
@@ -10,6 +12,7 @@
 <li><a href="#org871a35f">Documentation</a></li>
 <li><a href="#org75be765">Blogs</a></li>
 <li><a href="#org9ff6676">Videos</a></li>
+<li><a href="#orgd928fcd">Tools</a></li>
 </ul>
 </li>
 <li><a href="#org0ed6bec">FAQ</a></li>
@@ -22,27 +25,41 @@
 </p>
 <h2><a id="background" class="anchor" href="#background"><i># </i></a>Background</h2><div class="outline-text-2" id="text-orgf9271c0">
 <p>
-Deep diving into a linux system was something that I got interested in 2020,
-having a lot of time on my hand during the lockdown era. My idea was still
-limited to exploring the userspace with <a href="//www.linuxfromscratch.org/lfs/">LFS</a> or start with Gentoo. I had tried
-reading Robert Love&rsquo;s <a href="//archive.org/details/linuxsystemprogr0000love_h9n0">Linux System Programming</a>, but it felt too difficult to
-start with and C programming was something I had little experience in.
+Deep diving into a linux system was something that I had wanted to do since in 2022,
+but it was only this year that while searching for guidance on systems programming
+on <a href="//old.reddit.com/r/kernel/">r/kernel</a> I found a link to <a href="//lfx.linuxfoundation.org/tools/mentorship/">Mentorship Program</a> run by the Linux Foundation! It
+happens thrice every year and I was just 2 weeks away from the Fall Session start. I
+was very excited and anxious after the application process which required completing
+tasks like building the kernel, adding EXTRAVERSION, reproducing a syzbot bug,
+etc. as I felt I could have done better. I felt especially lucky when I got an
+invitation to the program, a Discord Invite and the Zoom meet link.
 </p>
 
 <p>
-So when I found out about the Linux Kernel Mentorship Program from an accidental
-reddit post I applied without any other thought. And it turned out to be the
-best decision since the time years back I installed Ubuntu on my laptop in my
-college dorm.
+About my technical side I did not have the slighest idea about Virtual Memory,
+Paging, Scheduling, Interrupt, Locking. Prior to this my C experience was - the
+first 20 episodes of the legendary <a href="//hero.handmade.network/">Handmade Hero</a> game development course run by
+<a href="//caseymuratori.com/about">Casey Muratori</a>, first 2 chapters of Robert Love&rsquo;s <a href="//archive.org/details/linuxsystemprogr0000love_h9n0">Linux System Programming</a> back in
+2022 and built a cli tool I built using libxml, curl, xpath libraries. Apart from
+that my daily work involved javascript and python, so naturaly getting into kernel
+programming right away might have been more than I had asked for, but things put off
+long enough go to the fabled Never-land and since I am here writing thing something
+must have worked out!
 </p>
 </div>
+<h2><a id="thefirstfewweeks" class="anchor" href="#thefirstfewweeks"><i># </i></a>The first few weeks</h2><div class="outline-text-2" id="text-org1e24fda">
+<p>
+The past experiences <a href="//wiki.linuxfoundation.org/lkmp/lkmp_mentee_blogs">mentee blogs</a> was one of the first places I t
+</p>
+</div>
+<h2><a id="" class="anchor" href="#"><i># </i></a></h2>
+
 <h2><a id="cprogramming" class="anchor" href="#cprogramming"><i># </i></a>C programming</h2><div class="outline-text-2" id="text-orgd756d92">
 <p>
 Compared to all the high-level languages my work primarily involved python &amp;
 javascript where the tooling is something that just works out of the box, in
-C you have to set things up painstakingly. C will provide a lot of friction
-to a programmer in general who hasn&rsquo;t had much low-level programming experience,
-so it was often very frustrating  for me.
+C you have to set a lot of things up yourself. I understood the basic concept
+of pointers, but the kernel takes 
 </p>
 </div>
 <h2><a id="resources" class="anchor" href="#resources"><i># </i></a>Resources</h2><h3><a id="books" class="anchor" href="#books"><i># </i></a>Books</h3><div class="outline-text-3" id="text-org1636070">
@@ -65,17 +82,33 @@ All the different versions of the docs can be found <a href="//kernel.org/doc/ht
 </p>
 
 <ul class="org-ul">
-<li><a href="https://elixir.bootlin.com/linux/v6.17-rc5/source">https://elixir.bootlin.com/linux/v6.17-rc5/source</a></li>
 <li><a href="https://lwn.net/">https://lwn.net/</a></li>
 </ul>
 </div>
 <h3><a id="blogs" class="anchor" href="#blogs"><i># </i></a>Blogs</h3><div class="outline-text-3" id="text-org75be765">
 <ul class="org-ul">
-<li><a href="https://wiki.linuxfoundation.org/lkmp/lkmp_mentee_blogs">https://wiki.linuxfoundation.org/lkmp/lkmp_mentee_blogs</a></li>
+<li><a href="https://wiki.linuxfoundation.org/lkmp/lkmp_mentee_blogs">https://wiki.linuxfoundation.org/lkmp/lkmp_mentee_blogs</a>
+<ul class="org-ul">
+<li><a href="https://blog.marliere.net/posts/">https://blog.marliere.net/posts/</a> (debootstrap+kernel, git workflow, neovim setup, remote debugging)</li>
+<li><a href="https://djahchankoike.wordpress.com/2024/11/07/a-look-into-lk-bugfixing/">https://djahchankoike.wordpress.com/2024/11/07/a-look-into-lk-bugfixing/</a> (RCU bug)</li>
+<li><a href="https://alez87.github.io/tag/kernel">https://alez87.github.io/tag/kernel</a> (Rust)</li>
+<li></li>
+</ul></li>
+<li><a href="https://www.linuxfoundation.org/webinars">https://www.linuxfoundation.org/webinars</a></li>
 <li><a href="https://hackerbikepacker.com">https://hackerbikepacker.com</a></li>
+<li><a href="https://sergioprado.blog/how-is-the-linux-kernel-tested/">https://sergioprado.blog/how-is-the-linux-kernel-tested/</a></li>
+<li></li>
 </ul>
 </div>
 <h3><a id="videos" class="anchor" href="#videos"><i># </i></a>Videos</h3>
+
+<h3><a id="tools" class="anchor" href="#tools"><i># </i></a>Tools</h3><div class="outline-text-3" id="text-orgd928fcd">
+<p>
+<a href="https://buildroot.org/">https://buildroot.org/</a>
+<a href="https://elixir.bootlin.com/linux/v6.17-rc5/source">https://elixir.bootlin.com/linux/v6.17-rc5/source</a>
+<a href="https://b4.docs.kernel.org/">https://b4.docs.kernel.org/</a>
+</p>
+</div>
 <h2><a id="faq" class="anchor" href="#faq"><i># </i></a>FAQ</h2><div class="outline-text-2" id="text-org0ed6bec">
 <p>
 <b><b>Disclaimer</b></b>: These were collected over the course of my mentorship from the
