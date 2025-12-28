@@ -1,0 +1,193 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta author="Ankan Biswas"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><link rel="manifest" href="/favicon/manifest.json?v=1"/><link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1"/><link rel="stylesheet" href="/css/uikit.min.css"/><link rel="stylesheet" href="/css/code.css"/><link rel="stylesheet" href="/css/site.css"/><script src="/js/uikit.min.js"></script><script src="/js/uikit-icons.min.js"></script><script src="/js/lunr.min.js"></script><script src="/js/site.js"></script><title>LKMP Fall 2025: Adventures in Kernel Land - Spyjetfayed's Blog</title></head><body><div class="header uk-section uk-section-primary"><div class="heading uk-container"><div class="site-title-container uk-flex uk-flex-middle"><h1 class="site-title uk-h1 uk-heading-medium">Spyjetfayed's Blog</h1><form class="uk-search uk-search-default search-form" id="search-form"><span uk-search-icon=""></span><input class="uk-search-input" type="search" placeholder="Search"/></form></div><div class="site-tagline uk-text-lead">FOSS, Internet Freedom, Systems Programming</div></div><div class="uk-container"><nav class="uk-navbar-container uk-navbar-transparent" uk-navbar="uk-navbar"><div class="uk-navbar-left"><ul class="uk-navbar-nav"><li><a class="nav-link" href="/">Posts</a></li><li><a class="nav-link" href="https://github.com/spyjetfayed">Github</a></li><li><a class="nav-link" href="https://codeberg.org/spyjetfayed">Codeberg</a></li></ul></div></nav></div></div><div class="main uk-section uk-section-secondary uk-height-viewport"><div class="note uk-container"><div class="note-content"><h1 class="note-title uk-h1">LKMP Fall 2025: Adventures in Kernel Land</h1><div class="note-meta"><p class="note-created uk-article-meta">Created on December 28, 2025</p></div><p class="blog-post-tags">Tags: <a href="/?tag=kernel">kernel</a></p><div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org1bb41df">Introduction</a></li>
+<li><a href="#orgcd483be">The first few weeks</a></li>
+<li><a href="#org8a4b51b">Landing some patches</a></li>
+<li><a href="#orgb71703b">The last few weeks and then some</a></li>
+<li><a href="#org6cff496">What next?</a></li>
+<li><a href="#org6bce9a1">Closing Thoughts</a></li>
+</ul>
+</div>
+</div>
+<p>
+:ID:       a4125769-f18c-423c-aa6e-2eb2afbe572a
+</p>
+<h2><a id="introduction" class="anchor" href="#introduction"><i># </i></a>Introduction</h2><div class="outline-text-2" id="text-org1bb41df">
+<p>
+Hey I am Ankan, I have been a linux user for good part of a decade decade now. What
+started as an effort to save my aging laptop from obsolescence, turned into an
+endless series of rabbit holes that got me here. After the ritual distro hopping
+days, and settling down with a comfortable Artix Linux config I hit a
+plateau. Things like mesa, device tree, wayland protocol, libc, stack trace, system
+calls, fork, etc. stuff that I would regularly come across in forums but always
+remained a bit of a blackbox. I felt like just playful curiosity wasn&rsquo;t enough to
+get past these.
+</p>
+
+<p>
+System Programming was what I needed but I never could go beyond the first few pages
+of <a href="//en.wikipedia.org/wiki/The_Linux_Programming_Interface">The Linux Programming Interface</a> and <a href="//www.amazon.com/Linux-System-Programming-Talking-Directly/dp/1449339530/">Linux System Programming</a>. So when I found out
+about <a href="//lfx.linuxfoundation.org/tools/mentorship/">Mentorship Program</a> run by the Linux Foundation from <a href="//old.reddit.com/r/kernel/">r/kernel,</a> I applied right
+away.  With a few weeks to spare before the start I managed to complete the tasks
+needed to be eligible for it. I was unsure if I would get accepted since I did have
+to rush through a bit, so I was extremely glad when I found an email invitation waiting
+for me in my inbox.
+</p>
+</div>
+<h2><a id="thefirstfewweeks" class="anchor" href="#thefirstfewweeks"><i># </i></a>The first few weeks</h2><div class="outline-text-2" id="text-orgcd483be">
+<p>
+In our first meet Shuah welcomed us and provided some initial guidance - to use our
+legal names, as the contribution make is under the name in the patch and to focus on
+at most two subsystems. I had a vague idea what a subsystem meant, it is the the
+highest level of organization, where each subsystem has its maintainer/s and
+reviewer/s. Establishing proper communication with them was one of the key
+objectives.
+</p>
+
+<p>
+When sending a sending a contribution if we had any problems we could ask on Discord
+and generally static analysis and <a href="//syzkaller.appspot.com/">syzbot</a> bugs were the recommended place to start for
+mentees.
+</p>
+
+<p>
+The initial challenges for me were:
+</p>
+<ol class="org-ol">
+<li>Syzbot bugs beyond my comfort zone.</li>
+<li>The information in the docs were condensed, I wasn&rsquo;t extracting much info.</li>
+<li>Difficultly in keeping track of which header imports what and from where and
+general inexperience with C.</li>
+<li>Clever use of macro, took me time to learn and appreciate.</li>
+<li>Ineffective use of git. Git is so much more than just <i>commit</i> and <i>merge</i>.</li>
+<li>Scattered efforts, so I was not making much real progress.</li>
+<li>In addition to this I made a mistake by not going through each <a href="//wiki.linuxfoundation.org/lkmp/lkmp_mentee_blogs">mentee blogs</a> and
+the resources list more rigorously. Most of the problems I encountered and ended
+up reinventing the wheel were already documented there. I have tried to
+categorize things in <a href="//spyjetfayed.github.io/20251227153745-kernel_resources">Kernel Resources</a> (should get updated frequently).</li>
+</ol>
+
+<p>
+After the initial setbacks I decided to get some foundational OS knowledge, Kaiwan
+N. Billimoria&rsquo;s <a href="//www.amazon.in/Linux-Kernel-Programming-practical-synchronization/dp/1803232226/">Linux Kernel Programming</a> and <a href="//www.amazon.in/Hands-System-Programming-Linux-programming-ebook/dp/B079RKKKJ7/">Hands-on System Programming</a> was how I
+understood concepts like paging, virtual memory, kernel modules, scheduling and
+process management, concurrency, interrupts, ftrace/trace-cmd, memory allocation,
+locking etc. These are really some core things that anyone learning about the kernel
+would need to understand. The books came with a git repo containing exercises which
+helped root the concepts. Even when these were quite recent books some of the things
+had changed, but it was nothing unmanagable. 
+</p>
+
+<p>
+I actually had expected to cruise through the rest of the mentorship having finished
+around 1500 pages, but as I progressed I came to the realization that books can only
+provide the basic foundational concepts, and as a good starting point, <b>the ultimate
+source of truth</b> remains in the kernel source itself and everything else is just a
+stepping stone. So navigating around the source shouldn&rsquo;t have been ommited for the
+period. I did find a few other books of interests that I would like to get back to -
+John Madieu&rsquo;s <a href="//www.packtpub.com/en-be/product/linux-device-drivers-development-9781785280009">Linux Kernel Driver Development</a>, Paul E. McKenny&rsquo;s <a href="git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/perfbook.git">Perfbook</a> and good
+ol&rsquo; <a href="//lwn.net/Kernel/LDD3/">LDD</a>.
+</p>
+
+<p>
+With the new understanding I was able go through the docs better and tools like
+cscope &amp; clangd allowed me to better navigate the source.
+</p>
+</div>
+<h2><a id="landingsomepatches" class="anchor" href="#landingsomepatches"><i># </i></a>Landing some patches</h2><div class="outline-text-2" id="text-org8a4b51b">
+<p>
+With half of the time remaining I decided to start looking for some easy patches,
+since a minimum of 5 patches is required for the graduation.  I resorted to static
+analysis tools as they seemingly had simpler fixes. The only issue was that there
+were a lot of many of them and most are ones with no quick fix and something low
+priority from a maintainer&rsquo;s perspective.
+</p>
+
+<p>
+Apart from a handful, a lot of mentees struggled to get patches accepted, so I was
+careful not to rush in with my patches. Although one patches did get rejected right
+away as I was modifying userspace behaviour. A workqueue api cleanup patch that felt
+was a safe bet had an issue which <a href="//www.linkedin.com/in/khalidaziz">Khalid Aziz</a>(mentor) pointed out while reviewing;
+you can never be too careful, it is always a good idea to get the initial patches
+reviewed before sending. There was a point where I spend one whole week, trying to
+do a TODO in realtek ethernet driver (r8169) only to figure that my network adapter
+loaded different firmware than the affected codepath. Thankfully the rest of the
+patches I sent got merged, these were mostly documentation fixes and one was
+cleanup. So nothing to brag about yet.
+</p>
+
+<p>
+My general understanding came to this:
+</p>
+<ol class="org-ol">
+<li>Getting a feature merged in the kernel is challenging if you aren&rsquo;t sure. Even if
+you are confident, chances are there would be a long discussion and some changes
+proposed before it gets accepted.</li>
+<li>A code cleanup work which doesn&rsquo;t fix anything or is not being actively pursued
+by the kernel community may be frowned upon depending on how busy a subsystem
+is.</li>
+<li>The general assumption is that patches are expected to have been properly
+tested. If not, then <b>it needs to be mentioned</b>. If your patch is hardware
+dependent you need to test it on real hardware yourself or request someone who
+owns one.</li>
+<li>Syzbot bug fixes get accepted almost immediately.</li>
+</ol>
+
+<p>
+Overall I had 6 patches merged, learn&rsquo;t about Kunit and Kselftest, those turned out
+to be more beginner friendly and serve as documentation themselves.
+</p>
+</div>
+<h2><a id="thelastfewweeksandthensome" class="anchor" href="#thelastfewweeksandthensome"><i># </i></a>The last few weeks and then some</h2><div class="outline-text-2" id="text-orgb71703b">
+<p>
+Towards the end of the program I had managed to acquire an old laptop with a ryzen
+2500U APU for testing purposes. Qemu while convenient for testing syzbot bugs, will
+always fall short when testing drivers, which needs actual hardware to run &amp;
+test. The <i>drm</i> subsystem had a great <a href="//kernel.org/doc/html/latest/gpu/vkms.html#todo">TODO</a> list which I wanted to work on.
+</p>
+
+<p>
+With little time I was granted some extension in which I managed to find a
+regression in amdgpu driver since kernel version 6.13, where on reloading the module
+it would crash on certain operations. This seems to be hardware timing issue on the
+gfx IP, so for the time being the <i>drm</i> subsystem is where I will focus. I was able
+to reproduce the issue with <a href="//gitlab.freedesktop.org/drm/igt-gpu-tools">igt-gpu-tools</a> and then with my own reproducer. The older
+kernels blocks the operations that cause the crash, which could be a valid patch,
+but I am still pondering if that would be the ideal way to go.
+</p>
+</div>
+<h2><a id="whatnext" class="anchor" href="#whatnext"><i># </i></a>What next?</h2><div class="outline-text-2" id="text-org6cff496">
+<ol class="org-ol">
+<li>Solve a syzbot bug. I am yet to fix one.</li>
+<li>Follow the discussions on LKML &amp; LWN regularly.</li>
+<li>Focus on the drm subsystem.</li>
+<li>Review patches. The <a href="//youtu.be/HX0GH-YJbGw?si=u7_uimI9MSwDqNmw&t=69">kernel has too many developer</a>, not enough reviwers/maintainers.</li>
+<li>Regular blog posts about low-level stuff.</li>
+<li>Definitely a career in low-level programming.</li>
+</ol>
+</div>
+<h2><a id="closingthoughts" class="anchor" href="#closingthoughts"><i># </i></a>Closing Thoughts</h2><div class="outline-text-2" id="text-org6bce9a1">
+<p>
+The Mentorship Program was an enriching experience, getting to work on the kernel
+with actual kernel maintainers as mentors! They are indeed very underappreciated
+heros making sure a billion devices (20 billion actually) dont miss out on those cpu
+ticks. It also got me to finally set up my my blog, this very blog post is part of
+the graduation criteria. The kernel is still largely mysterious to me, but instead
+of going &ldquo;oh its a kernel issue&rdquo; and quietly back off, now I can confidently say
+&ldquo;let me take a look at it&rdquo;. It is a very liberating feeling.
+</p>
+
+<p>
+Many a thanks to my mentors <a href="//en.wikipedia.org/wiki/Shuah_Khan">Shuah Khan</a>, <a href="//www.linkedin.com/in/david-hunter-34a10371">David Hunter</a>, <a href="//www.linkedin.com/in/khalidaziz">Khalid Aziz</a> for the
+unforgettable experience, my fellow mentees and ex-mentees from whome I got to learn
+so much and the maintainers for providing constructive feedback. I hope we get to
+work again in coming years.
+</p>
+
+<p>
+Cheers!  :)
+</p>
+</div>
+</div><script src="https://utteranc.es/client.js" repo="spyjetfayed/spyjetfayed.github.io" issue-term="title" label="comments" theme="github-dark" crossorigin="anonymous" async="async"></script></div></div><footer class="footer uk-section uk-section-secondary"><div class="uk-container footer-container"><div class="footer-links"><a href="https://github.com/spyjetfayed" class="footer-link" uk-icon="icon: github-alt">github</a><a href="https://codeberg.org/spyjetfayed/" class="footer-link" uk-icon="icon: album">Codeberg</a></div><div class="copyright"><div style="padding-top: 3px;">Made with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</div><div style="padding-top: 3px;">Copyright © 2025 Ankan Biswas. All rights reserved.</div></div></div></footer><div id="search-results" class="search-results" uk-modal=""><div class="uk-modal-dialog uk-modal-body uk-background-secondary uk-light"><h2 class="uk-modal-title" id="search-results-title">Search Results</h2><div id="search-results-body" class="search-results-body"></div><a class="uk-modal-close-default" uk-close=""></a></div></div></body></html>
